@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/navigation_community"
-        android:icon="@mipmap/home"
+        android:icon="@mipmap/community"
         android:title="@string/navigation_community" />
 
     <item
