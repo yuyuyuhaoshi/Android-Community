@@ -88,15 +88,19 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_community:
                     viewPager.setCurrentItem(COMMUNITY_FRAGMENT);
+                    actionBar.setCustomView(R.layout.actionbar_community);
                     return true;
                 case R.id.navigation_discovery:
                     viewPager.setCurrentItem(DISCOVERY_FRAGMENT);
+                    actionBar.setCustomView(R.layout.actionbar_discovery);
                     return true;
                 case R.id.navigation_notifications:
                     viewPager.setCurrentItem(NOTIFICATION_FRAGMENT);
+                    actionBar.setCustomView(R.layout.actionbar_community);
                     return true;
                 case R.id.navigation_mine:
                     viewPager.setCurrentItem(MINE_FRAGMENT);
+                    actionBar.setCustomView(R.layout.actionbar_mine);
                     return true;
             }
             return false;
