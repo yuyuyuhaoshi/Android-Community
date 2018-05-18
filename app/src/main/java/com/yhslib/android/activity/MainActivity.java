@@ -2,6 +2,7 @@ package com.yhslib.android.activity;
 
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
@@ -11,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -30,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
     private BottomNavigationView navigation;
     private ViewPager viewPager;
+    private ActionBar actionBar;
     private Fragment[] fragments;
 
     private final int FRAGMENT_COUNT = 4;
@@ -42,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         findView();
         init();
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -52,10 +55,15 @@ public class MainActivity extends AppCompatActivity {
     private void findView() {
         navigation = findViewById(R.id.navigation);
         viewPager = findViewById(R.id.viewPager);
+        actionBar = getSupportActionBar();
     }
 
 
     private void init() {
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.actionbar_community);
+        }
 
         fragments = new Fragment[FRAGMENT_COUNT];
         fragments[COMMUNITY_FRAGMENT] = CommunityFragment.newInstance();
@@ -147,6 +155,20 @@ public class MainActivity extends AppCompatActivity {
 
 
     };
+
+    @Override
+    public void onBackPressed() {
+        exit_dialog();
+    }
+
+    private void exit_dialog() {
+        new AlertDialog.Builder(this).setMessage("您确定要退出吗？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                MainActivity.this.finish();
+            }
+        }).setNegativeButton("取消", null).show();
+    }
 
     @SuppressLint("RestrictedApi")
     public static void disableShiftMode(BottomNavigationView view) {
