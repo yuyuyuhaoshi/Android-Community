@@ -8,4 +8,11 @@
     <string name="navigation_discovery">发现</string>
     <string name="navigation_notification">通知</string>
     <string name="navigation_mine">我的</string>
+    
+    <string name="mine_check_in">打卡签到</string>
+    <string name="mine_my_focus">我的关注</string>
+    <string name="mine_my_fans">我的粉丝</string>
+    <string name="mine_my_favorite">我的收藏</string>
+    <string name="mine_my_post">我的文章</string>
+    <string name="mine_my_check_in">我的签到</string>
 </resources>

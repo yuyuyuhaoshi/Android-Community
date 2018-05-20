@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        public MyFragmentPagerAdapter(FragmentManager fm) {
+        private MyFragmentPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
