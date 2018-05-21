@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
+    <dimen name="offset_0dp">0dp</dimen>
     <dimen name="offset_2dp">2dp</dimen>
     <dimen name="offset_4dp">4dp</dimen>
     <dimen name="offset_6dp">6dp</dimen>
@@ -13,7 +14,9 @@
     <dimen name="offset_16dp">16dp</dimen>
     <dimen name="offset_18dp">18dp</dimen>
     <dimen name="offset_20dp">20dp</dimen>
+    <dimen name="offset_30dp">30dp</dimen>
     <dimen name="offset_40dp">40dp</dimen>
+    <dimen name="offset_60dp">60dp</dimen>
     <dimen name="offset_80dp">80dp</dimen>
 
 

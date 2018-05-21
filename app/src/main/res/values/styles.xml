@@ -20,4 +20,13 @@
         <item name="contentInsetEnd">0dp</item>
     </style>
 
+
+    <style name="AttentionButton">
+        <item name="android:layout_width">@dimen/offset_60dp</item>
+        <item name="android:layout_height">@dimen/offset_30dp</item>
+        <item name="android:textSize">@dimen/font_size_normal</item>
+        <item name="android:background">@drawable/attention_button_shape</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
 </resources>
