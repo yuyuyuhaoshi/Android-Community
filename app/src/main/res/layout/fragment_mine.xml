@@ -21,8 +21,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/mine_via"
                 android:layout_width="@dimen/offset_80dp"
-                android:layout_height="@dimen/offset_80dp"
-                android:src="@mipmap/via" />
+                android:layout_height="@dimen/offset_80dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -36,22 +35,22 @@
                     android:layout_height="wrap_content">
 
                     <!--<TextView-->
-                        <!--android:id="@+id/mine_nickname"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:text="我的名字XXX"-->
-                        <!--android:textColor="@color/colorPrimaryText"-->
-                        <!--android:textSize="@dimen/font_size_normal" />-->
+                    <!--android:id="@+id/mine_nickname"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="我的名字XXX"-->
+                    <!--android:textColor="@color/colorPrimaryText"-->
+                    <!--android:textSize="@dimen/font_size_normal" />-->
 
                     <!--<TextView-->
-                        <!--android:id="@+id/mine_number_of_member"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginRight="@dimen/offset_12dp"-->
-                        <!--android:layout_toLeftOf="@+id/checkin"-->
-                        <!--android:text="第XXX号会员"-->
-                        <!--android:textColor="@color/colorPrimaryText"-->
-                        <!--android:textSize="@dimen/font_size_normal" />-->
+                    <!--android:id="@+id/mine_number_of_member"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginRight="@dimen/offset_12dp"-->
+                    <!--android:layout_toLeftOf="@+id/checkin"-->
+                    <!--android:text="第XXX号会员"-->
+                    <!--android:textColor="@color/colorPrimaryText"-->
+                    <!--android:textSize="@dimen/font_size_normal" />-->
 
                     <TextView
                         android:id="@+id/checkin"
@@ -68,20 +67,19 @@
                     android:layout_marginTop="@dimen/offset_14dp">
 
                     <!--<TextView-->
-                        <!--android:id="@+id/mine_signature"-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_weight="1"-->
-                        <!--android:text="我的个性签名 aaaaaaaa aaaaaa aaa aaaaaa aaaaa aaaaaa aaaaaaaaaa"-->
-                        <!--android:textColor="@color/colorPrimaryText"-->
-                        <!--android:textSize="@dimen/font_size_small" />-->
+                    <!--android:id="@+id/mine_signature"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:text="我的个性签名 aaaaaaaa aaaaaa aaa aaaaaa aaaaa aaaaaa aaaaaaaaaa"-->
+                    <!--android:textColor="@color/colorPrimaryText"-->
+                    <!--android:textSize="@dimen/font_size_small" />-->
 
                     <TextView
                         android:id="@+id/mine_nickname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="我的名字XXX"
                         android:textColor="@color/colorPrimaryText"
                         android:textSize="@dimen/font_size_large_high" />
 
@@ -97,66 +95,66 @@
         </LinearLayout>
 
         <!--<View-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="@dimen/offset_2dp"-->
-            <!--android:layout_marginTop="@dimen/offset_10dp"-->
-            <!--android:background="@color/colorDivider" />-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="@dimen/offset_2dp"-->
+        <!--android:layout_marginTop="@dimen/offset_10dp"-->
+        <!--android:background="@color/colorDivider" />-->
 
         <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="@dimen/offset_10dp"-->
-            <!--android:orientation="horizontal">-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="@dimen/offset_10dp"-->
+        <!--android:orientation="horizontal">-->
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:orientation="vertical">-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="vertical">-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/mine_following"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="@dimen/offset_14dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="222222"-->
-                    <!--android:textColor="@color/colorPrimaryText"-->
-                    <!--android:textSize="@dimen/font_size_large" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/mine_following"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="@dimen/offset_14dp"-->
+        <!--android:gravity="center"-->
+        <!--android:text="222222"-->
+        <!--android:textColor="@color/colorPrimaryText"-->
+        <!--android:textSize="@dimen/font_size_large" />-->
 
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@string/mine_my_following"-->
-                    <!--android:textColor="@color/colorPrimaryText"-->
-                    <!--android:textSize="@dimen/font_size_normal" />-->
-            <!--</LinearLayout>-->
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/mine_my_following"-->
+        <!--android:textColor="@color/colorPrimaryText"-->
+        <!--android:textSize="@dimen/font_size_normal" />-->
+        <!--</LinearLayout>-->
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="1"-->
-                <!--android:orientation="vertical">-->
+        <!--<LinearLayout-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1"-->
+        <!--android:orientation="vertical">-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/mine_follower"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_marginBottom="@dimen/offset_14dp"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="2"-->
-                    <!--android:textColor="@color/colorPrimaryText"-->
-                    <!--android:textSize="@dimen/font_size_large" />-->
+        <!--<TextView-->
+        <!--android:id="@+id/mine_follower"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="@dimen/offset_14dp"-->
+        <!--android:gravity="center"-->
+        <!--android:text="2"-->
+        <!--android:textColor="@color/colorPrimaryText"-->
+        <!--android:textSize="@dimen/font_size_large" />-->
 
-                <!--<TextView-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:gravity="center"-->
-                    <!--android:text="@string/mine_my_follower"-->
-                    <!--android:textColor="@color/colorPrimaryText"-->
-                    <!--android:textSize="@dimen/font_size_normal" />-->
-            <!--</LinearLayout>-->
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center"-->
+        <!--android:text="@string/mine_my_follower"-->
+        <!--android:textColor="@color/colorPrimaryText"-->
+        <!--android:textSize="@dimen/font_size_normal" />-->
+        <!--</LinearLayout>-->
         <!--</LinearLayout>-->
 
         <View
@@ -197,7 +195,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/offset_40dp"
-            android:layout_marginTop="@dimen/offset_10dp"
+            android:layout_marginTop="@dimen/offset_20dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -226,7 +224,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/offset_40dp"
-            android:layout_marginTop="@dimen/offset_10dp"
+            android:layout_marginTop="@dimen/offset_20dp"
             android:orientation="horizontal">
 
             <ImageView
