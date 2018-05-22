@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,7 @@ public class MineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Log.d(TAG, TAG);
         findView();
+        initView();
         initPersonalInformation();
 
     }
@@ -82,8 +85,21 @@ public class MineFragment extends Fragment {
         myCheckinTxt = view.findViewById(R.id.mine_my_checkin);
     }
 
+    private void initView() {
+        myPostsTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyPostsFragment myPostsFragment = MyPostsFragment.newInstance();
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+            }
+        });
+    }
+
     private void initPersonalInformation() {
-        String url = URL.User.detail + USERID + '/';
+        String url = URL.User.detail(USERID);
+        Log.d(TAG, url);
+
         OkHttpUtils
                 .get()
                 .url(url)
@@ -112,8 +128,7 @@ public class MineFragment extends Fragment {
                 .get()//
                 .url(url)//
                 .build()//
-                .execute(new BitmapCallback()
-                {
+                .execute(new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Log.d(TAG, e.getMessage());
@@ -123,9 +138,6 @@ public class MineFragment extends Fragment {
                     public void onResponse(Bitmap response, int id) {
                         myVia.setImageBitmap(response);
                     }
-
-
-
                 });
     }
 
@@ -143,5 +155,23 @@ public class MineFragment extends Fragment {
             e.printStackTrace();
         }
         return resultList;
+    }
+
+    private void switchFragment(Fragment targetFragment) {
+        // 点击时调用此方法
+        // 从MineFragment 跳转到 MyPostsFragment
+        FragmentTransaction transaction = getFragmentManager()
+                .beginTransaction();
+        if (!targetFragment.isAdded()) {
+            transaction
+                    .hide(MineFragment.this)
+                    .add(R.id.viewPager, targetFragment)
+                    .commit();
+        } else {
+            transaction
+                    .hide(MineFragment.this)
+                    .show(targetFragment)
+                    .commit();
+        }
     }
 }
