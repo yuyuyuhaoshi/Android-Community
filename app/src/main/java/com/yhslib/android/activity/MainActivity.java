@@ -48,8 +48,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findView();
         init();
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //BottomNavigationViewHelper.disableShiftMode(navigation);
     }
 
     private void findView() {
@@ -75,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(myFragmentPagerAdapter);
         viewPager.addOnPageChangeListener(onPageChangeListener);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        viewPager.setOffscreenPageLimit(FRAGMENT_COUNT - 1);
         disableShiftMode(navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
 
