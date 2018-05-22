@@ -1,5 +1,6 @@
 package com.yhslib.android.fragment;
 
+import android.graphics.Bitmap;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,9 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
+import com.yhslib.android.config.URL;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -36,7 +44,8 @@ public class MineFragment extends Fragment {
     private TextView myPostsTxt;
     private TextView myCheckinTxt;
 
-
+    private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIwIiwiZXhwIjoxNTI3MDQwNDYyLCJ1c2VyX2lkIjoxLCJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwib3JpZ19pYXQiOjE1MjY5NTQwNjJ9.yochlyfHUFc8rj03WCz_zQU4Mas1-6uRQFuRN1hz-uk";
+    private final String USERID = "1";
 
     public static MineFragment newInstance() {
         Bundle args = new Bundle();
@@ -57,7 +66,7 @@ public class MineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Log.d(TAG, TAG);
         findView();
-        initPersonalInfomation();
+        initPersonalInformation();
 
     }
 
@@ -73,25 +82,66 @@ public class MineFragment extends Fragment {
         myCheckinTxt = view.findViewById(R.id.mine_my_checkin);
     }
 
-    private void initPersonalInfomation() {
-        String url = "http://api.dj-china.org//rest-auth/login/";
+    private void initPersonalInformation() {
+        String url = URL.User.detail + USERID + '/';
         OkHttpUtils
-                .post()
+                .get()
                 .url(url)
-                .addParams("username", "user0")
-                .addParams("password", "yuhaoshi")
+                .addHeader("Authorization", "Bearer " + TOKEN)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        Log.d(TAG, e.getMessage());
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.d(TAG, response);
+                        Log.d(TAG, formatUserInfoJSON(response).toString());
+                        HashMap<String, Object> hm = formatUserInfoJSON(response).get(0);
+                        nicknameTxt.setText(hm.get("nickname").toString());
+                        loadMugshotUrl(hm.get("mugshot_url").toString());
                     }
 
                 });
+    }
+
+    private void loadMugshotUrl(String url) {
+        url = URL.host + url;
+        OkHttpUtils
+                .get()//
+                .url(url)//
+                .build()//
+                .execute(new BitmapCallback()
+                {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(Bitmap response, int id) {
+                        myVia.setImageBitmap(response);
+                    }
+
+
+
+                });
+    }
+
+    private ArrayList<HashMap<String, Object>> formatUserInfoJSON(String response) {
+        ArrayList<HashMap<String, Object>> resultList = new ArrayList<>();
+        try {
+            JSONObject jsonobject = new JSONObject(response);
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("id", jsonobject.getLong("id"));
+            hashMap.put("username", jsonobject.getString("username"));
+            hashMap.put("nickname", jsonobject.getString("nickname"));
+            hashMap.put("mugshot_url", jsonobject.getString("mugshot_url"));
+            resultList.add(hashMap);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return resultList;
     }
 }
