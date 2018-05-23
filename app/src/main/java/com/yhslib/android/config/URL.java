@@ -10,7 +10,7 @@ public class URL {
             return host + "/rest-auth/login/";
         }
 
-        public static String emailList() {
+        public static String getEmailList() {
             // method:get
             // return http://api.dj-china.org/users/email/
             return host + "/users/email/";

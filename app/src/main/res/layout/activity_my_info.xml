@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/offset_14dp"
+    android:layout_marginLeft="@dimen/offset_14dp"
+    android:layout_marginRight="@dimen/offset_14dp"
+    android:layout_marginTop="@dimen/offset_14dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/offset_40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_12dp"
+            android:layout_weight="1"
+            android:text="编辑头像"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/font_size_normal" />
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/offset_30dp"
+            android:layout_height="@dimen/offset_30dp"
+            android:layout_marginRight="@dimen/offset_20dp"
+            android:layout_marginTop="@dimen/offset_4dp"
+            android:src="@mipmap/via" />
+
+        <ImageView
+            android:layout_width="@dimen/offset_20dp"
+            android:layout_height="@dimen/offset_20dp"
+            android:layout_marginTop="@dimen/offset_10dp"
+            android:src="@mipmap/right_arrow" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/offset_2dp"
+        android:layout_marginTop="@dimen/offset_6dp"
+        android:layout_marginBottom="@dimen/offset_6dp"
+        android:background="@color/colorDivider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/offset_40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_12dp"
+            android:layout_weight="1"
+            android:text="昵称"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/font_size_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/offset_20dp"
+            android:layout_marginTop="@dimen/offset_12dp"
+            android:text="我的昵称"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/font_size_normal" />
+
+        <ImageView
+            android:layout_width="@dimen/offset_20dp"
+            android:layout_height="@dimen/offset_20dp"
+            android:layout_marginTop="@dimen/offset_10dp"
+            android:src="@mipmap/right_arrow" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/offset_2dp"
+        android:layout_marginTop="@dimen/offset_6dp"
+        android:layout_marginBottom="@dimen/offset_6dp"
+        android:background="@color/colorDivider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/offset_40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_12dp"
+            android:layout_weight="1"
+            android:text="修改密码"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/font_size_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/offset_20dp"
+            android:layout_marginTop="@dimen/offset_12dp"
+            android:text=""
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/font_size_normal" />
+
+        <ImageView
+            android:layout_width="@dimen/offset_20dp"
+            android:layout_height="@dimen/offset_20dp"
+            android:layout_marginTop="@dimen/offset_10dp"
+            android:src="@mipmap/right_arrow" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/offset_2dp"
+        android:layout_marginTop="@dimen/offset_6dp"
+        android:layout_marginBottom="@dimen/offset_6dp"
+        android:background="@color/colorDivider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/offset_40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_12dp"
+            android:layout_weight="1"
+            android:text="绑定邮箱"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/font_size_normal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/offset_20dp"
+            android:layout_marginTop="@dimen/offset_12dp"
+            android:text="qq@qq.com"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/font_size_normal" />
+
+        <ImageView
+            android:layout_width="@dimen/offset_20dp"
+            android:layout_height="@dimen/offset_20dp"
+            android:layout_marginTop="@dimen/offset_10dp"
+            android:src="@mipmap/right_arrow" />
+    </LinearLayout>
+
+</LinearLayout>
