@@ -172,7 +172,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@mipmap/fav" />
+                android:src="@mipmap/reply" />
 
             <TextView
                 android:id="@+id/mine_my_favorite"
@@ -181,7 +181,7 @@
                 android:layout_marginLeft="@dimen/offset_8dp"
                 android:layout_weight="1"
                 android:paddingTop="@dimen/offset_10dp"
-                android:text="@string/mine_my_favorite"
+                android:text="@string/mine_my_reply"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="@dimen/font_size_normal" />
 

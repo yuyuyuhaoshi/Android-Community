@@ -1,5 +1,6 @@
 package com.yhslib.android.fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -16,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
+import com.yhslib.android.activity.LoginActivity;
+import com.yhslib.android.activity.MyInfoActivity;
+import com.yhslib.android.activity.MyPostsActivity;
 import com.yhslib.android.config.URL;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
@@ -46,7 +50,7 @@ public class MineFragment extends Fragment {
     private TextView myPostsTxt;
     private TextView myCheckinTxt;
 
-    private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIwIiwiZXhwIjoxNTI3MDQwNDYyLCJ1c2VyX2lkIjoxLCJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwib3JpZ19pYXQiOjE1MjY5NTQwNjJ9.yochlyfHUFc8rj03WCz_zQU4Mas1-6uRQFuRN1hz-uk";
+    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJ1c2VyMCIsImV4cCI6MTUyNzEzMDc2OSwidXNlcl9pZCI6MSwib3JpZ19pYXQiOjE1MjcwNDQzNjl9.8GCPvgPeBEWQzof94rnVdK-cO6ghGj43hNWbuC2JlQk";
     private final String USERID = "1";
 
     public static MineFragment newInstance() {
@@ -69,7 +73,7 @@ public class MineFragment extends Fragment {
         //Log.d(TAG, TAG);
         findView();
         initView();
-        initPersonalInformation();
+        fetchPersonalInformation();
 
     }
 
@@ -89,14 +93,25 @@ public class MineFragment extends Fragment {
         myPostsTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyPostsFragment myPostsFragment = MyPostsFragment.newInstance();
-                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                Intent intent = new Intent(getActivity(), MyPostsActivity.class);
+                intent.putExtra("userID", USERID);
+                intent.putExtra("token", TOKEN);
+                startActivity(intent);
+            }
+        });
 
+        nicknameTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyInfoActivity.class);
+                intent.putExtra("userID", USERID);
+                intent.putExtra("token", TOKEN);
+                startActivity(intent);
             }
         });
     }
 
-    private void initPersonalInformation() {
+    private void fetchPersonalInformation() {
         String url = URL.User.detail(USERID);
         Log.d(TAG, url);
 
@@ -155,23 +170,5 @@ public class MineFragment extends Fragment {
             e.printStackTrace();
         }
         return resultList;
-    }
-
-    private void switchFragment(Fragment targetFragment) {
-        // 点击时调用此方法
-        // 从MineFragment 跳转到 MyPostsFragment
-        FragmentTransaction transaction = getFragmentManager()
-                .beginTransaction();
-        if (!targetFragment.isAdded()) {
-            transaction
-                    .hide(MineFragment.this)
-                    .add(R.id.viewPager, targetFragment)
-                    .commit();
-        } else {
-            transaction
-                    .hide(MineFragment.this)
-                    .show(targetFragment)
-                    .commit();
-        }
     }
 }

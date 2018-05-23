@@ -2,14 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="@dimen/offset_14dp"
+    android:layout_marginLeft="@dimen/offset_14dp"
+    android:layout_marginRight="@dimen/offset_14dp"
+    android:layout_marginTop="@dimen/offset_14dp"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/actionbar_title"
+        android:id="@+id/my_post_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="登录"
+        android:text="我的文章列表"
         android:textColor="@color/colorPrimaryText"
         android:textSize="18sp" />
+
+    <!--<ListView-->
+        <!--android:id="@+id/my_post_list"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content" />-->
+
+
 </LinearLayout>
