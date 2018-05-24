@@ -50,7 +50,7 @@ public class MineFragment extends Fragment {
     private TextView myPostsTxt;
     private TextView myCheckinTxt;
 
-    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwidXNlcm5hbWUiOiJ1c2VyMCIsImV4cCI6MTUyNzEzMDc2OSwidXNlcl9pZCI6MSwib3JpZ19pYXQiOjE1MjcwNDQzNjl9.8GCPvgPeBEWQzof94rnVdK-cO6ghGj43hNWbuC2JlQk";
+    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIwIiwib3JpZ19pYXQiOjE1MjcxNDMyNzUsInVzZXJfaWQiOjEsImV4cCI6MTUyNzIyOTY3NSwiZW1haWwiOiJ1c2VyMEBleGFtcGxlLmNvbSJ9.GXUNFeUCqqFs4wSArJzASO1A8Ehd1e3KQRL99eMK4X4";
     private final String USERID = "1";
 
     public static MineFragment newInstance() {
@@ -87,6 +87,7 @@ public class MineFragment extends Fragment {
         myFavoriteTxt = view.findViewById(R.id.mine_my_favorite);
         myPostsTxt = view.findViewById(R.id.mine_my_posts);
         myCheckinTxt = view.findViewById(R.id.mine_my_checkin);
+
     }
 
     private void initView() {
