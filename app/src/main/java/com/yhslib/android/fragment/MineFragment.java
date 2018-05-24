@@ -87,8 +87,6 @@ public class MineFragment extends Fragment {
         myFavoriteTxt = view.findViewById(R.id.mine_my_favorite);
         myPostsTxt = view.findViewById(R.id.mine_my_posts);
         myCheckinTxt = view.findViewById(R.id.mine_my_checkin);
-
-
     }
 
     private void initView() {
