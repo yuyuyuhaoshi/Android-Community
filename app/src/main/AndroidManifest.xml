@@ -22,6 +22,7 @@
         <activity android:name=".activity.RegisterActivity" />
         <activity android:name=".activity.MyPostsActivity" />
         <activity android:name=".activity.MyInfoActivity" />
+        <activity android:name=".activity.PostActivity" />
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

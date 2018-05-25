@@ -64,4 +64,18 @@ public class URL {
             return host + "/users/email/" + emailID + "/set_primary/";
         }
     }
+
+    public static class Post {
+        public static String getPostDetail(String postID) {
+            // method: get
+            // return http://api.dj-china.org/post/1/;
+            return host + "/posts/" + postID + "/";
+        }
+
+        public static String getPostReply(String postID) {
+            // method: get
+            // return http://api.dj-china.org/post/1/replies/;
+            return host + "/posts/" + postID + "/replies/";
+        }
+    }
 }
