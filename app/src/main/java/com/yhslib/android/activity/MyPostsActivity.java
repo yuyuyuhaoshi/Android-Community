@@ -52,8 +52,8 @@ public class MyPostsActivity extends AppCompatActivity {
     }
 
     private void fetchPosts() {
-        String url = "http://api.dj-china.org/posts/"; // URL.User.getPosts(userID);
-        Log.d(TAG, url);
+        String url = URL.User.getPosts(userID); // URL.User.getPosts(userID);
+        // Log.d(TAG, url);
         OkHttpUtils
                 .get()
                 .url(url)
@@ -130,6 +130,11 @@ public class MyPostsActivity extends AppCompatActivity {
 
     private void showPostDetail(Long id) {
         String _id = hm.get(id.intValue()).get("_id").toString();
-        Log.d(TAG, _id);
+        //Log.d(TAG, _id);
+        Intent intent = new Intent(MyPostsActivity.this, PostActivity.class);
+        intent.putExtra("userID", userID);
+        intent.putExtra("token", token);
+        intent.putExtra("postID", _id);
+        startActivity(intent);
     }
 }

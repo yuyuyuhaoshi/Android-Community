@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         findView();
-        init();
+        initView();
     }
 
     private void findView() {
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void init() {
+    private void initView() {
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.actionbar_community);
