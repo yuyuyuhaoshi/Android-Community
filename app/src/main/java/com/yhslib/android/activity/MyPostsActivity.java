@@ -78,7 +78,7 @@ public class MyPostsActivity extends AppCompatActivity {
 
     private void fetchPosts() {
         RefreshFlag = false;
-        String url = URL.host + "/posts/"; // URL.User.getPosts(userID);
+        String url = URL.User.getPosts(userID);  //URL.host + "/posts/";
         OkHttpUtils
                 .get()
                 .url(url)
