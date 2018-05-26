@@ -50,7 +50,7 @@ public class MineFragment extends Fragment {
     private TextView myPostsTxt;
     private TextView myCheckinTxt;
 
-    private final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXIwIiwidXNlcl9pZCI6MSwiZXhwIjoxNTI3MjkzNTU0LCJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwib3JpZ19pYXQiOjE1MjcyMDcxNTR9.mxWpnkEmIt-h6xcyr1Tm7l9f8ykd8AAO5yyvv8ow5Y0";
+    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc0MTQzMDEsIm9yaWdfaWF0IjoxNTI3MzI3OTAxLCJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ1c2VyMCJ9.z5iFhYm8Nc14x8YzFjIxJJbzkjwdLac5UGJ_zk27ZsM";
     private final String USERID = "1";
 
     public static MineFragment newInstance() {

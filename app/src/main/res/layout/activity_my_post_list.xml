@@ -14,7 +14,7 @@
     <!--android:textColor="@color/colorPrimaryText"-->
     <!--android:textSize="18sp" />-->
 
-    <ListView
+    <com.yhslib.android.util.CustomListView
         android:id="@+id/my_post_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
