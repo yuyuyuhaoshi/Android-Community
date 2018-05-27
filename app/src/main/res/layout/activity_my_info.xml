@@ -9,6 +9,7 @@
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/my_info_change_via"
         android:layout_width="match_parent"
         android:layout_height="@dimen/offset_40dp"
         android:orientation="horizontal">
@@ -23,11 +24,11 @@
             android:textSize="@dimen/font_size_normal" />
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/my_info_via"
             android:layout_width="@dimen/offset_30dp"
             android:layout_height="@dimen/offset_30dp"
             android:layout_marginRight="@dimen/offset_20dp"
-            android:layout_marginTop="@dimen/offset_4dp"
-            android:src="@mipmap/via" />
+            android:layout_marginTop="@dimen/offset_4dp" />
 
         <ImageView
             android:layout_width="@dimen/offset_20dp"
@@ -39,11 +40,12 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="@dimen/offset_2dp"
-        android:layout_marginTop="@dimen/offset_6dp"
         android:layout_marginBottom="@dimen/offset_6dp"
+        android:layout_marginTop="@dimen/offset_6dp"
         android:background="@color/colorDivider" />
 
     <LinearLayout
+        android:id="@+id/my_info_change_nickname"
         android:layout_width="match_parent"
         android:layout_height="@dimen/offset_40dp"
         android:orientation="horizontal">
@@ -58,11 +60,11 @@
             android:textSize="@dimen/font_size_normal" />
 
         <TextView
+            android:id="@+id/my_info_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/offset_20dp"
             android:layout_marginTop="@dimen/offset_12dp"
-            android:text="我的昵称"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/font_size_normal" />
 
@@ -76,11 +78,12 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="@dimen/offset_2dp"
-        android:layout_marginTop="@dimen/offset_6dp"
         android:layout_marginBottom="@dimen/offset_6dp"
+        android:layout_marginTop="@dimen/offset_6dp"
         android:background="@color/colorDivider" />
 
     <LinearLayout
+        android:id="@+id/my_info_change_password"
         android:layout_width="match_parent"
         android:layout_height="@dimen/offset_40dp"
         android:orientation="horizontal">
@@ -94,15 +97,6 @@
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/font_size_normal" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/offset_20dp"
-            android:layout_marginTop="@dimen/offset_12dp"
-            android:text=""
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/font_size_normal" />
-
         <ImageView
             android:layout_width="@dimen/offset_20dp"
             android:layout_height="@dimen/offset_20dp"
@@ -113,11 +107,12 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="@dimen/offset_2dp"
-        android:layout_marginTop="@dimen/offset_6dp"
         android:layout_marginBottom="@dimen/offset_6dp"
+        android:layout_marginTop="@dimen/offset_6dp"
         android:background="@color/colorDivider" />
 
     <LinearLayout
+        android:id="@+id/my_info_change_email_list"
         android:layout_width="match_parent"
         android:layout_height="@dimen/offset_40dp"
         android:orientation="horizontal">
@@ -127,16 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/offset_12dp"
             android:layout_weight="1"
-            android:text="绑定邮箱"
-            android:textColor="@color/colorPrimaryText"
-            android:textSize="@dimen/font_size_normal" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/offset_20dp"
-            android:layout_marginTop="@dimen/offset_12dp"
-            android:text="qq@qq.com"
+            android:text="邮箱设置"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/font_size_normal" />
 
@@ -146,5 +132,6 @@
             android:layout_marginTop="@dimen/offset_10dp"
             android:src="@mipmap/right_arrow" />
     </LinearLayout>
+
 
 </LinearLayout>
