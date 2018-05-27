@@ -96,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_notifications:
                     viewPager.setCurrentItem(NOTIFICATION_FRAGMENT);
-                    actionBar.setCustomView(R.layout.actionbar_community);
+                    actionBar.setCustomView(R.layout.actionbar_notification);
                     return true;
                 case R.id.navigation_mine:
                     viewPager.setCurrentItem(MINE_FRAGMENT);
