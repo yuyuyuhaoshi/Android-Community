@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,14 @@ import com.yhslib.android.R;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseActivity;
 import com.yhslib.android.util.MugshotUrl;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import java.util.HashMap;
+
+import okhttp3.Call;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 
 public class MyInfoActivity extends BaseActivity {
     private String TAG = "MyInfoActivity";
@@ -96,7 +105,8 @@ public class MyInfoActivity extends BaseActivity {
         builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(MyInfoActivity.this, "你输入的是: " + edit.getText().toString(), Toast.LENGTH_SHORT).show();
+                // Toast.makeText(MyInfoActivity.this, "你输入的是: " + edit.getText().toString(), Toast.LENGTH_SHORT).show();
+                changeNickname(edit.getText().toString());
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -112,5 +122,31 @@ public class MyInfoActivity extends BaseActivity {
     private void loadMugshot(String url) {
         url = URL.host + url;
         MugshotUrl.load(url, myViaImage);
+    }
+
+    private void changeNickname(String nickname) {
+        String url = URL.User.detail(userID);
+        RequestBody requestBody = new FormBody.Builder()
+                .add("nickname", nickname)
+                .build();
+        OkHttpUtils
+                .patch()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .requestBody(requestBody)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        // Log.d(TAG, formatUserInfoJSON(response).toString());
+                        Log.d(TAG, response);
+                    }
+
+                });
     }
 }
