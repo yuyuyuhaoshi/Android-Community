@@ -9,17 +9,18 @@
         android:layout_height="wrap_content">
 
         <ImageView
+            android:id="@+id/reply_mugshot"
             android:layout_width="@dimen/offset_30dp"
             android:layout_height="@dimen/offset_30dp"
             android:src="@mipmap/via" />
 
         <TextView
+            android:id="@+id/reply_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/offset_10dp"
             android:layout_marginTop="@dimen/offset_6dp"
             android:layout_weight="1"
-            android:text="我的名字"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/font_size_normal" />
 

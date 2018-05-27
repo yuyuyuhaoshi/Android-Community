@@ -8,11 +8,20 @@
     android:orientation="vertical"
     tools:context=".activity.MainActivity">
 
+    <!--<FrameLayout-->
+    <!--android:id="@+id/main_fragment"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="1"-->
+    <!--android:name="com.yhslib.android.fragment.MainFragment">-->
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <!--</>-->
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
