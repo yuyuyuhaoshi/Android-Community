@@ -171,4 +171,5 @@ public class MineFragment extends Fragment {
         }
         return resultList;
     }
+
 }
