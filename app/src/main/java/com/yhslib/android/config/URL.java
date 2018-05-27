@@ -78,4 +78,14 @@ public class URL {
             return host + "/posts/" + postID + "/replies/";
         }
     }
+
+    public static class Community {
+        public static String getPosts(int page) {
+            return host + "/posts/" + "?page=" + page;
+        }
+
+        public static String getPopularTags() {
+            return host + "/tags/popular/";
+        }
+    }
 }
