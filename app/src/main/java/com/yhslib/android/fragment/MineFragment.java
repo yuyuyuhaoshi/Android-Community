@@ -21,6 +21,7 @@ import com.yhslib.android.activity.LoginActivity;
 import com.yhslib.android.activity.MyInfoActivity;
 import com.yhslib.android.activity.MyPostsActivity;
 import com.yhslib.android.config.URL;
+import com.yhslib.android.util.MugshotUrl;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -40,7 +42,7 @@ public class MineFragment extends Fragment {
     private String TAG = "MineFragment";
     private View view;
 
-    private ImageView myVia;
+    private ImageView myViaImage;
     private TextView nicknameTxt;
     private TextView numberOfMemberTxt;
     private TextView signatureTxt;
@@ -50,8 +52,11 @@ public class MineFragment extends Fragment {
     private TextView myPostsTxt;
     private TextView myCheckinTxt;
 
-    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc0MTQzMDEsIm9yaWdfaWF0IjoxNTI3MzI3OTAxLCJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJ1c2VyMCJ9.z5iFhYm8Nc14x8YzFjIxJJbzkjwdLac5UGJ_zk27ZsM";
+    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwidXNlcl9pZCI6MSwib3JpZ19pYXQiOjE1Mjc0MDk4MTYsInVzZXJuYW1lIjoidXNlcjAiLCJleHAiOjE1Mjc0OTYyMTZ9.fY2pgydz1C9QrelyFr_vXcF23tHjp92wX-iVClJqx-8";
     private final String USERID = "1";
+    private String nickname = "";
+    private String mugshot_url = "";
+    private Boolean ClickFlag = false; // 当数据加载完才能点击
 
     public static MineFragment newInstance() {
         Bundle args = new Bundle();
@@ -78,7 +83,7 @@ public class MineFragment extends Fragment {
     }
 
     private void findView() {
-        myVia = view.findViewById(R.id.mine_via);
+        myViaImage = view.findViewById(R.id.mine_via);
         nicknameTxt = view.findViewById(R.id.mine_nickname);
         //numberOfMemberTxt = view.findViewById(R.id.numberOfMember);
         //signatureTxt = view.findViewById(R.id.mine_signature);
@@ -93,6 +98,9 @@ public class MineFragment extends Fragment {
         myPostsTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!ClickFlag) {
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), MyPostsActivity.class);
                 intent.putExtra("userID", USERID);
                 intent.putExtra("token", TOKEN);
@@ -103,9 +111,14 @@ public class MineFragment extends Fragment {
         nicknameTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!ClickFlag) {
+                    return;
+                }
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
                 intent.putExtra("userID", USERID);
                 intent.putExtra("token", TOKEN);
+                intent.putExtra("mugshot_url", mugshot_url);
+                intent.putExtra("nickname", nickname);
                 startActivity(intent);
             }
         });
@@ -113,8 +126,6 @@ public class MineFragment extends Fragment {
 
     private void fetchPersonalInformation() {
         String url = URL.User.detail(USERID);
-        Log.d(TAG, url);
-
         OkHttpUtils
                 .get()
                 .url(url)
@@ -130,30 +141,19 @@ public class MineFragment extends Fragment {
                     public void onResponse(String response, int id) {
                         // Log.d(TAG, formatUserInfoJSON(response).toString());
                         HashMap<String, Object> hm = formatUserInfoJSON(response).get(0);
-                        nicknameTxt.setText(hm.get("nickname").toString());
-                        loadMugshotUrl(hm.get("mugshot_url").toString());
+                        nickname = hm.get("nickname").toString();
+                        nicknameTxt.setText(nickname);
+                        mugshot_url = hm.get("mugshot_url").toString();
+                        loadMugshot(mugshot_url);
+                        ClickFlag = true;
                     }
 
                 });
     }
 
-    private void loadMugshotUrl(String url) {
+    private void loadMugshot(String url) {
         url = URL.host + url;
-        OkHttpUtils
-                .get()//
-                .url(url)//
-                .build()//
-                .execute(new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Log.d(TAG, e.getMessage());
-                    }
-
-                    @Override
-                    public void onResponse(Bitmap response, int id) {
-                        myVia.setImageBitmap(response);
-                    }
-                });
+        MugshotUrl.load(url, myViaImage);
     }
 
     private ArrayList<HashMap<String, Object>> formatUserInfoJSON(String response) {

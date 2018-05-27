@@ -3,7 +3,6 @@ package com.yhslib.android.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -11,6 +10,7 @@ import android.widget.SimpleAdapter;
 
 import com.yhslib.android.R;
 import com.yhslib.android.config.URL;
+import com.yhslib.android.util.BaseActivity;
 import com.yhslib.android.util.CustomListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 import okhttp3.Call;
 
-public class MyPostsActivity extends AppCompatActivity {
+public class MyPostsActivity extends BaseActivity {
 
     private String TAG = "MyPostsActivity";
     private String userID;
@@ -35,29 +35,50 @@ public class MyPostsActivity extends AppCompatActivity {
 
     private CustomListView listView;
     private SimpleAdapter adapter;
-    private Boolean RefreshFlag = false; // 防止多次刷新
+    private Boolean RefreshFlag = false; // 防止多次刷新标记
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_post_list);
+    }
+
+    @Override
+    protected void getDataFromIntent() {
         Intent intent = getIntent();
         userID = intent.getStringExtra("userID");
         token = intent.getStringExtra("token");
-        findView();
-        fetchPosts();
-        setListViewListener();
     }
 
-    private void findView() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_my_post_list;
+    }
+
+    @Override
+    protected void findView() {
         listView = findViewById(R.id.my_post_list);
     }
 
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void setListener() {
+        setListViewListener();
+    }
+
+    @Override
+    protected void initData() {
+        fetchPosts();
+    }
+
     private void setListViewListener() {
+        // list view 下拉加载下一页文章
         listView.setOnPullToRefreshListener(new CustomListView.OnPullToRefreshListener() {
             @Override
             public void onBottom() {
-                Log.d(TAG, RefreshFlag.toString());
                 if (!RefreshFlag) {
                     return;
                 }
@@ -78,7 +99,7 @@ public class MyPostsActivity extends AppCompatActivity {
 
     private void fetchPosts() {
         RefreshFlag = false;
-        String url = URL.User.getPosts(userID);  //URL.host + "/posts/";
+        String url = URL.host + "/posts/";  //URL.host + "/posts/";
         OkHttpUtils
                 .get()
                 .url(url)
@@ -94,7 +115,6 @@ public class MyPostsActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.d(TAG, hm.size() + "");
                         hm.addAll(formatPostsJSON(response));
                         // 在请求第一页的时候初始化Adapter
                         // 其他时候更新Adapter即可
@@ -168,5 +188,10 @@ public class MyPostsActivity extends AppCompatActivity {
         intent.putExtra("token", token);
         intent.putExtra("postID", postID);
         startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
