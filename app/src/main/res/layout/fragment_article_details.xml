@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:padding="@dimen/offset_10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/fillet_frame_height"
+                android:background="@drawable/fillet_frame"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_marginBottom="10dp">
+                <TextView
+                    android:id="@+id/back"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/back_size"
+                    android:text=""
+                    tools:ignore="HardcodedText" />
+                <TextView
+                    android:layout_toEndOf="@id/back"
+                    android:id="@+id/articles_tittle"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/ArticleTittleText"
+                    android:text="@string/test_article_tittle" />
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/jerry_zheng"/>
+                    <RelativeLayout
+                        android:layout_marginStart="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/author_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="膜法师"/>
+                        <TextView
+                            android:id="@+id/articles_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:text="5月20日"/>
+                    </RelativeLayout>
+                </LinearLayout>
+                <TextView
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="15dp"
+                    android:paddingVertical="7dp"
+                    android:background="@drawable/fillet_frame"
+                    android:gravity="center"
+                    android:text="@string/focus"
+                    android:layout_alignParentEnd="true"
+                    tools:targetApi="o" />
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:scrollbars="vertical"
+                android:singleLine="false"
+                android:text="@string/test_article_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorCommonBackgroundGrey">
+        <EditText
+            android:layout_margin="7dp"
+            android:paddingStart="7dp"
+            android:layout_width="240dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fillet_frame_white"
+            android:hint="写点评论吧"
+            tools:ignore="RtlSymmetry" />
+        <ImageView
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_message" />
+        <ImageView
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_collection" />
+        <ImageView
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_share" />
+    </LinearLayout>
+</RelativeLayout>
