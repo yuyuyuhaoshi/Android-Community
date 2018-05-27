@@ -1,16 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+android:orientation="vertical" android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="@dimen/offset_10dp">
+<LinearLayout
+    android:id="@+id/swipe"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/actionbar_title"
+    <include android:id="@+id/search_view" layout="@layout/search_view"/>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="社区 主页"
-        android:textColor="@color/colorPrimaryText"
-        android:textSize="18sp" />
-
+        android:layout_height="@dimen/fillet_frame_height"
+        android:background="@drawable/fillet_frame"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:layout_marginBottom="10dp">
+        <TextView
+            android:id="@+id/popular_articles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/popular_articles"/>
+        <LinearLayout
+            android:id="@+id/line_all_articles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/all" />
+        </LinearLayout>
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/list_article"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <include android:id="@+id/tags" layout="@layout/popular_tags"/>
+</LinearLayout>
 </LinearLayout>
