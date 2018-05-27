@@ -23,12 +23,7 @@
         <item name="android:textSize">@dimen/articles_tittle_size</item>
         <item name="android:textColor">@color/colorPrimaryText</item>
     </style>
-
-    <style name="ArticleTittleText">
-        <item name="android:textSize">@dimen/articles_tittle_size</item>
-        <item name="android:textColor">@color/colorPrimaryText</item>
-    </style>
-
+    
     <style name="AttentionButton">
         <item name="android:layout_width">@dimen/offset_60dp</item>
         <item name="android:layout_height">@dimen/offset_30dp</item>
@@ -47,15 +42,5 @@
         <item name="actionBarStyle">@style/MyActionBarStyle</item>
     </style>
 
-    <style name="NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-
-        <item name="android:actionBarStyle">@style/MyActionBarStyle</item>
-        <item name="actionBarStyle">@style/MyActionBarStyle</item>
-    </style>
 
 </resources>
