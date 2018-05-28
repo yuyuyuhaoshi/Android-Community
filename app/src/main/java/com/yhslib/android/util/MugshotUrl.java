@@ -22,6 +22,7 @@ public class MugshotUrl {
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         String mTAG = TAG;
+
                         Log.d(mTAG, e.getMessage());
                     }
 
