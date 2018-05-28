@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/login_size_100pt"
+        android:src="@drawable/timg"
+        android:scaleType="fitXY"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_marginTop="@dimen/login_size_10pt"
+                android:layout_marginLeft="@dimen/login_size_40pt"
+                android:id="@+id/login_textview"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="登录"
+                android:textStyle="bold"
+                android:layout_width="wrap_content" />
+
+            <TextView
+                android:layout_marginTop="@dimen/login_size_10pt"
+                android:layout_marginRight="@dimen/login_size_40pt"
+                android:id="@+id/register_textview"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="注册"
+                android:textStyle="bold"
+                android:gravity="right"
+                android:layout_width="wrap_content"
+                android:layout_alignRight="@id/login_textview"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:orientation="horizontal">
+            <View
+                android:id="@+id/login_underline"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/offset_2dp"
+                android:layout_weight="1"
+                android:layout_marginTop="@dimen/offset_10dp"
+                android:background="@color/colorgray"
+                />
+            <View
+                android:id="@+id/register_underline"
+                android:layout_marginTop="@dimen/offset_10dp"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/offset_2dp"
+                android:layout_weight="1"
+                android:background="@color/colorLightGray"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <FrameLayout
+        android:id="@+id/login_title"
+        android:layout_margin="@dimen/offset_10dp"
+        android:layout_gravity="center"
+        android:background="@drawable/kuang"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+</LinearLayout>

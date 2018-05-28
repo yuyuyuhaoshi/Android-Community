@@ -12,13 +12,17 @@
     <dimen name="offset_10dp">10dp</dimen>
     <dimen name="offset_12dp">12dp</dimen>
     <dimen name="offset_14dp">14dp</dimen>
+    <dimen name="offset_15dp">15dp</dimen>
     <dimen name="offset_16dp">16dp</dimen>
     <dimen name="offset_18dp">18dp</dimen>
     <dimen name="offset_20dp">20dp</dimen>
     <dimen name="offset_30dp">30dp</dimen>
     <dimen name="offset_40dp">40dp</dimen>
     <dimen name="offset_60dp">60dp</dimen>
+    <dimen name="offset_70dp">70dp</dimen>
+    <dimen name="offset_75dp">75dp</dimen>
     <dimen name="offset_80dp">80dp</dimen>
+    <dimen name="offset_200dp">200dp</dimen>
 
 
     <dimen name="font_size_small">12sp</dimen>
@@ -33,4 +37,12 @@
     <dimen name="back_size">25sp</dimen>
     <dimen name="articles_tittle_size">15sp</dimen>
 
+    <dimen name="login_size_3pt">3pt</dimen>
+    <dimen name="login_size_5pt">5pt</dimen>
+    <dimen name="login_size_8pt">8pt</dimen>
+    <dimen name="login_size_10pt">10pt</dimen>
+    <dimen name="login_size_22pt">22pt</dimen>
+    <dimen name="login_size_25pt">25pt</dimen>
+    <dimen name="login_size_40pt">40pt</dimen>
+    <dimen name="login_size_100pt">100pt</dimen>
 </resources>
