@@ -9,8 +9,10 @@
     <color name="colorLightText">#FFFFFF</color>
     <color name="colorIcons">#FFFFFF</color>
     <color name="colorDivider">#BDBDBD</color>
+    <color name="colorLightGray">#ECEAED</color>
     <color name="colorCommonBackgroundGrey">#E5E5E5</color>
     <color name="colorCommonForegroundGrey">#888888</color>
     <color name="colorArticleTittle">#333333</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorgray">#c0c0c0</color>
 </resources>
