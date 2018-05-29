@@ -12,7 +12,7 @@
             android:layout_gravity="center"
             android:id="@+id/login_edt_name"
             android:layout_height="match_parent"
-            android:hint="用户名/邮箱"
+            android:hint="@string/login_admin"
             android:layout_width="match_parent" />
 
         <EditText
@@ -24,14 +24,14 @@
             android:layout_gravity="center"
             android:id="@+id/login_edt_password"
             android:layout_height="match_parent"
-            android:hint="密码"
+            android:hint="@string/login_password"
             android:layout_width="match_parent" />
         <Button
             android:layout_gravity="center"
             android:background="@drawable/anniu"
             android:layout_width="@dimen/offset_200dp"
             android:layout_height="wrap_content"
-            android:text="确定"/>
+            android:text="@string/login_ok"/>
         <LinearLayout
             android:layout_margin="@dimen/offset_15dp"
             android:layout_width="wrap_content"
@@ -41,19 +41,21 @@
                 android:layout_height="@dimen/offset_2dp"
                 android:layout_weight="1"
                 android:background="@color/colorgray"
-                android:layout_marginBottom="@dimen/offset_10dp"
-                android:layout_marginTop="@dimen/offset_10dp"/>
+                android:layout_marginBottom="@dimen/offset_6dp"
+                android:layout_marginTop="@dimen/offset_30dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="第三方登录"/>
+                android:text="@string/login_disanfang"
+                android:layout_marginTop="@dimen/offset_20dp"/>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_2dp"
                 android:layout_weight="1"
                 android:background="@color/colorgray"
-                android:layout_marginBottom="@dimen/offset_10dp"
-                android:layout_marginTop="@dimen/offset_10dp"/>
+                android:layout_marginBottom="@dimen/offset_6dp"
+                android:layout_marginTop="@dimen/offset_30dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -95,7 +97,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_70dp"
                 android:layout_weight="1"
-                android:text="QQ"/>
+                android:text="@string/login_QQ"/>
             <TextView
                 android:layout_marginTop="@dimen/login_size_5pt"
                 android:layout_marginLeft="@dimen/login_size_22pt"
@@ -104,7 +106,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_70dp"
                 android:layout_weight="1"
-                android:text="微信"/>
+                android:text="@string/login_wechat"/>
             <TextView
                 android:layout_marginTop="@dimen/login_size_5pt"
                 android:layout_marginLeft="@dimen/login_size_22pt"
@@ -113,7 +115,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_70dp"
                 android:layout_weight="1"
-                android:text="微博"/>
+                android:text="@string/login_weibo"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,7 @@
     <dimen name="offset_0dp">0dp</dimen>
     <dimen name="offset_1dp">1dp</dimen>
     <dimen name="offset_2dp">2dp</dimen>
+    <dimen name="offset_3dp">3dp</dimen>
     <dimen name="offset_4dp">4dp</dimen>
     <dimen name="offset_6dp">6dp</dimen>
     <dimen name="offset_8dp">8dp</dimen>
