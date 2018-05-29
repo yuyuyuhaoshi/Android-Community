@@ -99,7 +99,7 @@ public class MyPostsActivity extends BaseActivity {
 
     private void fetchPosts() {
         RefreshFlag = false;
-        String url = URL.host + "/posts/";  //URL.host + "/posts/";
+        String url = URL.User.getPosts(userID);  //URL.host + "/posts/";
         OkHttpUtils
                 .get()
                 .url(url)
