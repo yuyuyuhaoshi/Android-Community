@@ -20,13 +20,15 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
+import com.yhslib.android.activity.MainActivity;
+import com.yhslib.android.util.BaseFragment;
 import com.yhslib.android.util.SlideBar;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NotificationFragment extends Fragment {
+public class NotificationFragment extends BaseFragment {
     private String TAG = "NotificationFragment";
     private View view;
     private SimpleAdapter adapter;
@@ -61,16 +63,18 @@ public class NotificationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_notification, container, false);
-        init();
         return view;
     }
 
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, TAG);
+    protected void setListener() {
+        barListener();
+        setListViewListener();
     }
-    private void init(){
+
+    @Override
+    protected void findView() {
         listView=view.findViewById(R.id.notification_list_view);
 //        mReplay_avatar = (ImageView) view.findViewById(R.id.replay_avatar);
 //        mReplay_name = (TextView) view.findViewById(R.id.replay_name);
@@ -88,13 +92,17 @@ public class NotificationFragment extends Fragment {
         mNotice_under_line = (ImageView) view.findViewById(R.id.notice_under_line);
         mNotification_list_view = (ListView) view.findViewById(R.id.notification_list_view);
         bar=view.findViewById(R.id.bar);
+    }
+
+    @Override
+    protected void init(){
+
         setComment();
-        barListener();
-        setListViewListener();
     }
 
     private void setListViewListener() {
-        SlideBar slideBar= new SlideBar(bar,listView);
+        assert ((MainActivity)getActivity()) != null;
+        SlideBar slideBar= new SlideBar(bar,((MainActivity)getActivity()).navigation,listView);
         slideBar.SetSlideBar();
     }
 
@@ -108,7 +116,7 @@ public class NotificationFragment extends Fragment {
         mAtMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setAtme();
+                setAtMe();
             }
         });
         mNotice.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +139,7 @@ public class NotificationFragment extends Fragment {
         mNotice.setTextColor(ContextCompat.getColor(getActivity(),R.color.colorSecondaryText));
         mNotice_under_line.setVisibility(View.INVISIBLE);
     }
-    private void setAtme(){
+    private void setAtMe(){
         String[] from = {"replay_avatar", "replay_name", "replay_date", "replay_article", "text_my_comment"};
         int[] to = {R.id.replay_avatar, R.id.replay_name, R.id.replay_date, R.id.replay_article, R.id.text_my_comment};
         adapter = new SimpleAdapter(getActivity(), getData(ATME), R.layout.notification_atme, from, to);

@@ -24,15 +24,13 @@ import com.yhslib.android.fragment.DiscoveryFragment;
 import com.yhslib.android.fragment.MineFragment;
 import com.yhslib.android.fragment.NotificationFragment;
 
-import com.yhslib.android.util.BottomNavigationViewHelper;
-
 import java.lang.reflect.Field;
 
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
-    private BottomNavigationView navigation;
-    private ViewPager viewPager;
+    public BottomNavigationView navigation;
+    public ViewPager viewPager;
     private ActionBar actionBar;
     private Fragment[] fragments;
 
@@ -50,10 +48,12 @@ public class MainActivity extends AppCompatActivity {
         initView();
     }
 
+
     private void findView() {
         navigation = findViewById(R.id.navigation);
         viewPager = findViewById(R.id.viewPager);
         actionBar = getSupportActionBar();
+
     }
 
 

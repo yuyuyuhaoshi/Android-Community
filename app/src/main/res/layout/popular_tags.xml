@@ -9,6 +9,11 @@
         android:orientation="horizontal"
         android:layout_weight="1">
         <TextView
+            android:id="@+id/tag1_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
             android:id="@+id/tag1"
             android:layout_margin="7dp"
             android:layout_width="match_parent"
@@ -17,6 +22,11 @@
             android:gravity="center"
             android:layout_weight="1"
             android:text="摄影"/>
+        <TextView
+            android:id="@+id/tag2_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tag2"
             android:layout_margin="7dp"
@@ -27,6 +37,11 @@
             android:layout_weight="1"
             android:text="Python"/>
         <TextView
+            android:id="@+id/tag3_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
             android:id="@+id/tag3"
             android:layout_margin="7dp"
             android:layout_width="match_parent"
@@ -35,6 +50,11 @@
             android:gravity="center"
             android:layout_weight="1"
             android:text="航空母舰"/>
+        <TextView
+            android:id="@+id/tag4_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tag4"
             android:layout_margin="7dp"
@@ -53,6 +73,11 @@
         android:orientation="horizontal"
         android:layout_weight="1">
         <TextView
+            android:id="@+id/tag5_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
             android:id="@+id/tag5"
             android:layout_margin="7dp"
             android:layout_width="match_parent"
@@ -61,6 +86,11 @@
             android:gravity="center"
             android:layout_weight="1"
             android:text="骑行"/>
+        <TextView
+            android:id="@+id/tag6_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tag6"
             android:layout_margin="7dp"
@@ -71,6 +101,11 @@
             android:layout_weight="1"
             android:text="小猪佩奇"/>
         <TextView
+            android:id="@+id/tag7_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <TextView
             android:id="@+id/tag7"
             android:layout_margin="7dp"
             android:layout_width="match_parent"
@@ -79,6 +114,11 @@
             android:gravity="center"
             android:layout_weight="1"
             android:text="JAVA"/>
+        <TextView
+            android:id="@+id/tag8_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
         <TextView
             android:id="@+id/tag8"
             android:layout_margin="7dp"
