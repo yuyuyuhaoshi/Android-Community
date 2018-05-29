@@ -63,6 +63,12 @@ public class URL {
             // return http://api.dj-china.org/users/email/1/set_primary/;
             return host + "/users/email/" + emailID + "/set_primary/";
         }
+
+        public static String changePassword() {
+            // method: post
+            // return http://api.dj-china.org/rest-auth/password/change/;
+            return host + "/rest-auth/password/change/";
+        }
     }
 
     public static class Post {

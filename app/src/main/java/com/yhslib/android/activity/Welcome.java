@@ -18,19 +18,20 @@ import com.yhslib.android.R;
  * Created by jerryzheng on 2018/5/25.
  */
 
-public class Welcome  extends AppCompatActivity {
+public class Welcome extends AppCompatActivity {
     TextView textView;
     AnimationSet animationSet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.welcom);
-        textView=findViewById(R.id.text_welcome);
-        anim();
+        textView = findViewById(R.id.text_welcome);
+        animation();
     }
 
-    private void anim(){
+    private void animation() {
         Animation welcome_alpha = AnimationUtils.loadAnimation(Welcome.this, R.anim.welcome_alpha);
         Animation welcome_translate = AnimationUtils.loadAnimation(Welcome.this, R.anim.welcome_translate);
         Animation welcome_scale = AnimationUtils.loadAnimation(Welcome.this, R.anim.welcome_scale);
@@ -47,7 +48,7 @@ public class Welcome  extends AppCompatActivity {
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(Welcome.this,MainActivity.class);
+                Intent intent = new Intent(Welcome.this, MainActivity.class);
                 startActivity(intent);
             }
 

@@ -52,7 +52,7 @@ public class MineFragment extends Fragment {
     private TextView myPostsTxt;
     private TextView myCheckinTxt;
 
-    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwidXNlcl9pZCI6MSwib3JpZ19pYXQiOjE1Mjc0MDk4MTYsInVzZXJuYW1lIjoidXNlcjAiLCJleHAiOjE1Mjc0OTYyMTZ9.fY2pgydz1C9QrelyFr_vXcF23tHjp92wX-iVClJqx-8";
+    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc2NDIzNTUsInVzZXJuYW1lIjoidXNlcjAiLCJvcmlnX2lhdCI6MTUyNzU1NTk1NSwidXNlcl9pZCI6MSwiZW1haWwiOiJ1c2VyMEBleGFtcGxlLmNvbSJ9.plJ2eDcHks1xJdmwWPhWdLOrRJOS344iIKLhDQ6xB9E";
     private final String USERID = "1";
     private String nickname = "";
     private String mugshot_url = "";
@@ -171,5 +171,4 @@ public class MineFragment extends Fragment {
         }
         return resultList;
     }
-
 }
