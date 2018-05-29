@@ -1,14 +1,10 @@
 package com.yhslib.android.fragment;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
-import com.yhslib.android.activity.LoginActivity;
 import com.yhslib.android.activity.MyInfoActivity;
 import com.yhslib.android.activity.MyPostsActivity;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.MugshotUrl;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
@@ -31,12 +25,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.TreeMap;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 public class MineFragment extends Fragment {
     private String TAG = "MineFragment";
