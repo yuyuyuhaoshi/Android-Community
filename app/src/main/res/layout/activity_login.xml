@@ -12,7 +12,7 @@
             android:layout_gravity="center"
             android:id="@+id/login_edt_name"
             android:layout_height="match_parent"
-            android:hint="@string/login_admin"
+            android:hint="@string/login_admin_username_email"
             android:layout_width="match_parent" />
 
         <EditText
@@ -43,7 +43,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/login_disanfang"
+                android:text="@string/login_thirdparty"
                 android:layout_marginTop="@dimen/offset_10dp"/>
 
             <View

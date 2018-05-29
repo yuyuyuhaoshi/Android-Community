@@ -72,12 +72,12 @@
     <string name="app_flags">朝闻道夕死可矣</string>
     <string name="login">登录</string>
     <string name="register">注册</string>
-    <string name="login_admin_yonghuming">用户名/邮箱</string>
-    <string name="login_admin">用户名/邮箱</string>
-    <string name="login_youxiang">邮箱</string>
+    <string name="login_admin_username">用户名/邮箱</string>
+    <string name="login_admin_username_email">用户名/邮箱</string>
+    <string name="login_admin_email">邮箱</string>
     <string name="login_password">密码</string>
     <string name="login_ok">确定</string>
-    <string name="login_disanfang">第三方登录</string>
+    <string name="login_thirdparty">第三方登录</string>
     <string name="login_QQ">QQ</string>
     <string name="login_wechat">微信</string>
     <string name="login_weibo">微博</string>

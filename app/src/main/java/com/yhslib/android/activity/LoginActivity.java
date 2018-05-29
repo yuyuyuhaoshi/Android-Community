@@ -36,11 +36,11 @@ public class LoginActivity extends AppCompatActivity {
         Fragment fragment = LoginFragment.newInstance();
         ft.replace(R.id.login_title,fragment);
         ft.commit();
-        FindView();
+        findView();
         setListener();
 
     }
-    private void FindView(){
+    private void findView(){
         login_textview=findViewById(R.id.login_textview);
         register_textview=findViewById(R.id.register_textview);
         login_underline=findViewById(R.id.login_underline);

@@ -13,7 +13,7 @@
             android:layout_gravity="center"
             android:id="@+id/edt_name"
             android:layout_height="match_parent"
-            android:hint="@string/login_admin_yonghuming"
+            android:hint="@string/login_admin_username"
             android:layout_width="match_parent" />
 
         <EditText
@@ -36,7 +36,7 @@
             android:layout_gravity="center"
             android:id="@+id/edt_call"
             android:layout_height="match_parent"
-            android:hint="@string/login_youxiang"
+            android:hint="@string/login_admin_email"
             android:layout_width="match_parent" />
         <!--<LinearLayout-->
             <!--android:layout_width="match_parent"-->
