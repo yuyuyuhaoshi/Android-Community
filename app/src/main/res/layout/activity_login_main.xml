@@ -6,7 +6,7 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/login_size_100pt"
+        android:layout_height="220dp"
         android:src="@drawable/timg"
         android:scaleType="fitXY"/>
     <LinearLayout
@@ -19,8 +19,8 @@
             android:orientation="horizontal"
             >
             <TextView
-                android:layout_marginTop="@dimen/login_size_10pt"
-                android:layout_marginLeft="@dimen/login_size_40pt"
+                android:layout_marginTop="@dimen/offset_22dp"
+                android:layout_marginLeft="@dimen/offset_88dp"
                 android:id="@+id/login_textview"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -29,8 +29,8 @@
                 android:layout_width="wrap_content" />
 
             <TextView
-                android:layout_marginTop="@dimen/login_size_10pt"
-                android:layout_marginRight="@dimen/login_size_40pt"
+                android:layout_marginTop="@dimen/offset_22dp"
+                android:layout_marginRight="@dimen/offset_88dp"
                 android:id="@+id/register_textview"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
         android:id="@+id/login_title"
         android:layout_margin="@dimen/offset_10dp"
         android:layout_gravity="center"
-        android:background="@drawable/kuang"
+        android:background="@drawable/large_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </FrameLayout>

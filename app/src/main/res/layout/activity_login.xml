@@ -7,8 +7,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <EditText
-            android:layout_margin="@dimen/login_size_10pt"
-            android:background="@drawable/xiaokuang"
+            android:layout_margin="@dimen/offset_22dp"
+            android:background="@drawable/edttevie_frame"
             android:layout_gravity="center"
             android:id="@+id/login_edt_name"
             android:layout_height="match_parent"
@@ -16,11 +16,8 @@
             android:layout_width="match_parent" />
 
         <EditText
-            android:layout_marginLeft="@dimen/login_size_10pt"
-            android:layout_marginRight="@dimen/login_size_10pt"
-            android:layout_marginBottom="@dimen/login_size_10pt"
-            android:layout_marginTop="@dimen/login_size_10pt"
-            android:background="@drawable/xiaokuang"
+            android:layout_margin="@dimen/offset_22dp"
+            android:background="@drawable/edttevie_frame"
             android:layout_gravity="center"
             android:id="@+id/login_edt_password"
             android:layout_height="match_parent"
@@ -28,7 +25,7 @@
             android:layout_width="match_parent" />
         <Button
             android:layout_gravity="center"
-            android:background="@drawable/anniu"
+            android:background="@drawable/button_ok"
             android:layout_width="@dimen/offset_200dp"
             android:layout_height="wrap_content"
             android:text="@string/login_ok"/>
@@ -42,12 +39,12 @@
                 android:layout_weight="1"
                 android:background="@color/colorgray"
                 android:layout_marginBottom="@dimen/offset_6dp"
-                android:layout_marginTop="@dimen/offset_30dp"/>
+                android:layout_marginTop="@dimen/offset_20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:text="@string/login_disanfang"
-                android:layout_marginTop="@dimen/offset_20dp"/>
+                android:layout_marginTop="@dimen/offset_10dp"/>
 
             <View
                 android:layout_width="match_parent"
@@ -55,7 +52,7 @@
                 android:layout_weight="1"
                 android:background="@color/colorgray"
                 android:layout_marginBottom="@dimen/offset_6dp"
-                android:layout_marginTop="@dimen/offset_30dp"/>
+                android:layout_marginTop="@dimen/offset_20dp"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -63,24 +60,24 @@
             android:orientation="horizontal">
             <ImageButton
                 android:layout_marginTop="@dimen/offset_0dp"
-                android:layout_marginLeft="@dimen/login_size_10pt"
-                android:layout_width="@dimen/offset_75dp"
+                android:layout_marginLeft="@dimen/offset_22dp"
+                android:layout_width="@dimen/offset_100dp"
                 android:layout_height="@dimen/offset_75dp"
                 android:scaleType="fitCenter"
                 android:layout_weight="1"
                 android:background="@drawable/qq" />
             <ImageButton
-                android:layout_marginLeft="@dimen/login_size_25pt"
+                android:layout_marginLeft="@dimen/offset_20dp"
+                android:layout_width="@dimen/offset_100dp"
                 android:layout_marginTop="@dimen/offset_0dp"
-                android:layout_width="@dimen/offset_75dp"
                 android:layout_height="@dimen/offset_75dp"
                 android:scaleType="fitCenter"
                 android:layout_weight="1"
                 android:background="@drawable/wechat"/>
             <ImageButton
-                android:layout_marginLeft="@dimen/login_size_25pt"
+                android:layout_marginLeft="@dimen/offset_20dp"
+                android:layout_width="@dimen/offset_100dp"
                 android:layout_marginTop="@dimen/offset_0dp"
-                android:layout_width="@dimen/offset_75dp"
                 android:layout_height="@dimen/offset_75dp"
                 android:scaleType="fitCenter"
                 android:layout_weight="1"
@@ -90,28 +87,31 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:layout_marginTop="@dimen/login_size_5pt"
-                android:layout_marginLeft="@dimen/login_size_22pt"
-                android:layout_marginRight="@dimen/login_size_22pt"
                 android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/offset_0dp"
+                android:layout_marginLeft="@dimen/offset_14dp"
+                android:layout_marginRight="@dimen/font_size_small"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_70dp"
                 android:layout_weight="1"
                 android:text="@string/login_QQ"/>
             <TextView
-                android:layout_marginTop="@dimen/login_size_5pt"
-                android:layout_marginLeft="@dimen/login_size_22pt"
-                android:layout_marginRight="@dimen/login_size_22pt"
                 android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="@dimen/offset_0dp"
+                android:layout_marginLeft="@dimen/offset_10dp"
+                android:layout_marginRight="@dimen/font_size_small"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_70dp"
                 android:layout_weight="1"
                 android:text="@string/login_wechat"/>
             <TextView
-                android:layout_marginTop="@dimen/login_size_5pt"
-                android:layout_marginLeft="@dimen/login_size_22pt"
-                android:layout_marginRight="@dimen/login_size_22pt"
                 android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginLeft="@dimen/offset_1dp"
+                android:layout_marginTop="@dimen/offset_0dp"
+                android:layout_marginRight="@dimen/offset_18dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_70dp"
                 android:layout_weight="1"
