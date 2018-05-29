@@ -28,10 +28,13 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
+import com.yhslib.android.activity.MainActivity;
 import com.yhslib.android.config.URL;
+import com.yhslib.android.util.BaseFragment;
 import com.yhslib.android.util.CutBitmap;
 import com.yhslib.android.util.SlideBar;
 import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.GetBuilder;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONArray;
@@ -52,7 +55,7 @@ import java.util.TimeZone;
 import okhttp3.Call;
 import okhttp3.Response;
 
-public class CommunityFragment extends Fragment {
+public class CommunityFragment extends BaseFragment {
     private String TAG = "CommunityFragment";
 
     private View view;
@@ -60,12 +63,13 @@ public class CommunityFragment extends Fragment {
     private ListView listViewArticle;
     private SearchView searchView;
     private View.OnClickListener tagsOnClickListener;
-    private TextView tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, textViewPopularArticles;
+    private TextView tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag1Id, tag2Id, tag3Id, tag4Id, tag5Id, tag6Id, tag7Id, tag8Id,textViewPopularArticles;
     private SimpleAdapter adapter;
     private View layoutSwipe;
-    private TextView[] tags;
-    private boolean searchIsOpen = false;
-
+    private TextView[] tags,tagsId;
+    EditText searchText;
+    private boolean isSearchTag = false;
+    int lastPage=0;
     public static CommunityFragment newInstance() {
         Bundle args = new Bundle();
         CommunityFragment fragment = new CommunityFragment();
@@ -77,28 +81,26 @@ public class CommunityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_community, container, false);
-        init();
-        searchListener();
-        setListViewListener();
-        setPopularTags(tags);
         return view;
     }
 
+
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, TAG);
+    protected void setListener() {
+        setSearchListener();
+        setListViewListener();
     }
 
-    private void init() {
+    @Override
+    protected void findView() {
         layoutPopularTags = view.findViewById(R.id.tags);
         layoutSearch = view.findViewById(R.id.search_view);
         listViewArticle = view.findViewById(R.id.list_article);
         searchView = layoutSearch.findViewById(R.id.search);
         layoutSwipe = view.findViewById(R.id.swipe);
         textViewPopularArticles = view.findViewById(R.id.popular_articles);
-        searchView.clearFocus();
-        layoutPopularTags.setVisibility(View.GONE);
+        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        searchText = searchView.findViewById(id);
         tag1 = layoutPopularTags.findViewById(R.id.tag1);
         tag2 = layoutPopularTags.findViewById(R.id.tag2);
         tag3 = layoutPopularTags.findViewById(R.id.tag3);
@@ -107,21 +109,40 @@ public class CommunityFragment extends Fragment {
         tag6 = layoutPopularTags.findViewById(R.id.tag6);
         tag7 = layoutPopularTags.findViewById(R.id.tag7);
         tag8 = layoutPopularTags.findViewById(R.id.tag8);
+
+        tag1Id = layoutPopularTags.findViewById(R.id.tag1_id);
+        tag2Id = layoutPopularTags.findViewById(R.id.tag2_id);
+        tag3Id = layoutPopularTags.findViewById(R.id.tag3_id);
+        tag4Id = layoutPopularTags.findViewById(R.id.tag4_id);
+        tag5Id = layoutPopularTags.findViewById(R.id.tag5_id);
+        tag6Id = layoutPopularTags.findViewById(R.id.tag6_id);
+        tag7Id = layoutPopularTags.findViewById(R.id.tag7_id);
+        tag8Id = layoutPopularTags.findViewById(R.id.tag8_id);
+    }
+    @Override
+    protected void init() {
+        searchView.clearFocus();
+        layoutPopularTags.setVisibility(View.GONE);
         tags = new TextView[]{tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8};
+        tagsId = new TextView[]{tag1Id, tag2Id, tag3Id, tag4Id, tag5Id, tag6Id, tag7Id, tag8Id};
+        setPopularTags(tags);
+        refreshDate(null);
+    }
+
+    private void refreshDate(String tagId){
         String[] from = {"tittle", "name", "date", "tag", "image"};
         int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
-        adapter = new SimpleAdapter(getActivity(), getCommunityPosts(), R.layout.article_list, from, to);
+        adapter = new SimpleAdapter(getActivity(), getCommunityPosts(tagId,1), R.layout.article_list, from, to);
         listViewArticle.setAdapter(adapter);
     }
 
-    private void searchListener() {
+    private void setSearchListener() {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
                 listViewArticle.setVisibility(View.VISIBLE);
                 layoutPopularTags.setVisibility(View.GONE);
                 textViewPopularArticles.setText(R.string.popular_articles);
-                searchIsOpen = false;
                 return false;
             }
         });
@@ -132,7 +153,23 @@ public class CommunityFragment extends Fragment {
                 listViewArticle.setVisibility(View.GONE);
                 layoutPopularTags.setVisibility(View.VISIBLE);
                 textViewPopularArticles.setText(R.string.hot_tags);
-                searchIsOpen = true;
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (isSearchTag)
+                    return false;
+                else {
+                    doSearch(query);
+                    return false;
+                }
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
 
@@ -140,9 +177,16 @@ public class CommunityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 TextView tag = (TextView) v;
-                int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
-                EditText textView = searchView.findViewById(id);
-                textView.setText(tag.getText());
+                searchText.setText(tag.getText());
+                String id;
+                for (int i = 0; i < tags.length; i++) {
+                    if (v.getId()==tags[i].getId()){
+                        id=tagsId[i].getText().toString();
+                        refreshDate(id);
+                        isSearchTag=true;
+                        break;
+                    }
+                }
             }
         };
         for (TextView tag : tags) {
@@ -150,14 +194,59 @@ public class CommunityFragment extends Fragment {
         }
     }
 
+    private void doSearch(String searchString){
+        String[] from = {"tittle", "name", "date", "tag", "image"};
+        int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
+        ArrayList<Map<String, Object>> data=new ArrayList<>();
+        System.out.println("788787788："+lastPage);
+        for (int i = 0; i < lastPage; i++) {
+            ArrayList<Map<String, Object>> dataFrom=getCommunityPosts(null,i);
+            System.out.println("啦啦啦");
+            for (Map<String, Object> item: dataFrom
+                 ) {
+                String tittle =item.get("tittle").toString();
+                System.out.println(tittle+tittle.contains(searchString));
+                if (tittle.contains(searchString)){
+                    data.add(item);
+                }
+            }
+        }
+        System.out.println(data);
+        adapter = new SimpleAdapter(getActivity(), data, R.layout.article_list, from, to);
+        listViewArticle.setAdapter(adapter);
+    }
+
     public ArrayList<Map<String, Object>> resolvePostsJson(String response) {
         String[] from = {"tittle", "name", "date", "tag", "image"};
         ArrayList<Map<String, Object>> data = new ArrayList<>();
-        Map<String, Object> map = new HashMap<>(); //这个new HashMap<>()不可以省略，否则会报空指针
+        Map<String, Object> map ;
         try {
+            map = new HashMap<>();
+            map.put("tittle", "如何使用单反拍出好看的延时摄影？");
+            map.put("name", "膜法师");
+            map.put("date", changeDate("2018-05-28T14:33:00.000+08:00"));
+            map.put("tag", "技术·摄影");
+            map.put("image", R.drawable.articlc_image);
+            data.add(map);
+            map = new HashMap<>();
+            map.put("tittle", "JAVA对比C#各有什么优势？");
+            map.put("name", "PHP是最好的语言");
+            map.put("date", changeDate("2016-09-03T00:00:00.000+08:00"));
+            map.put("tag", "JAVA·程序");
+            map.put("image", R.drawable.article_image2);
+            data.add(map);
+            map = new HashMap<>();
+            map.put("tittle", "谈一谈，中国进5年的发展速度到底有多迅猛。");
+            map.put("name", "中国牛逼");
+            map.put("date", changeDate("2018-05-27T00:00:00.000+08:00"));
+            map.put("tag", "社会·历史");
+            map.put("image", R.drawable.article_image3);
+            data.add(map);
+
             JSONObject jsonObject = new JSONObject(response);
             JSONTokener jsonTokener = new JSONTokener(jsonObject.getString("data"));
             JSONArray postsArray = (JSONArray) jsonTokener.nextValue();
+            lastPage=jsonObject.getInt("last_page");
             for (int i = 0; i < postsArray.length(); i++) {
                 map = new HashMap<>();
                 JSONObject jsonPost = postsArray.getJSONObject(i);
@@ -186,32 +275,28 @@ public class CommunityFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-//        for (int i = 0; i < 15; i++) {
-//            map.put("tittle", "如何使用单反拍出好看的延时摄影？");
-//            map.put("name", "膜法师");
-//            map.put("date", "5月20日");
-//            map.put("tag", "技术·摄影");
-//            map.put("image", R.drawable.articlc_image);
-//            data.add(map);
-//        }
         return data;
     }
 
     private void setListViewListener() {
-        SlideBar slideBar = new SlideBar(layoutSwipe, listViewArticle);
+        assert ((MainActivity)getActivity()) != null;
+        SlideBar slideBar = new SlideBar(layoutSwipe,((MainActivity)getActivity()).navigation, listViewArticle);
         slideBar.SetSlideBar();
     }
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
 
-    private ArrayList<Map<String, Object>> getCommunityPosts() {
-        String url = URL.Community.getPosts(1);
+    private ArrayList<Map<String, Object>> getCommunityPosts(String tagId,int page) {
+
+        String url = URL.Community.getPosts(page);
         Log.d(TAG, url);
-        OkHttpUtils
+        GetBuilder builder =  OkHttpUtils
                 .get()
-                .url(url)
-                .build()
+                .url(url);
+        if (tagId!=null){
+            builder.addParams("tags",tagId);
+        }
+        builder.build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
@@ -241,7 +326,6 @@ public class CommunityFragment extends Fragment {
         String[] strings = date.split("T");
         String[] strings1 = strings[1].split("\\.");
         date = strings[0] + " " + strings1[0];
-        System.out.println(date + "ddededededededede");
         Date date1 = null, now;
         String result = "";
         long minutes, hour, days;
@@ -274,22 +358,6 @@ public class CommunityFragment extends Fragment {
         return result;
     }
 
-    /**
-     * 日期格式转换yyyy-MM-dd'T'HH:mm:ss.SSSXXX  (yyyy-MM-dd'T'HH:mm:ss.SSSZ) TO  yyyy-MM-dd HH:mm:ss2016-09-03T00:00:00.000+08:00
-     *
-     * @throws ParseException
-     */
-    public static String dealDateFormat(String oldDateStr) throws ParseException {
-        //此格式只有  jdk 1.7才支持  yyyy-MM-dd'T'HH:mm:ss.SSSXXX
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");  //yyyy-MM-dd'T'HH:mm:ss.SSSZ
-        Date date = df.parse(oldDateStr);
-        SimpleDateFormat df1 = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.UK);
-        Date date1 = df1.parse(date.toString());
-        DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//  Date date3 =  df2.parse(date1.toString());
-        return df2.format(date1);
-    }
-
     private void setPopularTags(final TextView[] tags) {
         String url = URL.Community.getPopularTags();
         Log.d(TAG, url);
@@ -311,6 +379,7 @@ public class CommunityFragment extends Fragment {
                                 if (i == tags.length)
                                     return;
                                 tags[i].setText(tagsJson.getJSONObject(i).getString("name"));
+                                tagsId[i].setText(tagsJson.getJSONObject(i).getString("id"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -318,5 +387,4 @@ public class CommunityFragment extends Fragment {
                     }
                 });
     }
-
 }
