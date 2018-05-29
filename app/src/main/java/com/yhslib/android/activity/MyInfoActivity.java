@@ -166,7 +166,7 @@ public class MyInfoActivity extends BaseActivity {
 
     private void changeNickname(String nickname) {
         // 发起更改昵称的请求
-        String url = URL.User.detail(userID);
+        String url = URL.User.changeNickname(userID);
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("nickname", nickname)
