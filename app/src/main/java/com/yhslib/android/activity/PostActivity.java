@@ -6,12 +6,15 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
 
 import com.yhslib.android.config.URL;
+import com.yhslib.android.util.BaseActivity;
+import com.yhslib.android.util.MugshotUrl;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.BitmapCallback;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -28,7 +31,7 @@ import java.util.HashMap;
 import okhttp3.Call;
 import ru.noties.markwon.Markwon;
 
-public class PostActivity extends AppCompatActivity {
+public class PostActivity extends BaseActivity {
     private String TAG = "PostActivity";
     private String userID;
     private String token;
@@ -38,29 +41,48 @@ public class PostActivity extends AppCompatActivity {
     private TextView postAuthorNickname;
     private TextView postCreatedTime;
     private TextView postViewsCount;
-    private ImageView postAuthorMugshot;
+    private ImageView postAuthorMugshotImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_post_detail);
+    }
+
+    @Override
+    protected void getDataFromIntent() {
         Intent intent = getIntent();
         userID = intent.getStringExtra("userID");
         token = intent.getStringExtra("token");
         postID = intent.getStringExtra("postID");
-        findView();
-        fetchPost();
-        //fetchReply();
-        Log.d(TAG, postID);
     }
 
-    private void findView() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_post_detail;
+    }
+    @Override
+    protected void findView() {
         postContentTxt = findViewById(R.id.post_content);
         postTitleTxt = findViewById(R.id.post_title);
         postAuthorNickname = findViewById(R.id.post_author_nickname);
-        postAuthorMugshot = findViewById(R.id.post_author_mugshot);
+        postAuthorMugshotImage = findViewById(R.id.post_author_mugshot);
         postViewsCount = findViewById(R.id.post_views_count);
         postCreatedTime = findViewById(R.id.post_created_time);
+    }
+
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void initData() {
+        fetchPost();
     }
 
     private void fetchPost() {
@@ -68,7 +90,6 @@ public class PostActivity extends AppCompatActivity {
         OkHttpUtils
                 .get()
                 .url(url)
-                .addHeader("Authorization", "Bearer " + token)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -84,7 +105,7 @@ public class PostActivity extends AppCompatActivity {
                         postAuthorNickname.setText(hm.get("nickname").toString());
                         postViewsCount.setText(hm.get("views").toString());
                         postCreatedTime.setText(hm.get("time").toString());
-                        loadMugshotUrl(hm.get("mugshot").toString());
+                        loadMugshot(hm.get("mugshot").toString());
                         //TODO markdown图片无法加载
                         // RichText.fromMarkdown(hm.get("body").toString()).autoFix(true).into(postContentTxt);
                         Markwon.setMarkdown(postContentTxt, hm.get("body").toString());
@@ -98,7 +119,6 @@ public class PostActivity extends AppCompatActivity {
         OkHttpUtils
                 .get()
                 .url(url)
-                .addHeader("Authorization", "Bearer " + token)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -115,22 +135,9 @@ public class PostActivity extends AppCompatActivity {
                 });
     }
 
-    private void loadMugshotUrl(String url) {
-        OkHttpUtils
-                .get()//
-                .url(url)//
-                .build()//
-                .execute(new BitmapCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Log.d(TAG, e.getMessage());
-                    }
-
-                    @Override
-                    public void onResponse(Bitmap response, int id) {
-                        postAuthorMugshot.setImageBitmap(response);
-                    }
-                });
+    private void loadMugshot(String url) {
+        // url = URL.host + url;
+        MugshotUrl.load(url, postAuthorMugshotImage);
     }
 
     private HashMap<String, Object> formatPostJSON(String response) {
@@ -170,4 +177,9 @@ public class PostActivity extends AppCompatActivity {
             }
             return resultList;
         }
+
+    @Override
+    public void onClick(View v) {
+
     }
+}
