@@ -62,10 +62,10 @@
         将连续照片拼合成视频的软件很多。比如有：Photolapse 3、VirtualDub、QuickTime Pro、Adobe Premiere Elements、Lightroom、Final Cut Pro、Adobe After Effects。这些都可以制作视频，且不局限于这些，完全可以按照自己的习惯和能力去选择。 当然，后期制作决不只有拼合照片这一点，一段优秀的延时摄影视频需要加入音乐，而且应用大量的剪辑片段。 那么面对成百上千张序列照片怎么能成为一段连续的视频？下面我们使用PR为大家讲解。
 </string>
     <string name="comment">评论</string>
-    <string name="atMe">\@我</string>
+    <string name="at_me">\@我</string>
     <string name="notice">通知</string>
     <string name="magician">膜法师</string>
-    <string name="atLeWo">\@了我</string>
+    <string name="at_me_already">\@了我</string>
     <string name="test_article_tittle">如何使用单反拍摄延时摄影？</string>
     <string name="liked_your_comment"> &#160;赞了你的评论</string>
     <string name="welcome_text">朝&#160;&#160;闻&#160;&#160;道</string>
@@ -77,8 +77,11 @@
     <string name="login_admin_email">邮箱</string>
     <string name="login_password">密码</string>
     <string name="login_ok">确定</string>
-    <string name="login_thirdparty">第三方登录</string>
-    <string name="login_QQ">QQ</string>
+    <string name="login_third_party">第三方登录</string>
+    <string name="login_qq">QQ</string>
     <string name="login_wechat">微信</string>
     <string name="login_weibo">微博</string>
+
+    <string name="primary_email">主邮箱</string>
+    <string name="unverified">未验证</string>
 </resources>

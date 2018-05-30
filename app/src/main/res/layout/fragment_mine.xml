@@ -234,7 +234,7 @@
 
             <TextView
                 android:id="@+id/mine_my_checkin"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/offset_0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/offset_8dp"
                 android:layout_weight="1"

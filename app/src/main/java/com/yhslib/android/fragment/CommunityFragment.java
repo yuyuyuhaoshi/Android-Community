@@ -63,13 +63,14 @@ public class CommunityFragment extends BaseFragment {
     private ListView listViewArticle;
     private SearchView searchView;
     private View.OnClickListener tagsOnClickListener;
-    private TextView tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag1Id, tag2Id, tag3Id, tag4Id, tag5Id, tag6Id, tag7Id, tag8Id,textViewPopularArticles;
+    private TextView tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag1Id, tag2Id, tag3Id, tag4Id, tag5Id, tag6Id, tag7Id, tag8Id, textViewPopularArticles;
     private SimpleAdapter adapter;
     private View layoutSwipe;
-    private TextView[] tags,tagsId;
+    private TextView[] tags, tagsId;
     EditText searchText;
     private boolean isSearchTag = false;
-    int lastPage=0;
+    int lastPage = 0;
+
     public static CommunityFragment newInstance() {
         Bundle args = new Bundle();
         CommunityFragment fragment = new CommunityFragment();
@@ -119,6 +120,7 @@ public class CommunityFragment extends BaseFragment {
         tag7Id = layoutPopularTags.findViewById(R.id.tag7_id);
         tag8Id = layoutPopularTags.findViewById(R.id.tag8_id);
     }
+
     @Override
     protected void init() {
         searchView.clearFocus();
@@ -129,10 +131,10 @@ public class CommunityFragment extends BaseFragment {
         refreshDate(null);
     }
 
-    private void refreshDate(String tagId){
+    private void refreshDate(String tagId) {
         String[] from = {"tittle", "name", "date", "tag", "image"};
         int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
-        adapter = new SimpleAdapter(getActivity(), getCommunityPosts(tagId,1), R.layout.article_list, from, to);
+        adapter = new SimpleAdapter(getActivity(), getCommunityPosts(tagId, 1), R.layout.article_list, from, to);
         listViewArticle.setAdapter(adapter);
     }
 
@@ -180,10 +182,10 @@ public class CommunityFragment extends BaseFragment {
                 searchText.setText(tag.getText());
                 String id;
                 for (int i = 0; i < tags.length; i++) {
-                    if (v.getId()==tags[i].getId()){
-                        id=tagsId[i].getText().toString();
+                    if (v.getId() == tags[i].getId()) {
+                        id = tagsId[i].getText().toString();
                         refreshDate(id);
-                        isSearchTag=true;
+                        isSearchTag = true;
                         break;
                     }
                 }
@@ -194,19 +196,19 @@ public class CommunityFragment extends BaseFragment {
         }
     }
 
-    private void doSearch(String searchString){
+    private void doSearch(String searchString) {
         String[] from = {"tittle", "name", "date", "tag", "image"};
         int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
-        ArrayList<Map<String, Object>> data=new ArrayList<>();
-        System.out.println("788787788："+lastPage);
+        ArrayList<Map<String, Object>> data = new ArrayList<>();
+        System.out.println("788787788：" + lastPage);
         for (int i = 0; i < lastPage; i++) {
-            ArrayList<Map<String, Object>> dataFrom=getCommunityPosts(null,i);
+            ArrayList<Map<String, Object>> dataFrom = getCommunityPosts(null, i);
             System.out.println("啦啦啦");
-            for (Map<String, Object> item: dataFrom
-                 ) {
-                String tittle =item.get("tittle").toString();
-                System.out.println(tittle+tittle.contains(searchString));
-                if (tittle.contains(searchString)){
+            for (Map<String, Object> item : dataFrom
+                    ) {
+                String tittle = item.get("tittle").toString();
+                System.out.println(tittle + tittle.contains(searchString));
+                if (tittle.contains(searchString)) {
                     data.add(item);
                 }
             }
@@ -219,7 +221,7 @@ public class CommunityFragment extends BaseFragment {
     public ArrayList<Map<String, Object>> resolvePostsJson(String response) {
         String[] from = {"tittle", "name", "date", "tag", "image"};
         ArrayList<Map<String, Object>> data = new ArrayList<>();
-        Map<String, Object> map ;
+        Map<String, Object> map;
         try {
             map = new HashMap<>();
             map.put("tittle", "如何使用单反拍出好看的延时摄影？");
@@ -246,7 +248,7 @@ public class CommunityFragment extends BaseFragment {
             JSONObject jsonObject = new JSONObject(response);
             JSONTokener jsonTokener = new JSONTokener(jsonObject.getString("data"));
             JSONArray postsArray = (JSONArray) jsonTokener.nextValue();
-            lastPage=jsonObject.getInt("last_page");
+            lastPage = jsonObject.getInt("last_page");
             for (int i = 0; i < postsArray.length(); i++) {
                 map = new HashMap<>();
                 JSONObject jsonPost = postsArray.getJSONObject(i);
@@ -279,22 +281,22 @@ public class CommunityFragment extends BaseFragment {
     }
 
     private void setListViewListener() {
-        assert ((MainActivity)getActivity()) != null;
-        SlideBar slideBar = new SlideBar(layoutSwipe,((MainActivity)getActivity()).navigation, listViewArticle);
+        assert ((MainActivity) getActivity()) != null;
+        SlideBar slideBar = new SlideBar(layoutSwipe, ((MainActivity) getActivity()).navigation, listViewArticle);
         slideBar.SetSlideBar();
     }
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
 
-    private ArrayList<Map<String, Object>> getCommunityPosts(String tagId,int page) {
+    private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {
 
         String url = URL.Community.getPosts(page);
-        Log.d(TAG, url);
-        GetBuilder builder =  OkHttpUtils
+        // Log.d(TAG, url);
+        GetBuilder builder = OkHttpUtils
                 .get()
                 .url(url);
-        if (tagId!=null){
-            builder.addParams("tags",tagId);
+        if (tagId != null) {
+            builder.addParams("tags", tagId);
         }
         builder.build()
                 .execute(new StringCallback() {
@@ -310,7 +312,7 @@ public class CommunityFragment extends BaseFragment {
                         int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
                         adapter = new SimpleAdapter(getActivity(), data, R.layout.article_list, from, to);
                         listViewArticle.setAdapter(adapter);
-                        Log.d(TAG, "onResponse: " + data);
+                        // Log.d(TAG, "onResponse: " + data);
                     }
                 });
         return data;
@@ -360,7 +362,7 @@ public class CommunityFragment extends BaseFragment {
 
     private void setPopularTags(final TextView[] tags) {
         String url = URL.Community.getPopularTags();
-        Log.d(TAG, url);
+        // Log.d(TAG, url);
         OkHttpUtils
                 .get()
                 .url(url)

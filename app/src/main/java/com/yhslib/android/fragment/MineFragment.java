@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yhslib.android.R;
 import com.yhslib.android.activity.MyInfoActivity;
@@ -22,6 +23,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +43,9 @@ public class MineFragment extends Fragment {
     private TextView myFavoriteTxt;
     private TextView myPostsTxt;
     private TextView myCheckinTxt;
+    private TextView chekcinTxt;
 
-    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1Mjc2NDIzNTUsInVzZXJuYW1lIjoidXNlcjAiLCJvcmlnX2lhdCI6MTUyNzU1NTk1NSwidXNlcl9pZCI6MSwiZW1haWwiOiJ1c2VyMEBleGFtcGxlLmNvbSJ9.plJ2eDcHks1xJdmwWPhWdLOrRJOS344iIKLhDQ6xB9E";
+    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJvcmlnX2lhdCI6MTUyNzY2ODY2MywiZXhwIjoxNTI3NzU1MDYzLCJ1c2VybmFtZSI6InVzZXIwIiwiZW1haWwiOiJ1c2VyMEBleGFtcGxlLmNvbSJ9.p9o7m2v_Ndpifkn6b6TnqWAuK4WhC2_CXNPvSJaP0c8";
     private final String USERID = "1";
     private String nickname = "";
     private String mugshot_url = "";
@@ -67,9 +70,8 @@ public class MineFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         //Log.d(TAG, TAG);
         findView();
+        setListener();
         initView();
-        fetchPersonalInformation();
-
     }
 
     private void findView() {
@@ -82,9 +84,14 @@ public class MineFragment extends Fragment {
         myFavoriteTxt = view.findViewById(R.id.mine_my_favorite);
         myPostsTxt = view.findViewById(R.id.mine_my_posts);
         myCheckinTxt = view.findViewById(R.id.mine_my_checkin);
+        chekcinTxt = view.findViewById(R.id.checkin);
     }
 
     private void initView() {
+        fetchPersonalInformation();
+    }
+
+    private void setListener() {
         myPostsTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +119,36 @@ public class MineFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        chekcinTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleCheckin();
+            }
+        });
+    }
+
+    private void handleCheckin() {
+        String url = URL.User.checkin(USERID);
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + TOKEN)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Toast.makeText(getActivity().getApplicationContext(), "签到失败", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Toast.makeText(getActivity().getApplicationContext(), "签到成功", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, response);
+                    }
+
+                });
     }
 
     private void fetchPersonalInformation() {
