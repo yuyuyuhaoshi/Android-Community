@@ -112,7 +112,7 @@
         android:background="@color/colorDivider" />
 
     <LinearLayout
-        android:id="@+id/my_info_change_email_list"
+        android:id="@+id/my_info_change_email"
         android:layout_width="match_parent"
         android:layout_height="@dimen/offset_40dp"
         android:orientation="horizontal">
