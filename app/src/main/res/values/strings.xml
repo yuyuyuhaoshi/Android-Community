@@ -84,4 +84,8 @@
 
     <string name="primary_email">主邮箱</string>
     <string name="unverified">未验证</string>
+    <string name="set_primary">设为主邮箱</string>
+    <string name="delete">删除</string>
+    <string name="verify">验证</string>
+    <string name="click">点击</string>
 </resources>

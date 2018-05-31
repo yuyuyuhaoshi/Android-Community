@@ -43,9 +43,9 @@ public class MineFragment extends Fragment {
     private TextView myFavoriteTxt;
     private TextView myPostsTxt;
     private TextView myCheckinTxt;
-    private TextView chekcinTxt;
+    private TextView checkinTxt;
 
-    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJvcmlnX2lhdCI6MTUyNzY2ODY2MywiZXhwIjoxNTI3NzU1MDYzLCJ1c2VybmFtZSI6InVzZXIwIiwiZW1haWwiOiJ1c2VyMEBleGFtcGxlLmNvbSJ9.p9o7m2v_Ndpifkn6b6TnqWAuK4WhC2_CXNPvSJaP0c8";
+    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwib3JpZ19pYXQiOjE1Mjc3NTk2MDIsInVzZXJuYW1lIjoidXNlcjAiLCJ1c2VyX2lkIjoxLCJleHAiOjE1Mjc4NDYwMDJ9.XyK65PEqe8a01pFbkTsu9BD3PaaHBC5-7VBEIctraIk";
     private final String USERID = "1";
     private String nickname = "";
     private String mugshot_url = "";
@@ -84,7 +84,7 @@ public class MineFragment extends Fragment {
         myFavoriteTxt = view.findViewById(R.id.mine_my_favorite);
         myPostsTxt = view.findViewById(R.id.mine_my_posts);
         myCheckinTxt = view.findViewById(R.id.mine_my_checkin);
-        chekcinTxt = view.findViewById(R.id.checkin);
+        checkinTxt = view.findViewById(R.id.checkin);
     }
 
     private void initView() {
@@ -120,7 +120,7 @@ public class MineFragment extends Fragment {
             }
         });
 
-        chekcinTxt.setOnClickListener(new View.OnClickListener() {
+        checkinTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 handleCheckin();
