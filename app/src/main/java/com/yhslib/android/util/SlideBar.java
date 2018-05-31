@@ -7,9 +7,6 @@ import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 import android.widget.ListView;
 
-/**
- * Created by jerryzheng on 2018/5/24.
- */
 
 public class SlideBar {
     private int lastVisibleItemPosition=0;

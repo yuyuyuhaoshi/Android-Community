@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 
 import com.yhslib.android.R;
@@ -38,6 +39,7 @@ public class MyPostsActivity extends BaseActivity {
     private CustomListView listView;
     private SimpleAdapter adapter;
     private Boolean RefreshFlag = false; // 防止多次刷新标记
+    private ImageView returnArrowImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,12 +69,14 @@ public class MyPostsActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.actionbar_my_post_list);
+            returnArrowImage = findViewById(R.id.return_image); // 此image findView 只能写在这
         }
     }
 
     @Override
     protected void setListener() {
         setListViewPullListener();
+        returnArrowImage.setOnClickListener(this);
     }
 
     @Override
@@ -193,7 +197,6 @@ public class MyPostsActivity extends BaseActivity {
     }
 
     private void showPostDetail(Long id) {
-        // String postID = hm.get(id.intValue()).get("_id").toString();
         Log.d(TAG, id + "");
         Intent intent = new Intent(MyPostsActivity.this, PostActivity.class);
         intent.putExtra("userID", userID);
@@ -204,6 +207,10 @@ public class MyPostsActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.return_image:
+                MyPostsActivity.this.finish();
+                break;
+        }
     }
 }

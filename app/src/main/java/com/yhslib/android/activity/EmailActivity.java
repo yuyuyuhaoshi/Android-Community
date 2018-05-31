@@ -1,12 +1,14 @@
 package com.yhslib.android.activity;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
@@ -38,6 +40,8 @@ public class EmailActivity extends BaseActivity {
     private CustomListView listView;
     private SimpleAdapter adapter;
     private Boolean RefreshFlag = false; // 防止多次刷新标记
+    private ActionBar actionBar;
+    private ImageView returnArrowImage;
 
     @Override
     protected void getDataFromIntent() {
@@ -54,6 +58,12 @@ public class EmailActivity extends BaseActivity {
     @Override
     protected void findView() {
         listView = findViewById(R.id.email_list);
+        actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.actionbar_email);
+            returnArrowImage = findViewById(R.id.return_image); // 此image findView 只能写在这
+        }
     }
 
     @Override
@@ -64,6 +74,7 @@ public class EmailActivity extends BaseActivity {
     @Override
     protected void setListener() {
         setListViewPullListener();
+        returnArrowImage.setOnClickListener(this);
     }
 
     @Override
@@ -73,7 +84,11 @@ public class EmailActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.return_image:
+                EmailActivity.this.finish();
+                break;
+        }
     }
 
     private void setListViewPullListener() {
