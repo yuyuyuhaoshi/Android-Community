@@ -38,7 +38,7 @@ public class MyInfoActivity extends BaseActivity {
     private String mugshot_url;
 
     private AlertDialog.Builder changeNicknameDialogBuilder, changePasswordDialogBuilder;
-    private LinearLayout changeNicknameLayout, changePasswordLayout;
+    private LinearLayout changeNicknameLayout, changePasswordLayout, changeEmailLayout;
     private AlertDialog changeNicknameDialog, changePasswordDialog;
     private TextView nicknameTxt;
     private ImageView myViaImage;
@@ -68,6 +68,7 @@ public class MyInfoActivity extends BaseActivity {
     protected void findView() {
         changeNicknameLayout = findViewById(R.id.my_info_change_nickname);
         changePasswordLayout = findViewById(R.id.my_info_change_password);
+        changeEmailLayout = findViewById(R.id.my_info_change_email);
         nicknameTxt = findViewById(R.id.my_info_nickname);
         myViaImage = findViewById(R.id.my_info_via);
     }
@@ -84,6 +85,7 @@ public class MyInfoActivity extends BaseActivity {
     protected void setListener() {
         changeNicknameLayout.setOnClickListener(this);
         changePasswordLayout.setOnClickListener(this);
+        changeEmailLayout.setOnClickListener(this);
     }
 
     @Override
@@ -99,6 +101,12 @@ public class MyInfoActivity extends BaseActivity {
                 break;
             case R.id.my_info_change_password:
                 changePasswordDialog.show();
+                break;
+            case R.id.my_info_change_email:
+                Intent intent = new Intent(MyInfoActivity.this, EmailActivity.class);
+                intent.putExtra("userID", userID);
+                intent.putExtra("token", token);
+                startActivity(intent);
                 break;
         }
     }
@@ -166,7 +174,7 @@ public class MyInfoActivity extends BaseActivity {
 
     private void changeNickname(String nickname) {
         // 发起更改昵称的请求
-        String url = URL.User.detail(userID);
+        String url = URL.User.changeNickname(userID);
 
         RequestBody requestBody = new FormBody.Builder()
                 .add("nickname", nickname)

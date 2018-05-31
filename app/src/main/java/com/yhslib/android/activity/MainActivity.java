@@ -29,7 +29,7 @@ import java.lang.reflect.Field;
 
 public class MainActivity extends AppCompatActivity {
     private String TAG = "MainActivity";
-    private BottomNavigationView navigation;
+    public BottomNavigationView navigation;
     private ViewPager viewPager;
     private ActionBar actionBar;
     private Fragment[] fragments;

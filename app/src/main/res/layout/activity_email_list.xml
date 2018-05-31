@@ -5,11 +5,10 @@
     android:orientation="vertical">
 
     <com.yhslib.android.util.CustomListView
-        android:id="@+id/my_post_list"
+        android:id="@+id/email_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/offset_14dp"
         android:layout_marginTop="@dimen/offset_14dp" />
-
 
 </LinearLayout>
