@@ -124,7 +124,11 @@ public class MyInfoActivity extends BaseActivity {
         }
     }
 
-
+    /**
+     * [创建更改昵称对话框]
+     *
+     * @param
+     */
     private void buildChangeNicknameDialog() {
         // 创建更改昵称对话框
         changeNicknameDialogBuilder = new AlertDialog.Builder(MyInfoActivity.this);
@@ -147,8 +151,10 @@ public class MyInfoActivity extends BaseActivity {
         changeNicknameDialog.setCanceledOnTouchOutside(true);
     }
 
+    /**
+     * [创建更改密码对话框]
+     */
     private void buildChangePasswordDialog() {
-        // 创建更改密码对话框
         View dialogView = LayoutInflater.from(MyInfoActivity.this).inflate(R.layout.dialog_change_password, null);
         final EditText edit_old_password = dialogView.findViewById(R.id.dialog_old_password);
         final EditText edit_new_password = dialogView.findViewById(R.id.dialog_new_password);
@@ -179,12 +185,21 @@ public class MyInfoActivity extends BaseActivity {
         changePasswordDialog.setView(dialogView);
     }
 
+    /**
+     * [加载头像]
+     *
+     * @param url
+     */
     private void loadMugshot(String url) {
-        // 加载作者头像
         url = URL.host + url;
         MugshotUrl.load(url, myViaImage);
     }
 
+    /**
+     * [发起更改昵称的请求]
+     *
+     * @param nickname
+     */
     private void changeNickname(String nickname) {
         // 发起更改昵称的请求
         String url = URL.User.changeNickname(userID);
@@ -215,6 +230,12 @@ public class MyInfoActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * [解析JSON数据]
+     *
+     * @param response
+     * @return hashMap
+     */
     private HashMap<String, Object> formatUserInfoJSON(String response) {
         HashMap<String, Object> hashMap = new HashMap<>();
         try {
@@ -226,6 +247,13 @@ public class MyInfoActivity extends BaseActivity {
         return hashMap;
     }
 
+    /**
+     * [更改密码请求]
+     *
+     * @param oldPassword
+     * @param newPassword
+     * @param newPasswordRepeat
+     */
     private void changePassword(String oldPassword, String newPassword, String newPasswordRepeat) {
         String url = URL.User.changePassword();
         OkHttpUtils

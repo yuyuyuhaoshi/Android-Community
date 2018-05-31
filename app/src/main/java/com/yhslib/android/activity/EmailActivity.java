@@ -91,6 +91,11 @@ public class EmailActivity extends BaseActivity {
         }
     }
 
+    /**
+     * [设置往下拉至底部加载更多数据]
+     *
+     * @param
+     */
     private void setListViewPullListener() {
         // list view 下拉加载下一页文章
         listView.setOnPullToRefreshListener(new CustomListView.OnPullToRefreshListener() {
@@ -110,10 +115,16 @@ public class EmailActivity extends BaseActivity {
 
             @Override
             public void onTop() {
+
             }
         });
     }
 
+    /**
+     * [获取邮箱列表]
+     *
+     * @param
+     */
     private void fetchEmail() {
         RefreshFlag = false;
         String url = URL.User.getEmailList();
@@ -147,6 +158,11 @@ public class EmailActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * [解析JSON字符串]
+     *
+     * @param response
+     */
     private ArrayList<HashMap<String, Object>> formatEmailsJSON(String response) {
         RefreshFlag = false;
         ArrayList<HashMap<String, Object>> resultList = new ArrayList<>();
@@ -182,6 +198,12 @@ public class EmailActivity extends BaseActivity {
         return resultList;
     }
 
+
+    /**
+     * [设置listAdapter]
+     *
+     * @param list
+     */
     private void setEmailListAdapter(final ArrayList<HashMap<String, Object>> list) {
         String[] from = {"email", "primary", "verified"};
         int[] to = {R.id.email, R.id.email_primary, R.id.email_verified};
@@ -220,6 +242,11 @@ public class EmailActivity extends BaseActivity {
         return super.onContextItemSelected(item);
     }
 
+    /**
+     * [设置主邮箱]
+     *
+     * @param emailID
+     */
     private void set_primary_email(String emailID) {
         String url = URL.User.setPrimaryEmail(emailID);
         OkHttpUtils
@@ -245,6 +272,11 @@ public class EmailActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * [删除邮箱]
+     *
+     * @param emailID
+     */
     private void delete_email(String emailID) {
         String url = URL.User.deleteEmail(emailID);
         OkHttpUtils
@@ -269,6 +301,11 @@ public class EmailActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * [验证邮箱]
+     *
+     * @param emailID
+     */
     private void verify_email(String emailID) {
         String url = URL.User.deleteEmail(emailID);
         OkHttpUtils
