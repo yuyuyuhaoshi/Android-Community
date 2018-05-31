@@ -40,12 +40,4 @@
             android:textSize="@dimen/font_size_normal" />
     </LinearLayout>
 
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/offset_1dp"
-        android:layout_marginTop="@dimen/offset_10dp"
-        android:background="@color/colorDivider" />
-
-
 </LinearLayout>

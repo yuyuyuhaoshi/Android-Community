@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="@dimen/offset_30dp"
         android:layout_height="@dimen/offset_30dp"
-        android:src="@mipmap/left_arrow" />
+        android:src="@drawable/return_image" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/mine_my_post"
-        android:textColor="@color/colorPrimaryText"
+        android:textColor="@color/colorWhite"
         android:textSize="@dimen/font_size_large_high" />
 
     <ImageView

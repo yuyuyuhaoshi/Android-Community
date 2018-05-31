@@ -2,8 +2,13 @@ package com.yhslib.android.activity;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.yhslib.android.R;
 import com.yhslib.android.config.URL;
@@ -58,7 +63,7 @@ public class EmailActivity extends BaseActivity {
 
     @Override
     protected void setListener() {
-        setListViewListener();
+        setListViewPullListener();
     }
 
     @Override
@@ -71,7 +76,7 @@ public class EmailActivity extends BaseActivity {
 
     }
 
-    private void setListViewListener() {
+    private void setListViewPullListener() {
         // list view 下拉加载下一页文章
         listView.setOnPullToRefreshListener(new CustomListView.OnPullToRefreshListener() {
             @Override
@@ -112,7 +117,7 @@ public class EmailActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.d(TAG, formatEmailsJSON(response).toString());
+                        Log.d(TAG, response);
                         hm.addAll(formatEmailsJSON(response));
                         // 在请求第一页的时候初始化Adapter
                         // 其他时候更新Adapter即可
@@ -137,7 +142,7 @@ public class EmailActivity extends BaseActivity {
             for (int i = 0; i < emailsArray.length(); i++) {
                 JSONObject emailObject = (JSONObject) emailsArray.opt(i);
                 HashMap<String, Object> hashMap = new HashMap<>();
-
+                hashMap.put("id", emailObject.getString("id"));
                 hashMap.put("email", currentPage + "." + emailObject.getString("email"));
 
                 String primary = emailObject.getString("primary");
@@ -162,11 +167,115 @@ public class EmailActivity extends BaseActivity {
         return resultList;
     }
 
-    private void setEmailListAdapter(ArrayList<HashMap<String, Object>> list) {
+    private void setEmailListAdapter(final ArrayList<HashMap<String, Object>> list) {
         String[] from = {"email", "primary", "verified"};
         int[] to = {R.id.email, R.id.email_primary, R.id.email_verified};
-        adapter = new SimpleAdapter(EmailActivity.this, list, R.layout.list_email, from, to);
+        adapter = new SimpleAdapter(EmailActivity.this, list, R.layout.list_email, from, to) {
+            @Override
+            public long getItemId(int position) {
+                return Integer.parseInt(list.get(position).get("id").toString());
+            }
+        };
         listView.setAdapter(adapter);
+        listView.setOnCreateContextMenuListener(new View.OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                MenuInflater menuInflater = EmailActivity.this.getMenuInflater();
+                menuInflater.inflate(R.menu.email_list_menu, menu);
+            }
+        });
+    }
 
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        long id = info.id;
+        Log.d(TAG, id + "");
+        switch (item.getItemId()) {
+            case R.id.set_primary:
+                set_primary_email(id + "");
+                break;
+            case R.id.verify:
+                verify_email(id + "");
+                break;
+            case R.id.delete:
+                delete_email(id + "");
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void set_primary_email(String emailID) {
+        String url = URL.User.setPrimaryEmail(emailID);
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, e.getMessage());
+                        Toast.makeText(EmailActivity.this, "设置失败，请稍后再试!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        // Log.d(TAG, response);
+                        currentPage = 1;
+                        hm = new ArrayList<>();
+                        fetchEmail();
+                        Toast.makeText(EmailActivity.this, "设置成功!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void delete_email(String emailID) {
+        String url = URL.User.deleteEmail(emailID);
+        OkHttpUtils
+                .delete()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, e.getMessage());
+                        Toast.makeText(EmailActivity.this, "邮箱删除失败，请稍后再试!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        currentPage = 1;
+                        hm = new ArrayList<>();
+                        fetchEmail();
+                        Toast.makeText(EmailActivity.this, "邮箱删除成功!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void verify_email(String emailID) {
+        String url = URL.User.deleteEmail(emailID);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, e.getMessage());
+                        Toast.makeText(EmailActivity.this, "邮箱验证失败，请稍后再试!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        // Log.d(TAG, response);
+                        currentPage = 1;
+                        hm = new ArrayList<>();
+                        fetchEmail();
+                        Toast.makeText(EmailActivity.this, "邮箱验证成功!", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 }

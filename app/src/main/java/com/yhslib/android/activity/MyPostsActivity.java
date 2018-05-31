@@ -3,6 +3,7 @@ package com.yhslib.android.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +34,7 @@ public class MyPostsActivity extends BaseActivity {
     private int lastPage;
     private ArrayList<HashMap<String, Object>> hm = new ArrayList<>();
 
+    private ActionBar actionBar;
     private CustomListView listView;
     private SimpleAdapter adapter;
     private Boolean RefreshFlag = false; // 防止多次刷新标记
@@ -57,16 +59,20 @@ public class MyPostsActivity extends BaseActivity {
     @Override
     protected void findView() {
         listView = findViewById(R.id.my_post_list);
+        actionBar = getSupportActionBar();
     }
 
     @Override
     protected void initView() {
-
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.actionbar_my_post_list);
+        }
     }
 
     @Override
     protected void setListener() {
-        setListViewListener();
+        setListViewPullListener();
     }
 
     @Override
@@ -74,7 +80,7 @@ public class MyPostsActivity extends BaseActivity {
         fetchPosts();
     }
 
-    private void setListViewListener() {
+    private void setListViewPullListener() {
         // list view 下拉加载下一页文章
         listView.setOnPullToRefreshListener(new CustomListView.OnPullToRefreshListener() {
             @Override
@@ -138,7 +144,7 @@ public class MyPostsActivity extends BaseActivity {
             for (int i = 0; i < postsArray.length(); i++) {
                 JSONObject postObject = (JSONObject) postsArray.opt(i);
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("_id", postObject.getString("id"));
+                hashMap.put("id", postObject.getString("id"));
                 hashMap.put("url", postObject.getString("url"));
                 hashMap.put("title", currentPage + postObject.getString("title"));
 
@@ -168,10 +174,15 @@ public class MyPostsActivity extends BaseActivity {
         return resultList;
     }
 
-    private void setMyPostsListAdapter(ArrayList<HashMap<String, Object>> hm) {
+    private void setMyPostsListAdapter(final ArrayList<HashMap<String, Object>> list) {
         String[] from = {"title", "time", "views", "tags", "reply_count"};
         int[] to = {R.id.my_post_title, R.id.my_post_create_time, R.id.my_post_views_count, R.id.my_post_tags, R.id.my_post_reply_count};
-        adapter = new SimpleAdapter(MyPostsActivity.this, hm, R.layout.list_my_post, from, to);
+        adapter = new SimpleAdapter(MyPostsActivity.this, list, R.layout.list_my_post, from, to) {
+            @Override
+            public long getItemId(int position) {
+                return Integer.parseInt(list.get(position).get("id").toString());
+            }
+        };
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -182,11 +193,12 @@ public class MyPostsActivity extends BaseActivity {
     }
 
     private void showPostDetail(Long id) {
-        String postID = hm.get(id.intValue()).get("_id").toString();
+        // String postID = hm.get(id.intValue()).get("_id").toString();
+        Log.d(TAG, id + "");
         Intent intent = new Intent(MyPostsActivity.this, PostActivity.class);
         intent.putExtra("userID", userID);
         intent.putExtra("token", token);
-        intent.putExtra("postID", postID);
+        intent.putExtra("postID", id + "");
         startActivity(intent);
     }
 
