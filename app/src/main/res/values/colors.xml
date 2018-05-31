@@ -14,5 +14,5 @@
     <color name="colorCommonForegroundGrey">#888888</color>
     <color name="colorArticleTittle">#333333</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="colorgray">#c0c0c0</color>
+    <color name="colorGray">#c0c0c0</color>
 </resources>

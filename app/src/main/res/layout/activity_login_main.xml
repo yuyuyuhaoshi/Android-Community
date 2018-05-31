@@ -50,7 +50,7 @@
                 android:layout_height="@dimen/offset_2dp"
                 android:layout_weight="1"
                 android:layout_marginTop="@dimen/offset_10dp"
-                android:background="@color/colorgray"
+                android:background="@color/colorGray"
                 />
             <View
                 android:id="@+id/register_underline"

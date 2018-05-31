@@ -40,20 +40,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_2dp"
                 android:layout_weight="1"
-                android:background="@color/colorgray"
+                android:background="@color/colorGray"
                 android:layout_marginBottom="@dimen/offset_6dp"
                 android:layout_marginTop="@dimen/offset_20dp"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="@string/login_thirdparty"
+                android:text="@string/login_third_party"
                 android:layout_marginTop="@dimen/offset_10dp"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_2dp"
                 android:layout_weight="1"
-                android:background="@color/colorgray"
+                android:background="@color/colorGray"
                 android:layout_marginBottom="@dimen/offset_6dp"
                 android:layout_marginTop="@dimen/offset_20dp"/>
         </LinearLayout>
@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_70dp"
                 android:layout_weight="1"
-                android:text="@string/login_QQ"/>
+                android:text="@string/login_qq"/>
             <TextView
                 android:layout_gravity="center"
                 android:gravity="center"

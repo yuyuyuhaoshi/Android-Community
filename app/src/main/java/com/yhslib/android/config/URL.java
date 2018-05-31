@@ -69,6 +69,12 @@ public class URL {
             // return http://api.dj-china.org/rest-auth/password/change/;
             return host + "/rest-auth/password/change/";
         }
+
+        public static String checkin(String userId) {
+            // method: post
+            // return http://api.dj-china.org/users/1/checkin/;
+            return host + "/users/" + userId + "/checkin/";
+        }
     }
 
     public static class Post {
