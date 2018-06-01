@@ -32,12 +32,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
+import okhttp3.internal.Internal;
 
 public class LoginFragment extends Fragment {
     private String TAG = "LoginFragment";
     private EditText login_edt_name, login_edt_password;
     private Button login_button;
     private View view;
+    private String token = "";
+
 
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
@@ -81,7 +84,8 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 boolean bool;
-                Intent intent = getActivity().getIntent();;
+                Intent intent = getActivity().getIntent();
+                ;
                 String usernameOrEmail = login_edt_name.getText().toString();
                 String password = login_edt_password.getText().toString();
 
@@ -104,6 +108,7 @@ public class LoginFragment extends Fragment {
                 .post().url(URL.User.login())
                 .addParams(bool ? "username" : "email", name)
                 .addParams("password", password)
+                .addParams("token", token)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -115,10 +120,18 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
                         Log.d(TAG, response);
-                        startActivity(new Intent(getActivity(), MainActivity.class));
+                        try {
+                            JSONObject jsonobject = new JSONObject(response);
+                            token = jsonobject.getString("token");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d(TAG,token);
+                        Intent intent=new Intent(getActivity(), MainActivity.class);
+                        intent.putExtra(token,"token");
+                        startActivity(intent);
                     }
                 });
     }
-
 }
 
