@@ -128,10 +128,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         tags = new TextView[]{tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8};
         tagsId = new TextView[]{tag1Id, tag2Id, tag3Id, tag4Id, tag5Id, tag6Id, tag7Id, tag8Id};
         setPopularTags(tags);
-        refreshDate(null);
         mContentRlv.setFooter(footer);
-//        mEmptyView = findViewById(R.id.empty_rl);
-//        mContentRlv.setEmptyView(mEmptyView);
         mAdapter = new RefreshListAdapter(getActivity());
         mContentRlv.setAdapter(mAdapter);
         mContentRlv.setOnLoadListener(this);
@@ -140,13 +137,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
 //        footer.setVisibility(View.GONE);
     }
 
-    private void refreshDate(String tagId) {
-        System.out.println("---------------------------------------" + tagId);
-        String[] from = {"tittle", "name", "date", "tag", "image"};
-        int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
-        adapter = new SimpleAdapter(getActivity(), getCommunityPosts(tagId, 1), R.layout.article_list, from, to);
-        mContentRlv.setAdapter(adapter);
-    }
 
     private void setSearchListener() {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
@@ -215,7 +205,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         }
     }
 
-    private void doSearch(String searchString) {
+    private void doSearch(String searchString) {//文章搜索功能(未完成)
         String[] from = {"tittle", "name", "date", "tag", "image"};
         int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
 //        ArrayList<Map<String, Object>> data=new ArrayList<>();
@@ -236,7 +226,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         mContentRlv.setAdapter(adapter);
     }
 
-    public ArrayList<Map<String, Object>> resolvePostsJson(String response) {
+    public ArrayList<Map<String, Object>> resolvePostsJson(String response) {//将API获取的json数据格式化
         String[] from = {"tittle", "name", "date", "tag", "image"};
         ArrayList<Map<String, Object>> data = new ArrayList<>();
         Map<String, Object> map;
@@ -305,7 +295,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     }
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
-    private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {
+    private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {//使用OkHTTP获取服务器数据
 
         String url = URL.Community.getPosts();
         Log.d(TAG, url);
@@ -328,20 +318,15 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                     @Override
                     public void onResponse(String response, int id) {
                         data = resolvePostsJson(response);
-//                        String[] from = {"tittle", "name", "date", "tag", "image"};
-//                        int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
-//                        adapter = new SimpleAdapter(getActivity(), data, R.layout.article_list, from, to);
-//                        mContentRlv.setAdapter(adapter);
-//                        Log.d(TAG, "onResponse: " + data);
                     }
                 });
         return data;
     }
 
 
-    private void setPopularTags(final TextView[] tags) {
+    private void setPopularTags(final TextView[] tags) {//获取热门标签
         String url = URL.Community.getPopularTags();
-        Log.d(TAG, url);
+//        Log.d(TAG, url);
         OkHttpUtils
                 .get()
                 .url(url)
@@ -369,8 +354,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                 });
     }
 
-    boolean flag = false;
-
+    static boolean flag = false;
     private void getData(final int page, final String tag) {
         flag = false;
 //        footer.setVisibility(View.VISIBLE);
@@ -380,10 +364,10 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
             public void run() {
                 cycleRun(page,tag);
             }
-        }, 500);
+        }, 100);
     }
 
-    private void cycleRun(int page, String tag){
+    private void cycleRun(int page, String tag){//递归获取数据
         List<RefreshListItem> data = new LinkedList<>();
         RefreshListItem item;
         ArrayList<Map<String, Object>> data1 = getCommunityPosts(tag, page);

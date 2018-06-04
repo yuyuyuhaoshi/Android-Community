@@ -37,18 +37,25 @@
 
             <LinearLayout
                 android:layout_marginTop="10dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_width="match_parent"
+                android:layout_height="18dp">
                 <TextView
                     android:textColor="@color/colorPrimaryText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="回复我："/>
+                    android:text="在文章："/>
                 <TextView
-                    android:id="@+id/replay_text"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/replay_article"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="5"
                     android:text="给你续一秒"/>
+                <TextView
+                    android:textColor="@color/colorPrimaryText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:text=" 下回复我"/>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -63,20 +70,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/colorPrimaryText"
-            android:text="我的评论："/>
+            android:text="TA说："/>
         <TextView
-            android:id="@+id/text_my_comment"
-            android:layout_width="200dp"
+            android:id="@+id/replay_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/final_text_my_comment"
             android:text="苟利国家生死以，岂因祸福避趋之"/>
-        <TextView
-            android:layout_centerVertical="true"
-            android:id="@+id/see_details"
-            android:layout_alignParentEnd="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimaryText"
-            android:text="查看详细"/>
     </RelativeLayout>
 </LinearLayout>

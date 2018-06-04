@@ -1,21 +1,13 @@
 package com.yhslib.android.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,11 +18,19 @@ import android.widget.Toast;
 
 import com.yhslib.android.R;
 import com.yhslib.android.activity.MainActivity;
-import com.yhslib.android.util.BaseAdapter;
+import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseFragment;
+import com.yhslib.android.util.FormatDate;
 import com.yhslib.android.util.NotificationRefreshListAdapter;
 import com.yhslib.android.util.SimpleListView;
-import com.yhslib.android.util.SlideBar;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.builder.GetBuilder;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +38,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.Call;
+
 public class NotificationFragment extends BaseFragment implements SimpleListView.OnLoadListener, AdapterView.OnItemClickListener {
+    private static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InVzZXIzIiwib3JpZ19pYXQiOjE1MjgxMDg5MTMsImV4cCI6MTUyODE5NTMxMywidXNlcl9pZCI6NCwiZW1haWwiOiJ1c2VyM0BleGFtcGxlLmNvbSJ9.AlkrsiMPBxFxrM0ozh7NxfyTLUj3fFrRiw41QRxabec";
     private String TAG = "NotificationFragment";
     private View view;
     private SimpleAdapter adapter;
@@ -69,7 +72,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     String type = COMMENT;
     private boolean isSearchTag = false;
     int lastPage = 5;
-
+    boolean isTypeChange=false;
     public static NotificationFragment newInstance() {
         Bundle args = new Bundle();
         NotificationFragment fragment = new NotificationFragment();
@@ -133,6 +136,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             @Override
             public void onClick(View v) {
                 onLoad(true);
+                isTypeChange=true;
                 setComment();
             }
         });
@@ -140,6 +144,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             @Override
             public void onClick(View v) {
                 onLoad(true);
+                isTypeChange=true;
                 setAtMe();
             }
         });
@@ -147,6 +152,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             @Override
             public void onClick(View v) {
                 onLoad(true);
+                isTypeChange=true;
                 setNotice();
             }
         });
@@ -254,9 +260,84 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         return data;
     }
 
-    boolean flag = false;
+    public ArrayList<Map<String, Object>> resolveNotificationJson(String response) {
+        ArrayList<Map<String, Object>> data = new ArrayList<>();
+        Map<String, Object> map;
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(response);
+            JSONTokener jsonTokener = new JSONTokener(jsonObject.getString("data"));
+            JSONArray notificationArray = (JSONArray) jsonTokener.nextValue();
+            lastPage = jsonObject.getInt("last_page");
+            for (int i = 0; i < 2; i++) {
+                map = new HashMap<>();
+                String replay_avatar, replay_name, replay_date, replay_text, replay_article;
+                map.put("replay_avatar", R.drawable.jerry_zheng);
+                map.put("replay_name", "膜法师");
+                map.put("replay_date", "5月20日");
+                replay_text = "给你续一秒给你续一秒给你续一秒给你续一秒给你续一秒,苟利国家生死以，岂因祸福避趋之";
+                map.put("replay_text", replay_text);
+                replay_article = "苟利国家生死以，岂因祸福避趋之,苟利国家生死以，岂因祸福避趋之";
+                map.put("replay_article", replay_article);
+                data.add(map);
+            }
+            for (int i = 0; i < notificationArray.length(); i++) {
+                map = new HashMap<>();
+                String replay_date;
+                JSONObject jsonNotification = notificationArray.getJSONObject(i);
+                JSONObject jsonAuthor = jsonNotification.getJSONObject("actor");
+                map.put("replay_avatar", R.drawable.jerry_zheng);
+                map.put("replay_name", jsonAuthor.getString("nickname"));
+                replay_date= FormatDate.changeDate(jsonNotification.getString("timestamp"));
+                map.put("replay_date", replay_date);
+                JSONObject jsonReplay = jsonNotification.getJSONObject("reply");
+                map.put("replay_text", jsonReplay.getString("comment"));
+                JSONObject jsonPost = jsonNotification.getJSONObject("post");
+                map.put("replay_article", jsonPost.getString("post_title"));
+                data.add(map);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
 
-    private void getNotification(final int page) {
+    ArrayList<Map<String, Object>> data = new ArrayList<>();
+    private ArrayList<Map<String, Object>> getNotification(String verb, int page) {
+        String url = URL.Notfication.getNotfication();
+        Log.d(TAG, url);
+        GetBuilder builder = OkHttpUtils
+                .get()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + TOKEN);
+        if (verb != null) {
+            builder.addParams("verb", verb);
+        }
+        if (page != -1) {
+            builder.addParams("page", String.valueOf(page));
+        }
+        builder.build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, "getCommunityPosts()" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        data = resolveNotificationJson(response);
+//                        String[] from = {"tittle", "name", "date", "tag", "image"};
+//                        int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
+//                        adapter = new SimpleAdapter(getActivity(), data, R.layout.article_list, from, to);
+//                        mContentRlv.setAdapter(adapter);
+//                        Log.d(TAG, "onResponse: " + data);
+                    }
+                });
+        return data;
+    }
+
+    boolean flag = false;
+    private void setNotification(final int page) {
         flag = false;
 //        footer.setVisibility(View.VISIBLE);
         listView.postDelayed(new Runnable() {
@@ -271,46 +352,33 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     private void cycleRun(int page){
         List<RefreshListItem> data = new LinkedList<>();
         RefreshListItem item;
-        ArrayList<Map<String, Object>> data1 = getData();
+        ArrayList<Map<String, Object>> data1 = getNotification(null,-1);
         for (Map<String, Object> map : data1
                 ) {
             item = new RefreshListItem();
-            if (type.equals(COMMENT)) {
-                //        String[] from = {"replay_avatar", "replay_name", "replay_date", "replay_text", "text_my_comment"};
-                item.replay_avatar = String.valueOf(map.get("replay_avatar"));
-                item.replay_name = String.valueOf(map.get("replay_name"));
-                item.replay_date = String.valueOf(map.get("replay_date"));
-                item.replay_text = String.valueOf(map.get("replay_text"));
-                item.text_my_comment = String.valueOf(map.get("text_my_comment"));
-            } else if (type.equals(ATME)) {
-//            String[] from = {"replay_avatar", "replay_name", "replay_date", "replay_article", "text_my_comment"};
-                item.replay_avatar = String.valueOf(map.get("replay_avatar"));
-                item.replay_name = String.valueOf(map.get("replay_name"));
-                item.replay_date = String.valueOf(map.get("replay_date"));
-                item.replay_article = String.valueOf(map.get("replay_article"));
-                item.text_my_comment = String.valueOf(map.get("text_my_comment"));
-            } else {
-                //            String[] from = {"replay_avatar", "replay_name", "replay_date", "replay_text"};
-                item.replay_avatar = String.valueOf(map.get("replay_avatar"));
-                item.replay_name = String.valueOf(map.get("replay_name"));
-                item.replay_date = String.valueOf(map.get("replay_date"));
-                item.replay_text = String.valueOf(map.get("replay_text"));
-            }
+            item.replay_avatar = String.valueOf(map.get("replay_avatar"));
+            item.replay_name = String.valueOf(map.get("replay_name"));
+            item.replay_date = String.valueOf(map.get("replay_date"));
+            item.replay_text = String.valueOf(map.get("replay_text"));
+            item.replay_article = String.valueOf(map.get("replay_article"));
             flag = true;
             mIndex++;
             data.add(item);
         }
-        mAdapter = new NotificationRefreshListAdapter(getActivity(), type);
-        listView.setAdapter(mAdapter);
+        if (isTypeChange){
+            mAdapter = new NotificationRefreshListAdapter(getActivity(), type);
+            listView.setAdapter(mAdapter);
+            isTypeChange=false;
+        }
         mAdapter.setData(data, page == 1 ? true : false);
         listView.finishLoad(page == lastPage ? true : false);
         if (!flag) {//如果数据没有获取成功那么重新获取一次
             try {
-                Thread.sleep(500);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            cycleRun(page);
+            setNotification(page);
         }
     }
 
@@ -321,7 +389,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         } else {
             mPage++;
         }
-        getNotification(mPage);
+        setNotification(mPage);
         //TODO
     }
 
@@ -330,7 +398,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         public String replay_name;
         public String replay_date;
         public String replay_text;
-        public String text_my_comment;
         public String replay_article;
     }
 

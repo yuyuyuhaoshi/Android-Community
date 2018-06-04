@@ -100,4 +100,10 @@ public class URL {
             return host + "/tags/popular/";
         }
     }
+
+    public static class Notfication{
+        public static String getNotfication(){
+            return host+"/notifications/";
+        }
+    }
 }
