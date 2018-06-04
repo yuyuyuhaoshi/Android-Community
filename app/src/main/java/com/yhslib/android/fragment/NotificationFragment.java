@@ -72,7 +72,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     String type = COMMENT;
     private boolean isSearchTag = false;
     int lastPage = 5;
-    boolean isTypeChange=false;
+    boolean isTypeChange = false;
+
     public static NotificationFragment newInstance() {
         Bundle args = new Bundle();
         NotificationFragment fragment = new NotificationFragment();
@@ -136,7 +137,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             @Override
             public void onClick(View v) {
                 onLoad(true);
-                isTypeChange=true;
+                isTypeChange = true;
                 setComment();
             }
         });
@@ -144,7 +145,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             @Override
             public void onClick(View v) {
                 onLoad(true);
-                isTypeChange=true;
+                isTypeChange = true;
                 setAtMe();
             }
         });
@@ -152,7 +153,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             @Override
             public void onClick(View v) {
                 onLoad(true);
-                isTypeChange=true;
+                isTypeChange = true;
                 setNotice();
             }
         });
@@ -288,7 +289,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 JSONObject jsonAuthor = jsonNotification.getJSONObject("actor");
                 map.put("replay_avatar", R.drawable.jerry_zheng);
                 map.put("replay_name", jsonAuthor.getString("nickname"));
-                replay_date= FormatDate.changeDate(jsonNotification.getString("timestamp"));
+                replay_date = FormatDate.changeDate(jsonNotification.getString("timestamp"));
                 map.put("replay_date", replay_date);
                 JSONObject jsonReplay = jsonNotification.getJSONObject("reply");
                 map.put("replay_text", jsonReplay.getString("comment"));
@@ -303,6 +304,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     }
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
+
     private ArrayList<Map<String, Object>> getNotification(String verb, int page) {
         String url = URL.Notification.getNotification();
         Log.d(TAG, url);
@@ -337,6 +339,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     }
 
     boolean flag = false;
+
     private void setNotification(final int page) {
         flag = false;
 //        footer.setVisibility(View.VISIBLE);
@@ -349,10 +352,10 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         }, 500);
     }
 
-    private void cycleRun(int page){
+    private void cycleRun(int page) {
         List<RefreshListItem> data = new LinkedList<>();
         RefreshListItem item;
-        ArrayList<Map<String, Object>> data1 = getNotification(null,-1);
+        ArrayList<Map<String, Object>> data1 = getNotification(null, -1);
         for (Map<String, Object> map : data1
                 ) {
             item = new RefreshListItem();
@@ -365,10 +368,10 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             mIndex++;
             data.add(item);
         }
-        if (isTypeChange){
+        if (isTypeChange) {
             mAdapter = new NotificationRefreshListAdapter(getActivity(), type);
             listView.setAdapter(mAdapter);
-            isTypeChange=false;
+            isTypeChange = false;
         }
         mAdapter.setData(data, page == 1 ? true : false);
         listView.finishLoad(page == lastPage ? true : false);
