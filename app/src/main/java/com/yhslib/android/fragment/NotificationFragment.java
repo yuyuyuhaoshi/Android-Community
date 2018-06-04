@@ -304,7 +304,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
     private ArrayList<Map<String, Object>> getNotification(String verb, int page) {
-        String url = URL.Notfication.getNotfication();
+        String url = URL.Notification.getNotification();
         Log.d(TAG, url);
         GetBuilder builder = OkHttpUtils
                 .get()

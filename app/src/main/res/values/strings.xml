@@ -9,8 +9,6 @@
     <string name="navigation_notification">通知</string>
     <string name="navigation_mine">我的</string>
 
-    <string name="my_info">我的个人信息</string>
-    <string name="email_settings">邮箱设置</string>
     <string name="mine_check_in">打卡签到</string>
     <string name="mine_my_following">我的关注</string>
     <string name="mine_my_follower">我的粉丝</string>
@@ -74,11 +72,10 @@
     <string name="app_flags">朝闻道夕死可矣</string>
     <string name="login">登录</string>
     <string name="register">注册</string>
-    <string name="login_admin_username">用户名</string>
+    <string name="login_admin_username">用户名/邮箱</string>
     <string name="login_admin_username_email">用户名/邮箱</string>
     <string name="login_admin_email">邮箱</string>
     <string name="login_password">密码</string>
-    <string name="login_repassword">确认密码</string>
     <string name="login_ok">确定</string>
     <string name="login_third_party">第三方登录</string>
     <string name="login_qq">QQ</string>

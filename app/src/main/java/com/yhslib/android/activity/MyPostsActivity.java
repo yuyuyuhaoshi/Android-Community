@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 
 import com.yhslib.android.R;
@@ -39,7 +38,6 @@ public class MyPostsActivity extends BaseActivity {
     private CustomListView listView;
     private SimpleAdapter adapter;
     private Boolean RefreshFlag = false; // 防止多次刷新标记
-    private ImageView returnArrowImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,14 +67,12 @@ public class MyPostsActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.actionbar_my_post_list);
-            returnArrowImage = findViewById(R.id.return_image); // 此image findView 只能写在这
         }
     }
 
     @Override
     protected void setListener() {
         setListViewPullListener();
-        returnArrowImage.setOnClickListener(this);
     }
 
     @Override
@@ -84,9 +80,6 @@ public class MyPostsActivity extends BaseActivity {
         fetchPosts();
     }
 
-    /**
-     * [下拉加载下一页文章]
-     */
     private void setListViewPullListener() {
         // list view 下拉加载下一页文章
         listView.setOnPullToRefreshListener(new CustomListView.OnPullToRefreshListener() {
@@ -110,9 +103,6 @@ public class MyPostsActivity extends BaseActivity {
         });
     }
 
-    /**
-     * [获取文章列表]
-     */
     private void fetchPosts() {
         RefreshFlag = false;
         String url = URL.User.getPosts(userID);  //URL.host + "/posts/";
@@ -145,12 +135,6 @@ public class MyPostsActivity extends BaseActivity {
                 });
     }
 
-    /**
-     * [解析文章JSON数据]
-     *
-     * @param response
-     * @return ArrayList
-     */
     private ArrayList<HashMap<String, Object>> formatPostsJSON(String response) {
         ArrayList<HashMap<String, Object>> resultList = new ArrayList<>();
         try {
@@ -190,11 +174,6 @@ public class MyPostsActivity extends BaseActivity {
         return resultList;
     }
 
-    /**
-     * [设置文章列表listAdapter]
-     *
-     * @param list
-     */
     private void setMyPostsListAdapter(final ArrayList<HashMap<String, Object>> list) {
         String[] from = {"title", "time", "views", "tags", "reply_count"};
         int[] to = {R.id.my_post_title, R.id.my_post_create_time, R.id.my_post_views_count, R.id.my_post_tags, R.id.my_post_reply_count};
@@ -213,12 +192,8 @@ public class MyPostsActivity extends BaseActivity {
         });
     }
 
-    /**
-     * [启动文章详情页]
-     *
-     * @param id
-     */
     private void showPostDetail(Long id) {
+        // String postID = hm.get(id.intValue()).get("_id").toString();
         Log.d(TAG, id + "");
         Intent intent = new Intent(MyPostsActivity.this, PostActivity.class);
         intent.putExtra("userID", userID);
@@ -229,10 +204,6 @@ public class MyPostsActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.return_image:
-                MyPostsActivity.this.finish();
-                break;
-        }
+
     }
 }
