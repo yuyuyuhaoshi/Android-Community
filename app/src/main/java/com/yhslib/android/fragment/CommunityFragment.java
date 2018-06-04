@@ -197,12 +197,14 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                 for (int i = 0; i < tags.length; i++) {
                     if (v.getId() == tags[i].getId()) {
                         id = tagsId[i].getText().toString();
-                        isSearchTag = true;
+//                        isSearchTag = true;
                         mTag = id;
-                        onLoad(true);
-//                        isSearchTag=false;
+                        mAdapter = new RefreshListAdapter(getActivity());
+                        mContentRlv.setAdapter(mAdapter);
+//                        onLoad(true);
+                        getData(mPage, mTag);
+                        isSearchTag=false;
 //                        refreshDate(id);
-                        System.out.println("ddddssdsdsdsdsdsdsdsds" + id);
                         break;
                     }
                 }
@@ -303,16 +305,18 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     }
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
-
     private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {
 
-        String url = URL.Community.getPosts(page);
+        String url = URL.Community.getPosts();
         Log.d(TAG, url);
         GetBuilder builder = OkHttpUtils
                 .get()
                 .url(url);
         if (tagId != null) {
             builder.addParams("tags", tagId);
+        }
+        if (page != -1) {
+            builder.addParams("page", String.valueOf(page));
         }
         builder.build()
                 .execute(new StringCallback() {
@@ -370,55 +374,64 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     private void getData(final int page, final String tag) {
         flag = false;
 //        footer.setVisibility(View.VISIBLE);
-
         mContentRlv.postDelayed(new Runnable() {
             @SuppressLint("ResourceType")
             @Override
             public void run() {
-                List<RefreshListItem> data = new LinkedList<>();
-                RefreshListItem item;
-                ArrayList<Map<String, Object>> data1 = getCommunityPosts(tag, page);
-                for (Map<String, Object> map : data1
-                        ) {
-                    item = new RefreshListItem();
-                    item.tittle = String.valueOf(map.get("tittle"));
-                    item.name = String.valueOf(map.get("name"));
-                    item.date = String.valueOf(map.get("date"));
-                    item.image = String.valueOf(map.get("image"));
-                    item.tag = String.valueOf(map.get("tag"));
-                    flag = true;
-                    mIndex++;
-                    data.add(item);
-                }
-                mAdapter.setData(data, page == 1 ? true : false);
-                mContentRlv.finishLoad(page == lastPage ? true : false);
-                if (!flag) {//如果数据没有获取成功那么重新获取一次
-                    getData(page, tag);
-                }
+                cycleRun(page,tag);
             }
         }, 500);
+    }
 
+    private void cycleRun(int page, String tag){
+        List<RefreshListItem> data = new LinkedList<>();
+        RefreshListItem item;
+        ArrayList<Map<String, Object>> data1 = getCommunityPosts(tag, page);
+        for (Map<String, Object> map : data1
+                ) {
+            item = new RefreshListItem();
+            item.tittle = String.valueOf(map.get("tittle"));
+            item.name = String.valueOf(map.get("name"));
+            item.date = String.valueOf(map.get("date"));
+            item.image = String.valueOf(map.get("image"));
+            item.tag = String.valueOf(map.get("tag"));
+            flag = true;
+            mIndex++;
+            data.add(item);
+        }
+        mAdapter.setData(data, page == 1 ? true : false);
+        mContentRlv.finishLoad(page == lastPage ? true : false);
+        if (!flag) {//如果数据没有获取成功那么重新获取一次
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            getData(page, tag);
+        }
     }
 
     @Override
     public void onLoad(boolean isRefresh) {
+        mAdapter = new RefreshListAdapter(getActivity());
+        mContentRlv.setAdapter(mAdapter);
         if (isRefresh) {
             mPage = 1;
         } else {
             mPage++;
         }
-        if (isSearchTag)
-            getData(mPage, mTag);
-        else
+//        if (isSearchTag)
+//            getData(mPage, mTag);
+//        else
             getData(mPage, null);
     }
 
-    private static class RefreshListItem {
+    static class RefreshListItem {
         String tittle, name, date, tag, image;
     }
 
 
-    private static class RefreshListAdapter extends BaseAdapter<RefreshListItem> {
+    static class RefreshListAdapter extends BaseAdapter<RefreshListItem> {
 
         public RefreshListAdapter(Activity context) {
             super(context);
