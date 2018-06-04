@@ -92,12 +92,13 @@ public class URL {
     }
 
     public static class Community {
-        public static String getPosts(int page) {
-            return host + "/posts/" + "?page=" + page;
+        public static String getPosts() {
+            return host + "/posts/";
         }
 
         public static String getPopularTags() {
             return host + "/tags/popular/";
         }
     }
+
 }

@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-/**
- * Created by jerryzheng on 2018/5/29.
- */
 
 public class ListViewScrollHelper<T> {
     private static final String TAG = "ListViewScrollHelper";
