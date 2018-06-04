@@ -6,6 +6,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Created by jerryzheng on 2018/5/29.
+ */
 
 public class FormatDate {
     public static String changeDate(String date) {
