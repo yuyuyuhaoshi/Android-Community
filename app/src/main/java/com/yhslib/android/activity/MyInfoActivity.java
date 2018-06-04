@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,8 @@ public class MyInfoActivity extends BaseActivity {
     private AlertDialog changeNicknameDialog, changePasswordDialog;
     private TextView nicknameTxt;
     private ImageView myViaImage;
+    private ActionBar actionBar;
+    private ImageView returnArrowImage;
 
 
     @Override
@@ -71,6 +74,7 @@ public class MyInfoActivity extends BaseActivity {
         changeEmailLayout = findViewById(R.id.my_info_change_email);
         nicknameTxt = findViewById(R.id.my_info_nickname);
         myViaImage = findViewById(R.id.my_info_via);
+        actionBar = getSupportActionBar();
     }
 
     @Override
@@ -79,6 +83,11 @@ public class MyInfoActivity extends BaseActivity {
         loadMugshot(mugshot_url);
         buildChangeNicknameDialog();
         buildChangePasswordDialog();
+        if (actionBar != null) {
+            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            actionBar.setCustomView(R.layout.actionbar_my_info);
+            returnArrowImage = findViewById(R.id.return_image); // 此image findView 只能写在这
+        }
     }
 
     @Override
@@ -86,6 +95,7 @@ public class MyInfoActivity extends BaseActivity {
         changeNicknameLayout.setOnClickListener(this);
         changePasswordLayout.setOnClickListener(this);
         changeEmailLayout.setOnClickListener(this);
+        returnArrowImage.setOnClickListener(this);
     }
 
     @Override
@@ -108,10 +118,17 @@ public class MyInfoActivity extends BaseActivity {
                 intent.putExtra("token", token);
                 startActivity(intent);
                 break;
+            case R.id.return_image:
+                MyInfoActivity.this.finish();
+                break;
         }
     }
 
-
+    /**
+     * [创建更改昵称对话框]
+     *
+     * @param
+     */
     private void buildChangeNicknameDialog() {
         // 创建更改昵称对话框
         changeNicknameDialogBuilder = new AlertDialog.Builder(MyInfoActivity.this);
@@ -134,8 +151,10 @@ public class MyInfoActivity extends BaseActivity {
         changeNicknameDialog.setCanceledOnTouchOutside(true);
     }
 
+    /**
+     * [创建更改密码对话框]
+     */
     private void buildChangePasswordDialog() {
-        // 创建更改密码对话框
         View dialogView = LayoutInflater.from(MyInfoActivity.this).inflate(R.layout.dialog_change_password, null);
         final EditText edit_old_password = dialogView.findViewById(R.id.dialog_old_password);
         final EditText edit_new_password = dialogView.findViewById(R.id.dialog_new_password);
@@ -166,12 +185,21 @@ public class MyInfoActivity extends BaseActivity {
         changePasswordDialog.setView(dialogView);
     }
 
+    /**
+     * [加载头像]
+     *
+     * @param url
+     */
     private void loadMugshot(String url) {
-        // 加载作者头像
         url = URL.host + url;
         MugshotUrl.load(url, myViaImage);
     }
 
+    /**
+     * [发起更改昵称的请求]
+     *
+     * @param nickname
+     */
     private void changeNickname(String nickname) {
         // 发起更改昵称的请求
         String url = URL.User.changeNickname(userID);
@@ -202,6 +230,12 @@ public class MyInfoActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * [解析JSON数据]
+     *
+     * @param response
+     * @return hashMap
+     */
     private HashMap<String, Object> formatUserInfoJSON(String response) {
         HashMap<String, Object> hashMap = new HashMap<>();
         try {
@@ -213,6 +247,13 @@ public class MyInfoActivity extends BaseActivity {
         return hashMap;
     }
 
+    /**
+     * [更改密码请求]
+     *
+     * @param oldPassword
+     * @param newPassword
+     * @param newPasswordRepeat
+     */
     private void changePassword(String oldPassword, String newPassword, String newPasswordRepeat) {
         String url = URL.User.changePassword();
         OkHttpUtils
@@ -232,7 +273,6 @@ public class MyInfoActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.d(TAG, response);
                         Toast.makeText(MyInfoActivity.this, "密码修改成功", Toast.LENGTH_SHORT).show();
                     }
                 });

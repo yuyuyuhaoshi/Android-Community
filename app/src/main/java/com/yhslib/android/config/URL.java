@@ -101,9 +101,4 @@ public class URL {
         }
     }
 
-    public static class Notfication{
-        public static String getNotfication(){
-            return host+"/notifications/";
-        }
-    }
 }
