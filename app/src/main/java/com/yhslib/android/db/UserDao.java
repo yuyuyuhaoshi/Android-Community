@@ -11,41 +11,41 @@ import com.yhslib.android.activity.LoginActivity;
 import com.yhslib.android.fragment.LoginFragment;
 
 public class UserDao {
-        private static final String USERID = "userid";
-        private static final String USERNAME = "username";
-        private static final String TOKEN = "token";
-        private static final String TIMESTAMP="timestamp";
-        private static final String TAG="ls";
-        private static final String TABLE_NAME = "Login";
-        private static DatabaseHelper LoginHelper;
-        public UserDao(Context context){
-            if (LoginHelper==null){
-                LoginHelper=new DatabaseHelper(context);
-            }
+    private static final String USERID = "userid";
+    private static final String USERNAME = "username";
+    private static final String TOKEN = "token";
+    private static final String TIMESTAMP="timestamp";
+    private static final String TAG="ls";
+    private static final String TABLE_NAME = "Login";
+    private static DatabaseHelper LoginHelper;
+    public UserDao(Context context){
+        if (LoginHelper==null){
+            LoginHelper=new DatabaseHelper(context);
         }
-        public boolean createTable(){
-            SQLiteDatabase db =LoginHelper.getWritableDatabase();
-            try{
-                LoginHelper.dropTableDiary(db);
-                LoginHelper.createTableDiary(db);
-                Log.d(TAG,"Create DB Table");
-                return true;
-            }catch (SQLException e){
-                Log.d(TAG,e.getMessage());
-                return false;
-            }
+    }
+    public boolean createTable(){
+        SQLiteDatabase db =LoginHelper.getWritableDatabase();
+        try{
+            LoginHelper.dropTableDiary(db);
+            LoginHelper.createTableDiary(db);
+            Log.d(TAG,"Create DB Table");
+            return true;
+        }catch (SQLException e){
+            Log.d(TAG,e.getMessage());
+            return false;
         }
-        public boolean insertLogin(String userid, String username, String token,String timestamp){
-            SQLiteDatabase db=LoginHelper.getWritableDatabase();
-            ContentValues cv=new ContentValues();
-            cv.put(USERID,userid);
-            cv.put(USERNAME,username);
-            cv.put(TOKEN,token);
-            cv.put(TIMESTAMP,timestamp);
+    }
+    public boolean insertLogin(String userid, String username, String token,String timestamp){
+        SQLiteDatabase db=LoginHelper.getWritableDatabase();
+        ContentValues cv=new ContentValues();
+        cv.put(USERID,userid);
+        cv.put(USERNAME,username);
+        cv.put(TOKEN,token);
+        cv.put(TIMESTAMP,timestamp);
 //            Cursor cursor=get
-            return db.insert(TABLE_NAME, null, cv) != -1;
+        return db.insert(TABLE_NAME, null, cv) != -1;
 
-        }
+    }
     public boolean updateLogin(String token,String timestamp) {
         try {
 //            Log.d(TAG, "Do update before getWritableDatabase");
