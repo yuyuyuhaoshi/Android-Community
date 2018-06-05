@@ -112,11 +112,9 @@ public class CustomListView extends ListView {
 
 
     /**
-     * @param refreshing
-     *
-     * 控制在加载过程中的动画显示
-     * ture：显示.
-     * false：关闭
+     * @param refreshing 控制在加载过程中的动画显示
+     *                   ture：显示.
+     *                   false：关闭
      */
     public void onRefresh(boolean refreshing) {
         if (refreshing)

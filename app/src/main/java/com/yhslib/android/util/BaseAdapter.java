@@ -30,7 +30,9 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
         return mData.get(position);
     }
 
-    /** 设置数据 */
+    /**
+     * 设置数据
+     */
     final public void setData(List<T> data, boolean reset) {
         if (reset) {
             mData.clear();
@@ -67,6 +69,7 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
 
     /**
      * 返回视图类型
+     *
      * @param itemViewType 视图类型
      * @return
      */
@@ -74,9 +77,10 @@ public abstract class BaseAdapter<T> extends android.widget.BaseAdapter {
 
     /**
      * 处理item，主要是填充数据
+     *
      * @param itemViewType item对应的视图类型
-     * @param position 实体对应的索引位置
-     * @param item 具体实体
+     * @param position     实体对应的索引位置
+     * @param item         具体实体
      * @param holder
      */
     protected abstract void handleItem(int itemViewType, int position, T item, ViewHolder holder, boolean reused);

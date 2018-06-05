@@ -21,7 +21,7 @@ public class Welcome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.welcome);
-        textView=findViewById(R.id.text_welcome);
+        textView = findViewById(R.id.text_welcome);
         animation();
     }
 
