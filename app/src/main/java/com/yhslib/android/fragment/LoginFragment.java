@@ -91,7 +91,7 @@ public class LoginFragment extends Fragment {
                 String usernameOrEmail = login_edt_name.getText().toString();
                 String password = login_edt_password.getText().toString();
                 boolean bool;
-              //  Intent intent = getActivity().getIntent();
+                //  Intent intent = getActivity().getIntent();
 
                 if (usernameOrEmail.equals("") || password.equals("")) {
                     Toast.makeText(getActivity(), "账号或密码为空，请重新输入!", Toast.LENGTH_LONG).show();

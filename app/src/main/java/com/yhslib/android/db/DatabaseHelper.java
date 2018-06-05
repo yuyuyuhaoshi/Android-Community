@@ -17,9 +17,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         private static final int DATABASE_VERSION =8;
         private static final String TABLE_NAME = "Login";
         private static final String USERID = "userid";
+        private static final String TIME="time";
         private static final String TIMESTAMP="timestamp";
         private static final String USERNAME = "username";
         private static final String TOKEN = "token";
+
         public DatabaseHelper(Context context) {
 
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
