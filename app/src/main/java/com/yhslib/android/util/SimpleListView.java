@@ -22,6 +22,7 @@ import com.yhslib.android.R;
  *
  * @version V1.0
  */
+
 public class SimpleListView extends SwipeRefreshLayout {
     private ListView mListView;
     private LoadMoreStatus mLoadMoreStatus = LoadMoreStatus.CLICK_TO_LOAD;
@@ -99,12 +100,12 @@ public class SimpleListView extends SwipeRefreshLayout {
                     mOnScrollListener.onScroll(view, firstVisibleItem, visibleItemCount, totalItemCount);
                 }
                 if (firstVisibleItem + visibleItemCount >= totalItemCount - 1) {
-                    if (mLoadMoreView!=null)
+                    if (mLoadMoreView != null)
                         mLoadMoreView.setVisibility(VISIBLE);
                     mIsEnd = true;
                 } else {
                     mIsEnd = false;
-                    if (mLoadMoreView!=null)
+                    if (mLoadMoreView != null)
                         mLoadMoreView.setVisibility(GONE);
                 }
             }
@@ -145,7 +146,7 @@ public class SimpleListView extends SwipeRefreshLayout {
         mOnScrollListener = listener;
     }
 
-    public void setOnItemClickListener(AdapterView.OnItemClickListener listener){
+    public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         mListView.setOnItemClickListener(listener);
     }
 
@@ -182,12 +183,12 @@ public class SimpleListView extends SwipeRefreshLayout {
 //            mLoadMoreView.setTextSize(14);
 //            mLoadMoreView.setGravity(Gravity.CENTER);
             int count = adapter.getCount();
-            if (mLoadMoreView!=null)
+            if (mLoadMoreView != null)
                 mLoadMoreView.setVisibility(count == 0 ? View.GONE : View.VISIBLE);
             if (mEmptyView != null) {
                 mEmptyView.setVisibility(count == 0 ? View.VISIBLE : View.GONE);
             }
-            if (mLoadMoreView!=null){
+            if (mLoadMoreView != null) {
                 mLoadMoreView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -200,7 +201,7 @@ public class SimpleListView extends SwipeRefreshLayout {
                     }
                 });
             }
-            if (mLoadMoreView!=null){
+            if (mLoadMoreView != null) {
                 mLoadMoreView.setLayoutParams(new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, getResources().getDimensionPixelOffset(R.dimen.offset_10dp) * 4));
                 mListView.addFooterView(mLoadMoreView);
             }
@@ -221,8 +222,9 @@ public class SimpleListView extends SwipeRefreshLayout {
 
     TextView tittle;
     ProgressBar progressBar;
+
     private void setLoadMoreStatus(LoadMoreStatus status) {
-        tittle=mLoadMoreView.findViewById(R.id.title);
+        tittle = mLoadMoreView.findViewById(R.id.title);
         progressBar = mLoadMoreView.findViewById(R.id.progressBar);
         mLoadMoreStatus = status;
         if (mLoadMoreView != null) {
@@ -248,7 +250,7 @@ public class SimpleListView extends SwipeRefreshLayout {
         setLoadMoreStatus(loadAll ? LoadMoreStatus.LOADED_ALL : LoadMoreStatus.CLICK_TO_LOAD);
     }
 
-    public void setFooter(View view){
-        this.mLoadMoreView=view;
+    public void setFooter(View view) {
+        this.mLoadMoreView = view;
     }
 }

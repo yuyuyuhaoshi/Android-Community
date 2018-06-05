@@ -9,9 +9,6 @@ import com.yhslib.android.fragment.NotificationFragment;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by jerryzheng on 2018/6/1.
- */
 
 public class NotificationRefreshListAdapter extends BaseAdapter<NotificationFragment.RefreshListItem> {
     String type;

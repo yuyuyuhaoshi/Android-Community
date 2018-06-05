@@ -7,11 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by jerryzheng on 2018/5/29.
- */
-
-public abstract class BaseFragment extends Fragment{
+public abstract class BaseFragment extends Fragment {
 
 
     @Override

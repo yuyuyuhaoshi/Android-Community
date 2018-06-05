@@ -5,10 +5,6 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 
-/**
- * Created by jerryzheng on 2018/5/24.
- */
-
 public class SlideBar {
     private int lastVisibleItemPosition=0;
     private boolean topBaIsDown=true,topBarIsUp=true,deepBaIsDown=true,deepBarIsUp=true;
