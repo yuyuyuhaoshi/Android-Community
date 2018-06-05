@@ -8,16 +8,11 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
 import com.yhslib.android.fragment.LoginFragment;
 import com.yhslib.android.fragment.RegisterFragment;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class LoginActivity extends AppCompatActivity {
     private TextView register_textview;
@@ -51,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         login_underline=findViewById(R.id.login_underline);
         register_underline=findViewById(R.id.register_underline);
     }
-
     private void setListener(){
         login_textview.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,8 +71,6 @@ public class LoginActivity extends AppCompatActivity {
                 register_underline.setBackground(getResources().getDrawable((R.drawable.line)));
             }
         });
-
     }
-
 }
 

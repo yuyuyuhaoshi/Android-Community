@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         navigation = findViewById(R.id.navigation);
         viewPager = findViewById(R.id.viewPager);
         actionBar = getSupportActionBar();
+
     }
 
 
@@ -173,11 +174,6 @@ public class MainActivity extends AppCompatActivity {
         }).setNegativeButton("取消", null).show();
     }
 
-    /**
-     * [消除navigation偏移动画]
-     *
-     * @param view
-     */
     @SuppressLint("RestrictedApi")
     public static void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
