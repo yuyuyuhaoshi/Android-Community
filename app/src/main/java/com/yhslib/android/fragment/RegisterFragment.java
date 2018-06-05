@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.yhslib.android.R;
 
 public class RegisterFragment extends Fragment {
@@ -25,7 +26,7 @@ public class RegisterFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_register, container, false);
+        view = inflater.inflate(R.layout.fragment_register, container, false);
         return view;
     }
 

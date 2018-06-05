@@ -201,7 +201,7 @@ public abstract class BaseActivityCopy extends AppCompatActivity implements
     /**
      * [是否设置沉浸状态栏]
      *
-     * @param  // allowFullScreen
+     * @param // allowFullScreen
      */
     public void setSteepStatusBar(boolean isSetStatusBar) {
         this.isSetStatusBar = isSetStatusBar;

@@ -11,9 +11,6 @@ import android.widget.TextView;
 
 import com.yhslib.android.R;
 
-/**
- * Created by jerryzheng on 2018/5/25.
- */
 
 public class Welcome extends AppCompatActivity {
     TextView textView;
@@ -24,7 +21,7 @@ public class Welcome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.welcome);
-        textView=findViewById(R.id.text_welcome);
+        textView = findViewById(R.id.text_welcome);
         animation();
     }
 

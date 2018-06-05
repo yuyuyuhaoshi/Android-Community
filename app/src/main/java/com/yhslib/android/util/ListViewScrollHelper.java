@@ -10,9 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
-/**
- * Created by jerryzheng on 2018/5/29.
- */
 
 public class ListViewScrollHelper<T> {
     private static final String TAG = "ListViewScrollHelper";
@@ -64,7 +61,7 @@ public class ListViewScrollHelper<T> {
 
     /**
      * 此函数将会作为分页刷新数据的主函数
-     *     内部将会实现 根据当前页数判断是否重置数据 或者 继续下一页
+     * 内部将会实现 根据当前页数判断是否重置数据 或者 继续下一页
      * 如果重置数据，初始化起始页需要使用函数 resetPageIndex()
      *
      * @param list
@@ -80,7 +77,7 @@ public class ListViewScrollHelper<T> {
 
     /**
      * 如果有多处控制一个listview数据内容（比如：分类，搜索都能控制商品列表展示）
-     *   ，此时可以使用此函数设置分页信息
+     * ，此时可以使用此函数设置分页信息
      *
      * @param list
      * @param totalSize
