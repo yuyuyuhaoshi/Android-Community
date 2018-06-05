@@ -184,15 +184,15 @@ public class MineFragment extends Fragment {
     }
 
     private ArrayList<HashMap<String, Object>> formatUserInfoJSON(String response) {
-        ArrayList<HashMap<String, Object>> resultList = new ArrayList<>();
-        try {
-            JSONObject jsonobject = new JSONObject(response);
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("id", jsonobject.getLong("id"));
-            hashMap.put("username", jsonobject.getString("username"));
-            hashMap.put("nickname", jsonobject.getString("nickname"));
-            hashMap.put("mugshot_url", jsonobject.getString("mugshot_url"));
-            resultList.add(hashMap);
+                ArrayList<HashMap<String, Object>> resultList = new ArrayList<>();
+                try {
+                    JSONObject jsonobject = new JSONObject(response);
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("id", jsonobject.getLong("id"));
+                    hashMap.put("username", jsonobject.getString("username"));
+                    hashMap.put("nickname", jsonobject.getString("nickname"));
+                    hashMap.put("mugshot_url", jsonobject.getString("mugshot_url"));
+                    resultList.add(hashMap);
         } catch (JSONException e) {
             e.printStackTrace();
         }
