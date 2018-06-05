@@ -3,6 +3,7 @@ package com.yhslib.android.activity;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
@@ -19,6 +20,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.yhslib.android.R;
+import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.fragment.CommunityFragment;
 import com.yhslib.android.fragment.DiscoveryFragment;
 import com.yhslib.android.fragment.MineFragment;
@@ -44,16 +46,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getDataFromIntent();
         findView();
         initView();
     }
 
+    private void getDataFromIntent() {
+        Intent intent = getIntent();
+        String userID = intent.getStringExtra(IntentFields.USERID);
+        String token = intent.getStringExtra(IntentFields.TOKEN);
+        Log.d(TAG, userID + "  " + token);
+    }
 
     private void findView() {
         navigation = findViewById(R.id.navigation);
         viewPager = findViewById(R.id.viewPager);
         actionBar = getSupportActionBar();
-
     }
 
 

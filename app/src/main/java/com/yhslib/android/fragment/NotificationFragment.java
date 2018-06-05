@@ -349,7 +349,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             public void run() {
                 cycleRun(page);
             }
-        }, 500);
+        }, 5000000);
     }
 
     private void cycleRun(int page) {

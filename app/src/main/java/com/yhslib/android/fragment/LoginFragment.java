@@ -1,9 +1,7 @@
 package com.yhslib.android.fragment;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,30 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yhslib.android.R;
 import com.yhslib.android.activity.MainActivity;
-import com.yhslib.android.activity.Welcome;
+import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
-import com.yhslib.android.util.MugshotUrl;
+import com.yhslib.android.util.JWTUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import org.json.JSONArray;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import okhttp3.Call;
-import okhttp3.internal.Internal;
+
 import com.yhslib.android.db.*;
 
 public class LoginFragment extends Fragment {
@@ -124,39 +120,47 @@ public class LoginFragment extends Fragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.d(TAG, response);
-                        String userid="";
-                        String username="";
-                        Date day=new Date();
+                        HashMap<String, Object> hashMap = formatUserInfo(response);
+                        String token = hashMap.get("token").toString();
+                        String userid = hashMap.get("userid").toString();
+                        String username = hashMap.get("username").toString();
+                        HashMap<String, Object> tokenHashMap = JWTUtils.decoded(token);
+                        String exp = tokenHashMap.get("exp").toString();
+                        Date day = new Date();
                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String timestamp=df.format(day);
-                        //System.out.println(df.format(day));
-                        try {
-                            JSONObject jsonobject = new JSONObject(response);
-                            token = jsonobject.getString("token");
-//                            userid=jsonobject.getString("id");
-//                            username=jsonobject.getString("username");
-                            JSONObject user = jsonobject.getJSONObject("user");
-                            userid=user.getString("id");
-                            username=user.getString("username");
+                        String time = df.format(day);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                        UserDao dao = new UserDao(getContext());
+                        if (dao.searchUser(userid)) {
+                            dao.updateUser(userid, token, time);
+                        } else {
+                            dao.insertUser(userid, username, token, time, exp);
                         }
-                        Log.d(TAG,token);
-                        Log.d(TAG,userid);
-                        Intent intent=new Intent(getActivity(), MainActivity.class);
-                        intent.putExtra(token,"token");
-                        UserDao dao=new UserDao(getContext());
 
-                        if(dao.search(userid)){
-                            dao.updateLogin(token,timestamp);
-                        }else{
-                            dao.insertLogin(userid,username,token,timestamp);
-                        }
-                        startActivity(intent);
+                        startMainActivity(userid, token);
                     }
                 });
+    }
+
+    private HashMap<String, Object> formatUserInfo(String response) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        try {
+            JSONObject jsonobject = new JSONObject(response);
+            hashMap.put("token", jsonobject.getString("token"));
+            JSONObject user = jsonobject.getJSONObject("user");
+            hashMap.put("userid", user.getString("id"));
+            hashMap.put("username", user.getString("username"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return hashMap;
+    }
+
+    private void startMainActivity(String userid, String token) {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        intent.putExtra(IntentFields.USERID, userid);
+        intent.putExtra(IntentFields.TOKEN, token);
+        startActivity(intent);
     }
 }
 

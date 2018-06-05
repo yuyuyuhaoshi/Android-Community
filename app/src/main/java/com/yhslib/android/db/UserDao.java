@@ -7,53 +7,48 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.yhslib.android.activity.LoginActivity;
-import com.yhslib.android.fragment.LoginFragment;
-
 public class UserDao {
-    private static final String USERID = "userid";
-    private static final String USERNAME = "username";
-    private static final String TOKEN = "token";
-    private static final String TIMESTAMP="timestamp";
-    private static final String TAG="ls";
-    private static final String TABLE_NAME = "Login";
-    private static DatabaseHelper LoginHelper;
-    public UserDao(Context context){
-        if (LoginHelper==null){
-            LoginHelper=new DatabaseHelper(context);
+    private static final String TAG = "UserDao";
+
+    private static DatabaseHelper databaseHelper;
+
+    public UserDao(Context context) {
+        if (databaseHelper == null) {
+            databaseHelper = new DatabaseHelper(context);
         }
     }
-    public boolean createTable(){
-        SQLiteDatabase db =LoginHelper.getWritableDatabase();
-        try{
-            LoginHelper.dropTableDiary(db);
-            LoginHelper.createTableDiary(db);
-            Log.d(TAG,"Create DB Table");
+
+    public boolean createTable() {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        try {
+            databaseHelper.dropTableDiary(db);
+            databaseHelper.createTableDiary(db);
+            Log.d(TAG, "Create DB Table");
             return true;
-        }catch (SQLException e){
-            Log.d(TAG,e.getMessage());
+        } catch (SQLException e) {
+            Log.d(TAG, e.getMessage());
             return false;
         }
     }
-    public boolean insertLogin(String userid, String username, String token,String timestamp){
-        SQLiteDatabase db=LoginHelper.getWritableDatabase();
-        ContentValues cv=new ContentValues();
-        cv.put(USERID,userid);
-        cv.put(USERNAME,username);
-        cv.put(TOKEN,token);
-        cv.put(TIMESTAMP,timestamp);
-//            Cursor cursor=get
-        return db.insert(TABLE_NAME, null, cv) != -1;
 
+    public boolean insertUser(String userid, String username, String token, String timestamp, String time) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(DatabaseFiled.User.USERID, userid);
+        cv.put(DatabaseFiled.User.USERNAME, username);
+        cv.put(DatabaseFiled.User.TOKEN, token);
+        cv.put(DatabaseFiled.User.TIMESTAMP, timestamp);
+        cv.put(DatabaseFiled.User.TIME, time);
+        return db.insert(DatabaseFiled.Tables.USER, null, cv) != -1;
     }
-    public boolean updateLogin(String token,String timestamp) {
+
+    public boolean updateUser(String userid, String token, String timestamp) {
         try {
-//            Log.d(TAG, "Do update before getWritableDatabase");
-            SQLiteDatabase db = LoginHelper.getWritableDatabase();
+            SQLiteDatabase db = databaseHelper.getWritableDatabase();
             ContentValues cv = new ContentValues();
-            cv.put(TOKEN,token);
-            cv.put(TIMESTAMP,timestamp);
-            int x = db.update(TABLE_NAME, cv, null, null);
+            cv.put(DatabaseFiled.User.TOKEN, token);
+            cv.put(DatabaseFiled.User.TIMESTAMP, timestamp);
+            int x = db.update(DatabaseFiled.Tables.USER, cv, "userid=?", new String[]{userid});
             return x > 0;
         } catch (SQLException e) {
             Log.d(TAG, e.getMessage());
@@ -61,14 +56,12 @@ public class UserDao {
         }
     }
 
-    public boolean search(String userid){
-        SQLiteDatabase db = LoginHelper.getWritableDatabase();
-        Cursor cursor=db.query(TABLE_NAME, null, "userid=?", new String[]{userid}, null,null, null);
-        if(cursor.getCount() == 0){
+    public boolean searchUser(String userid) {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        Cursor cursor = db.query(DatabaseFiled.Tables.USER, null, "userid=?", new String[]{userid}, null, null, null);
+        if (cursor.getCount() == 0) {
             return false;
         }
         return true;
     }
-
-
 }
