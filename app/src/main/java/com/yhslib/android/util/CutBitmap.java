@@ -2,6 +2,9 @@ package com.yhslib.android.util;
 
 import android.graphics.Bitmap;
 
+/**
+ * Created by jerryzheng on 2018/5/25.
+ */
 
 public class CutBitmap {
     public static Bitmap imageCrop(Bitmap bitmap, int width,int height) {

@@ -8,7 +8,6 @@
     android:paddingTop="@dimen/offset_10dp">
 
     <ImageView
-        android:id="@+id/return_image"
         android:layout_width="@dimen/offset_30dp"
         android:layout_height="@dimen/offset_30dp"
         android:src="@drawable/return_image" />

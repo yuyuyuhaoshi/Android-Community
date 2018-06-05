@@ -1,14 +1,12 @@
 package com.yhslib.android.activity;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
@@ -40,8 +38,6 @@ public class EmailActivity extends BaseActivity {
     private CustomListView listView;
     private SimpleAdapter adapter;
     private Boolean RefreshFlag = false; // 防止多次刷新标记
-    private ActionBar actionBar;
-    private ImageView returnArrowImage;
 
     @Override
     protected void getDataFromIntent() {
@@ -58,12 +54,6 @@ public class EmailActivity extends BaseActivity {
     @Override
     protected void findView() {
         listView = findViewById(R.id.email_list);
-        actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            actionBar.setCustomView(R.layout.actionbar_email);
-            returnArrowImage = findViewById(R.id.return_image); // 此image findView 只能写在这
-        }
     }
 
     @Override
@@ -74,7 +64,6 @@ public class EmailActivity extends BaseActivity {
     @Override
     protected void setListener() {
         setListViewPullListener();
-        returnArrowImage.setOnClickListener(this);
     }
 
     @Override
@@ -84,18 +73,9 @@ public class EmailActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.return_image:
-                EmailActivity.this.finish();
-                break;
-        }
+
     }
 
-    /**
-     * [设置往下拉至底部加载更多数据]
-     *
-     * @param
-     */
     private void setListViewPullListener() {
         // list view 下拉加载下一页文章
         listView.setOnPullToRefreshListener(new CustomListView.OnPullToRefreshListener() {
@@ -115,16 +95,10 @@ public class EmailActivity extends BaseActivity {
 
             @Override
             public void onTop() {
-
             }
         });
     }
 
-    /**
-     * [获取邮箱列表]
-     *
-     * @param
-     */
     private void fetchEmail() {
         RefreshFlag = false;
         String url = URL.User.getEmailList();
@@ -158,11 +132,6 @@ public class EmailActivity extends BaseActivity {
                 });
     }
 
-    /**
-     * [解析JSON字符串]
-     *
-     * @param response
-     */
     private ArrayList<HashMap<String, Object>> formatEmailsJSON(String response) {
         RefreshFlag = false;
         ArrayList<HashMap<String, Object>> resultList = new ArrayList<>();
@@ -198,12 +167,6 @@ public class EmailActivity extends BaseActivity {
         return resultList;
     }
 
-
-    /**
-     * [设置listAdapter]
-     *
-     * @param list
-     */
     private void setEmailListAdapter(final ArrayList<HashMap<String, Object>> list) {
         String[] from = {"email", "primary", "verified"};
         int[] to = {R.id.email, R.id.email_primary, R.id.email_verified};
@@ -242,11 +205,6 @@ public class EmailActivity extends BaseActivity {
         return super.onContextItemSelected(item);
     }
 
-    /**
-     * [设置主邮箱]
-     *
-     * @param emailID
-     */
     private void set_primary_email(String emailID) {
         String url = URL.User.setPrimaryEmail(emailID);
         OkHttpUtils
@@ -272,11 +230,6 @@ public class EmailActivity extends BaseActivity {
                 });
     }
 
-    /**
-     * [删除邮箱]
-     *
-     * @param emailID
-     */
     private void delete_email(String emailID) {
         String url = URL.User.deleteEmail(emailID);
         OkHttpUtils
@@ -301,11 +254,6 @@ public class EmailActivity extends BaseActivity {
                 });
     }
 
-    /**
-     * [验证邮箱]
-     *
-     * @param emailID
-     */
     private void verify_email(String emailID) {
         String url = URL.User.deleteEmail(emailID);
         OkHttpUtils

@@ -13,8 +13,7 @@
             android:id="@+id/login_edt_name"
             android:layout_height="match_parent"
             android:hint="@string/login_admin_username_email"
-            android:layout_width="match_parent"
-            android:singleLine="true"/>
+            android:layout_width="match_parent" />
 
         <EditText
             android:layout_margin="@dimen/offset_22dp"
@@ -23,11 +22,9 @@
             android:id="@+id/login_edt_password"
             android:layout_height="match_parent"
             android:hint="@string/login_password"
-            android:layout_width="match_parent"
-            android:inputType="textPassword"/>
+            android:layout_width="match_parent" />
         <Button
             android:layout_gravity="center"
-            android:id="@+id/login_button"
             android:background="@drawable/button_ok"
             android:layout_width="@dimen/offset_200dp"
             android:layout_height="wrap_content"
