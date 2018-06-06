@@ -132,7 +132,7 @@ public class LoginFragment extends Fragment {
 
                         UserDao dao = new UserDao(getContext());
                         if (dao.searchUser(userid)) {
-                            dao.updateUser(userid, token, time);
+                            dao.updateUser(userid, token, time, exp);
                         } else {
                             dao.insertUser(userid, username, token, time, exp);
                         }
