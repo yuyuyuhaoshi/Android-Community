@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.yhslib.android.R;
 import com.yhslib.android.activity.MainActivity;
+import com.yhslib.android.config.HashMapField;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.JWTUtils;
@@ -40,8 +41,6 @@ public class LoginFragment extends Fragment {
     private EditText login_edt_name, login_edt_password;
     private Button login_button;
     private View view;
-    private String token = "";
-
 
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
@@ -67,7 +66,6 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login, container, false);
-
         return view;
     }
 
@@ -76,8 +74,6 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findView();
         setOnClickListener();
-        Log.d(TAG, TAG);
-
     }
 
     private void setOnClickListener() {
@@ -87,7 +83,6 @@ public class LoginFragment extends Fragment {
                 String usernameOrEmail = login_edt_name.getText().toString();
                 String password = login_edt_password.getText().toString();
                 boolean bool;
-                //  Intent intent = getActivity().getIntent();
 
                 if (usernameOrEmail.equals("") || password.equals("")) {
                     Toast.makeText(getActivity(), "账号或密码为空，请重新输入!", Toast.LENGTH_LONG).show();
@@ -106,7 +101,8 @@ public class LoginFragment extends Fragment {
 
     private void handleLogin(String name, String password, boolean bool) {
         OkHttpUtils
-                .post().url(URL.User.login())
+                .post()
+                .url(URL.User.login())
                 .addParams(bool ? "username" : "email", name)
                 .addParams("password", password)
                 .build()
@@ -120,17 +116,17 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onResponse(String response, int id) {
                         HashMap<String, Object> hashMap = formatUserInfo(response);
-                        String token = hashMap.get("token").toString();
-                        String userid = hashMap.get("userid").toString();
-                        String username = hashMap.get("username").toString();
+                        String token = hashMap.get(HashMapField.TOKEN).toString();
+                        String userid = hashMap.get(HashMapField.USERID).toString();
+                        String username = hashMap.get(HashMapField.USERNAME).toString();
                         HashMap<String, Object> tokenHashMap = JWTUtils.decoded(token);
-                        String exp = tokenHashMap.get("exp").toString();
+                        String exp = tokenHashMap.get(HashMapField.EXP).toString();
                         Date day = new Date();
                         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         String time = df.format(day);
 
                         UserDao dao = new UserDao(getContext());
-                        if (dao.searchUser(userid)) {
+                        if (dao.searchUserById(userid)) {
                             dao.updateUser(userid, token, time, exp);
                         } else {
                             // 保证数据库只有一条用户记录
@@ -147,10 +143,10 @@ public class LoginFragment extends Fragment {
         HashMap<String, Object> hashMap = new HashMap<>();
         try {
             JSONObject jsonobject = new JSONObject(response);
-            hashMap.put("token", jsonobject.getString("token"));
+            hashMap.put(HashMapField.TOKEN, jsonobject.getString("token"));
             JSONObject user = jsonobject.getJSONObject("user");
-            hashMap.put("userid", user.getString("id"));
-            hashMap.put("username", user.getString("username"));
+            hashMap.put(HashMapField.USERID, user.getString("id"));
+            hashMap.put(HashMapField.USERNAME, user.getString("username"));
         } catch (JSONException e) {
             e.printStackTrace();
         }

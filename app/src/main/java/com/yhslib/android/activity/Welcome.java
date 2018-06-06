@@ -1,6 +1,7 @@
 package com.yhslib.android.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,12 +12,20 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
+import com.yhslib.android.config.HashMapField;
+import com.yhslib.android.config.IntentFields;
+import com.yhslib.android.db.DatabaseFiled;
+import com.yhslib.android.db.UserDao;
 import com.yhslib.android.util.BaseActivity;
+import com.yhslib.android.util.JWTUtils;
+
+import java.util.HashMap;
 
 
 public class Welcome extends BaseActivity {
     TextView textView;
     AnimationSet animationSet;
+    UserDao dao;
 
     @Override
     protected void getDataFromIntent() {
@@ -59,15 +68,46 @@ public class Welcome extends BaseActivity {
         animationSet.addAnimation(welcome_scale);
         animationSet.setFillAfter(true);
         animationSet.setAnimationListener(new Animation.AnimationListener() {
+            int intentFlag;   // 1跳转到登录注册页，2跳转到首页
+            HashMap<String, Object> hashMap = new HashMap<>();
+
             @Override
             public void onAnimationStart(Animation animation) {
+                dao = new UserDao(getApplicationContext());
+                Cursor cursor = dao.selectUser();
 
+
+                if (cursor.getCount() == 0) {
+                    intentFlag = 1;
+                    return;
+                }
+                cursor.moveToFirst();
+
+                String userid = cursor.getString(cursor.getColumnIndex(DatabaseFiled.User.USERID));
+                String token = cursor.getString(cursor.getColumnIndex(DatabaseFiled.User.TOKEN));
+                String exp = cursor.getString(cursor.getColumnIndex(DatabaseFiled.User.TIMESTAMP));
+                hashMap.put(HashMapField.USERID, userid);
+                hashMap.put(HashMapField.TOKEN, token);
+                hashMap.put(HashMapField.EXP, exp);
+                Boolean bool = JWTUtils.inspectToken(hashMap, Welcome.this);
+                if (bool) {
+                    intentFlag = 2;
+                } else {
+                    intentFlag = 1;
+                }
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                Intent intent = new Intent(Welcome.this, MainActivity.class);
-                startActivity(intent);
+                if (intentFlag == 2) {
+                    Intent intent = new Intent(Welcome.this, MainActivity.class);
+                    intent.putExtra(IntentFields.TOKEN, hashMap.get(HashMapField.TOKEN).toString());
+                    intent.putExtra(IntentFields.USERID, hashMap.get(HashMapField.USERID).toString());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(Welcome.this, LoginActivity.class);
+                    startActivity(intent);
+                }
             }
 
             @Override
