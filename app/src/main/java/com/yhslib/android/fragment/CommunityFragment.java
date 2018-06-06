@@ -48,7 +48,6 @@ import okhttp3.Call;
 public class CommunityFragment extends BaseFragment implements SimpleListView.OnLoadListener, AdapterView.OnItemClickListener {
     private String TAG = "CommunityFragment";
 
-    private View view;
     private View layoutSearch, layoutPopularTags;
     //    private ListView mContentRlv;
     private SearchView searchView;
@@ -67,6 +66,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     EditText searchText;
     private boolean isSearchTag = false;
     int lastPage = 0;
+    static boolean flag = false;
 
     public static CommunityFragment newInstance() {
         Bundle args = new Bundle();
@@ -75,25 +75,20 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         return fragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_community, container, false);
-        return view;
+    protected int getLayoutId() {
+        return R.layout.fragment_community;
     }
 
-
-    @Override
-    protected void setListener() {
-        setSearchListener();
-        setListViewListener();
+    static class RefreshListItem {
+        String tittle, name, date, tag, image;
     }
+
 
     @Override
     protected void findView() {
         layoutPopularTags = view.findViewById(R.id.tags);
         layoutSearch = view.findViewById(R.id.search_view);
-//        listViewArticle = view.findViewById(R.id.content_rlv);
         searchView = layoutSearch.findViewById(R.id.search);
         layoutSwipe = view.findViewById(R.id.swipe);
         textViewPopularArticles = view.findViewById(R.id.popular_articles);
@@ -121,7 +116,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     }
 
     @Override
-    protected void init() {
+    protected void initView() {
         searchView.clearFocus();
         layoutPopularTags.setVisibility(View.GONE);
         tags = new TextView[]{tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8};
@@ -133,8 +128,19 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         mContentRlv.setOnLoadListener(this);
         mContentRlv.setOnItemClickListener(this);
         onLoad(true);
-//        footer.setVisibility(View.GONE);
     }
+
+    @Override
+    protected void setListener() {
+        setSearchListener();
+        setListViewListener();
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
 
 
     private void setSearchListener() {
@@ -192,7 +198,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                         mContentRlv.setAdapter(mAdapter);
 //                        onLoad(true);
                         getData(mPage, mTag);
-                        isSearchTag=false;
+                        isSearchTag = false;
 //                        refreshDate(id);
                         break;
                     }
@@ -294,6 +300,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     }
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
+
     private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {//使用OkHTTP获取服务器数据
 
         String url = URL.Community.getPosts();
@@ -353,7 +360,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                 });
     }
 
-    static boolean flag = false;
     private void getData(final int page, final String tag) {
         flag = false;
 //        footer.setVisibility(View.VISIBLE);
@@ -361,12 +367,12 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
             @SuppressLint("ResourceType")
             @Override
             public void run() {
-                cycleRun(page,tag);
+                cycleRun(page, tag);
             }
         }, 100);
     }
 
-    private void cycleRun(int page, String tag){//递归获取数据
+    private void cycleRun(int page, String tag) {//递归获取数据
         List<RefreshListItem> data = new LinkedList<>();
         RefreshListItem item;
         ArrayList<Map<String, Object>> data1 = getCommunityPosts(tag, page);
@@ -406,13 +412,8 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
 //        if (isSearchTag)
 //            getData(mPage, mTag);
 //        else
-            getData(mPage, null);
+        getData(mPage, null);
     }
-
-    static class RefreshListItem {
-        String tittle, name, date, tag, image;
-    }
-
 
     static class RefreshListAdapter extends BaseAdapter<RefreshListItem> {
 
