@@ -31,7 +31,7 @@ public class UserDao {
         }
     }
 
-    public boolean insertUser(String userid, String username, String token, String timestamp, String time) {
+    public boolean insertUser(String userid, String username, String token, String time, String timestamp) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(DatabaseFiled.User.USERID, userid);
@@ -42,11 +42,12 @@ public class UserDao {
         return db.insert(DatabaseFiled.Tables.USER, null, cv) != -1;
     }
 
-    public boolean updateUser(String userid, String token, String timestamp) {
+    public boolean updateUser(String userid, String token, String time, String timestamp) {
         try {
             SQLiteDatabase db = databaseHelper.getWritableDatabase();
             ContentValues cv = new ContentValues();
             cv.put(DatabaseFiled.User.TOKEN, token);
+            cv.put(DatabaseFiled.User.TIME, time);
             cv.put(DatabaseFiled.User.TIMESTAMP, timestamp);
             int x = db.update(DatabaseFiled.Tables.USER, cv, "userid=?", new String[]{userid});
             return x > 0;
