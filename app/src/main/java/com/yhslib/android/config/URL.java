@@ -105,6 +105,10 @@ public class URL {
         public static String getNotification() {
             return host + "/notifications/";
         }
+
+        public static String deleteNotification(String id) {
+            return host + "/notifications/" + id + "/";
+        }
     }
 
     public static class Auth {
@@ -114,8 +118,6 @@ public class URL {
             return host + "/rest-auth/jwt-refresh/";
         }
 
-        public static String deleteNotification(String id){
-            return host+"/notifications/"+id+"/";
-        }
+
     }
 }

@@ -7,6 +7,10 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.yhslib.android.config.HashMapField;
+
+import java.util.HashMap;
+
 public class UserDao {
     private static final String TAG = "UserDao";
 
@@ -57,13 +61,26 @@ public class UserDao {
         }
     }
 
-    public boolean searchUser(String userid) {
+    public boolean searchUserById(String userid) {
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
         Cursor cursor = db.query(DatabaseFiled.Tables.USER, null, "userid=?", new String[]{userid}, null, null, null);
         if (cursor.getCount() == 0) {
             return false;
         }
         return true;
+    }
+
+    public Cursor selectUser() {
+        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = db.query(DatabaseFiled.Tables.USER, null, null, null, null, null, null);
+            cursor.moveToFirst();
+            return cursor;
+        } catch (SQLException e) {
+            Log.d(TAG, e.getMessage());
+            return cursor;
+        }
     }
 
     public Boolean deleteAllUser() {
