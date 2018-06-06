@@ -11,6 +11,7 @@ import okhttp3.Call;
 
 public class MugshotUrl {
     public static final String TAG = "MugshotUrl";
+
     public static void load(String url, final ImageView imageView) {
         final String TAG = "";
         OkHttpUtils

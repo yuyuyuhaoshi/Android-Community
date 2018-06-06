@@ -5,22 +5,20 @@ import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.AbsListView;
 
-/**
- * Created by jerryzheng on 2018/5/24.
- */
-
 public class SlideBar {
-    private int lastVisibleItemPosition=0;
-    private boolean topBaIsDown=true,topBarIsUp=true,deepBaIsDown=true,deepBarIsUp=true;
+    private int lastVisibleItemPosition = 0;
+    private boolean topBaIsDown = true, topBarIsUp = true, deepBaIsDown = true, deepBarIsUp = true;
     private View topBar;
     private BottomNavigationView deepBar;
     private SimpleListView listView;
-    public SlideBar(View topBar,BottomNavigationView deepBar, SimpleListView listView){
-        this.topBar=topBar;
-        this.listView=listView;
-        this.deepBar=deepBar;
+
+    public SlideBar(View topBar, BottomNavigationView deepBar, SimpleListView listView) {
+        this.topBar = topBar;
+        this.listView = listView;
+        this.deepBar = deepBar;
     }
-    public void SetSlideBar(){
+
+    public void SetSlideBar() {
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -30,10 +28,10 @@ public class SlideBar {
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
                 if (firstVisibleItem > lastVisibleItemPosition) {
-                    if (topBar!=null&&topBaIsDown){
-                        slidBar(0,-170,topBar);
-                        topBaIsDown=false;
-                        topBarIsUp=true;
+                    if (topBar != null && topBaIsDown) {
+                        slidBar(0, -170, topBar);
+                        topBaIsDown = false;
+                        topBarIsUp = true;
                     }
 //                    if (deepBar!=null&&deepBarIsUp){
 //                        slidBar(0,170,deepBar);
@@ -41,10 +39,10 @@ public class SlideBar {
 //                        deepBarIsUp=false;
 //                    }
                 } else if (firstVisibleItem < lastVisibleItemPosition) {
-                    if (topBar!=null&&topBarIsUp){
-                        slidBar(-170,0,topBar);
-                        topBarIsUp=false;
-                        topBaIsDown=true;
+                    if (topBar != null && topBarIsUp) {
+                        slidBar(-170, 0, topBar);
+                        topBarIsUp = false;
+                        topBaIsDown = true;
                     }
 //                    if (deepBar!=null&&deepBaIsDown){
 //                        slidBar(170,0,deepBar);
@@ -59,10 +57,10 @@ public class SlideBar {
         });
     }
 
-    public void slidBar(float from,float to,View view) {
+    public void slidBar(float from, float to, View view) {
 
         TranslateAnimation translateAnimation;
-        translateAnimation = new TranslateAnimation(0.0f, 0.0f, from ,to);
+        translateAnimation = new TranslateAnimation(0.0f, 0.0f, from, to);
         translateAnimation.setFillAfter(true);
         translateAnimation.setDuration(300);
         view.startAnimation(translateAnimation);

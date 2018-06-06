@@ -30,6 +30,7 @@ import com.yhslib.android.R;
  *
  * @version V1.0
  */
+
 public class SimpleListView extends SwipeRefreshLayout {
 
     private ListView mListView;

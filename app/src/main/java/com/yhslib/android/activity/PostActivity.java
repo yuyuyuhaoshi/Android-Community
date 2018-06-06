@@ -60,6 +60,7 @@ public class PostActivity extends BaseActivity {
     protected int getLayoutId() {
         return R.layout.activity_post_detail;
     }
+
     @Override
     protected void findView() {
         postContentTxt = findViewById(R.id.post_content);
@@ -85,6 +86,9 @@ public class PostActivity extends BaseActivity {
         fetchPost();
     }
 
+    /**
+     * [获取文章详情]
+     */
     private void fetchPost() {
         String url = URL.Post.getPostDetail(postID);
         OkHttpUtils
@@ -114,6 +118,9 @@ public class PostActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * [解析文章所属的评论信息]
+     */
     private void fetchReply() {
         String url = URL.Post.getPostReply(postID);
         OkHttpUtils
@@ -135,11 +142,22 @@ public class PostActivity extends BaseActivity {
                 });
     }
 
+    /**
+     * [加载头像]
+     *
+     * @param url
+     */
     private void loadMugshot(String url) {
         // url = URL.host + url;
         MugshotUrl.load(url, postAuthorMugshotImage);
     }
 
+    /**
+     * [解析文章JSON数据]
+     *
+     * @param response
+     * @return hashMap
+     */
     private HashMap<String, Object> formatPostJSON(String response) {
         HashMap<String, Object> hashMap = new HashMap<>();
         try {
@@ -162,6 +180,12 @@ public class PostActivity extends BaseActivity {
         return hashMap;
     }
 
+    /**
+     * [解析评论JSON数据]
+     *
+     * @param response
+     * @return ArrayList
+     */
     private ArrayList<HashMap<String, Object>> formatReplyJSON(String response) {
         ArrayList<HashMap<String, Object>> resultList = new ArrayList<>();
         try {
@@ -172,11 +196,11 @@ public class PostActivity extends BaseActivity {
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("comment", replyObject.getString("comment"));
             }
-            } catch(JSONException e){
-                e.printStackTrace();
-            }
-            return resultList;
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        return resultList;
+    }
 
     @Override
     public void onClick(View v) {

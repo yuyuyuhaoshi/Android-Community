@@ -102,8 +102,16 @@ public class URL {
     }
 
     public static class Notification {
-        public static String getNotification(){
-            return host+"/notifications/";
+        public static String getNotification() {
+            return host + "/notifications/";
+        }
+    }
+
+    public static class Auth {
+        public static String refreshJWTToken() {
+            // method: post
+            // return http://api.dj-china.org/rest-auth/jwt-refresh/;
+            return host + "/rest-auth/jwt-refresh/";
         }
 
         public static String deleteNotification(String id){

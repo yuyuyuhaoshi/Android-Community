@@ -45,7 +45,7 @@ public class MineFragment extends Fragment {
     private TextView myCheckinTxt;
     private TextView checkinTxt;
 
-    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIwQGV4YW1wbGUuY29tIiwib3JpZ19pYXQiOjE1Mjc3NTk2MDIsInVzZXJuYW1lIjoidXNlcjAiLCJ1c2VyX2lkIjoxLCJleHAiOjE1Mjc4NDYwMDJ9.XyK65PEqe8a01pFbkTsu9BD3PaaHBC5-7VBEIctraIk";
+    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmlnX2lhdCI6MTUyODIyODE1OSwidXNlcm5hbWUiOiJ1c2VyMCIsInVzZXJfaWQiOjEsImV4cCI6MTUyODMxNDU1OSwiZW1haWwiOiJ1c2VyMEBleGFtcGxlLmNvbSJ9.o9akAdWDX7NZOIX0lBh1IwexZnEKfG3RRKwINpVzMYk";
     private final String USERID = "1";
     private String nickname = "";
     private String mugshot_url = "";

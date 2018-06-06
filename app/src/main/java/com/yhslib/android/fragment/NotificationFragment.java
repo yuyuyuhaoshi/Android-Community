@@ -361,7 +361,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             public void run() {
                 cycleRun(page, verb);
             }
-        }, 500);
+        }, 5000000);
     }
 
     private void cycleRun(int page, String verb) {
