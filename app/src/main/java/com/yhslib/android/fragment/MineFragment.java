@@ -16,7 +16,9 @@ import android.widget.Toast;
 import com.yhslib.android.R;
 import com.yhslib.android.activity.MyInfoActivity;
 import com.yhslib.android.activity.MyPostsActivity;
+import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
+import com.yhslib.android.util.BaseFragment;
 import com.yhslib.android.util.MugshotUrl;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -30,9 +32,8 @@ import java.util.HashMap;
 
 import okhttp3.Call;
 
-public class MineFragment extends Fragment {
+public class MineFragment extends BaseFragment {
     private String TAG = "MineFragment";
-    private View view;
 
     private ImageView myViaImage;
     private TextView nicknameTxt;
@@ -58,13 +59,6 @@ public class MineFragment extends Fragment {
         return fragment;
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_mine, container, false);
-        return view;
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -74,7 +68,23 @@ public class MineFragment extends Fragment {
         initView();
     }
 
-    private void findView() {
+//    @Override
+//    protected void getDataFromIntent() {
+//        Bundle bundle = getArguments();
+//        if (bundle != null) {
+//            String userID = bundle.getString(IntentFields.USERID);
+//            String token = bundle.getString(IntentFields.TOKEN);
+//            Log.d(TAG, userID + "  " + token);
+//        }
+//    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_mine;
+    }
+
+    @Override
+    protected void findView() {
         myViaImage = view.findViewById(R.id.mine_via);
         nicknameTxt = view.findViewById(R.id.mine_nickname);
         //numberOfMemberTxt = view.findViewById(R.id.numberOfMember);
@@ -87,11 +97,13 @@ public class MineFragment extends Fragment {
         checkinTxt = view.findViewById(R.id.checkin);
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         fetchPersonalInformation();
     }
 
-    private void setListener() {
+    @Override
+    protected void setListener() {
         myPostsTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +138,11 @@ public class MineFragment extends Fragment {
                 handleCheckin();
             }
         });
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     private void handleCheckin() {

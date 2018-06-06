@@ -13,16 +13,14 @@ public class MugshotUrl {
     public static final String TAG = "MugshotUrl";
 
     public static void load(String url, final ImageView imageView) {
-        final String TAG = "";
         OkHttpUtils
-                .get()//
-                .url(url)//
-                .build()//
+                .get()
+                .url(url)
+                .build()
                 .execute(new BitmapCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        String mTAG = TAG;
-                        Log.d(mTAG, e.getMessage());
+                        Log.d(TAG, e.getMessage());
                     }
 
                     @Override

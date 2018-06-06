@@ -52,7 +52,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     private final char FLING_LEFT = 1;
     private final char FLING_RIGHT = 2;
     private char flingState = FLING_CLICK;
-    private View view;
+
     private SimpleAdapter adapter;
     private SimpleListView listView;
     private TextView mComment;
@@ -93,11 +93,9 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         return fragment;
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_notification, container, false);
-        return view;
+    protected int getLayoutId() {
+        return R.layout.fragment_notification;
     }
 
 
@@ -105,6 +103,11 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     protected void setListener() {
         barListener();
         setListViewListener();
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     @Override
@@ -128,7 +131,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     }
 
     @Override
-    protected void init() {
+    protected void initView() {
         setComment();
         mAdapter = new NotificationRefreshListAdapter(getActivity(), COMMENT);
         listView.setAdapter(mAdapter);
@@ -141,8 +144,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
 
     private void setListViewListener() {
         assert ((MainActivity) getActivity()) != null;
-//        SlideBar slideBar= new SlideBar(bar,((BottomNavigationView)getActivity().findViewById(R.id.navigation)),listView);
-//        slideBar.SetSlideBar();
+        // SlideBar slideBar= new SlideBar(bar,((BottomNavigationView)getActivity().findViewById(R.id.navigation)),listView);
+        // slideBar.SetSlideBar();
     }
 
     private void barListener() {
@@ -294,7 +297,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 replay_article = "苟利国家生死以，岂因祸福避趋之,苟利国家生死以，岂因祸福避趋之";
                 map.put("replay_article", replay_article);
                 map.put("unread", false);
-                map.put("id","999999");
+                map.put("id", "999999");
                 data.add(map);
             }
             for (int i = 0; i < notificationArray.length(); i++) {
@@ -311,7 +314,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 JSONObject jsonPost = jsonNotification.getJSONObject("post");
                 map.put("replay_article", jsonPost.getString("post_title"));
                 map.put("unread", jsonNotification.getBoolean("unread"));
-                map.put("id",jsonNotification.getString("id"));
+                map.put("id", jsonNotification.getString("id"));
                 data.add(map);
             }
         } catch (JSONException e) {
@@ -377,7 +380,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             item.replay_text = String.valueOf(map.get("replay_text"));
             item.replay_article = String.valueOf(map.get("replay_article"));
             item.isUnread = (boolean) map.get("unread");
-            item.id= String.valueOf(map.get("id"));
+            item.id = String.valueOf(map.get("id"));
             flag = true;
             mIndex++;
             data.add(item);
@@ -455,12 +458,12 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        if (foreground!=null){
+        if (foreground != null) {
             closeMenu(foreground);//如果已经有菜单被展开那么关闭它
         }
         Toast.makeText(getContext(), "长按了" + position + " ", Toast.LENGTH_SHORT).show();
         int fetch = 0;
-        final ListView mListView=listView.getmListView();
+        final ListView mListView = listView.getmListView();
         if (mListView.getLastVisiblePosition() >= mListView.getChildCount())//get到的child只能是屏幕显示的，如第100个child，在屏幕里面当前是第2个，那么应当是第二个child而非100
         {
             fetch = mListView.getChildCount() - 1 - (mListView.getLastVisiblePosition() - position);
@@ -468,7 +471,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             fetch = position;
         }
         final View item;
-        item=mListView.getChildAt(fetch);
+        item = mListView.getChildAt(fetch);
         foreground = item.findViewById(R.id.foreground);
 //        foreground.setClickable(false);
         Animation open = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_open_menu);
@@ -478,10 +481,10 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         animationSet.setFillAfter(true);
         foreground.startAnimation(animationSet);
 
-        final TextView read,delete,notificationId;
-        notificationId=item.findViewById(R.id.id);
-        read=item.findViewById(R.id.read_notification);
-        delete=item.findViewById(R.id.delete_notification);
+        final TextView read, delete, notificationId;
+        notificationId = item.findViewById(R.id.id);
+        read = item.findViewById(R.id.read_notification);
+        delete = item.findViewById(R.id.delete_notification);
         read.setClickable(true);
         delete.setClickable(true);
         final int finalFetch = fetch;
@@ -491,7 +494,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 closeMenu(foreground);
                 read.setClickable(false);
                 delete.setClickable(false);
-                foreground=null;
+                foreground = null;
             }
         });
         delete.setOnClickListener(new View.OnClickListener() {
@@ -501,42 +504,43 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 read.setClickable(false);
                 delete.setClickable(false);
                 deleteNotification(notificationId.getText().toString());
-                View[] views=new View[]{mListView.getChildAt(finalFetch+1),mListView.getChildAt(finalFetch+2),mListView.getChildAt(finalFetch+3)};
-                NewThread newThread = new NewThread(item,views);
+                View[] views = new View[]{mListView.getChildAt(finalFetch + 1), mListView.getChildAt(finalFetch + 2), mListView.getChildAt(finalFetch + 3)};
+                NewThread newThread = new NewThread(item, views);
                 newThread.start();
                 listView.getmOnLoadListener().onLoad(true);
-                foreground=null;
+                foreground = null;
             }
         });
         return true;
     }
 
-    private void closeMenu(View foreground){
+    private void closeMenu(View foreground) {
         Animation close = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_close_menu);
         AnimationSet animationSet;
         animationSet = new AnimationSet(true);
         animationSet.addAnimation(close);
         animationSet.setFillAfter(true);
-        if (foreground!=null)
+        if (foreground != null)
             foreground.startAnimation(animationSet);
     }
-    private void deleteAnim(View view){
+
+    private void deleteAnim(View view) {
         Animation close = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_delete);
         AnimationSet animationSet;
         animationSet = new AnimationSet(true);
         animationSet.addAnimation(close);
-        if (view!=null)
+        if (view != null)
             view.startAnimation(animationSet);
     }
 
-    private void deleteAnimUp(View view){
+    private void deleteAnimUp(View view) {
         Animation up = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_delete_up);
         Animation down = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_delete_down);
         AnimationSet animationSet;
         animationSet = new AnimationSet(true);
         animationSet.addAnimation(up);
         animationSet.addAnimation(down);
-        if (view!=null)
+        if (view != null)
             view.startAnimation(animationSet);
     }
 
@@ -638,23 +642,24 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(getContext(),"删除成功"+response+":"+id,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "删除成功" + response + ":" + id, Toast.LENGTH_SHORT).show();
                         onLoad(true);
                     }
                 });
     }
 
-    class NewThread extends Thread{
+    class NewThread extends Thread {
         View view;
         View[] views;
-        public NewThread(View view,View[] views){
-            this.view=view;
-            this.views=views;
+
+        public NewThread(View view, View[] views) {
+            this.view = view;
+            this.views = views;
         }
+
         public void run() {
             deleteAnim(view);
-            for (View v:views
-                 ) {
+            for (View v : views) {
                 deleteAnimUp(v);
             }
         }
