@@ -113,5 +113,9 @@ public class URL {
             // return http://api.dj-china.org/rest-auth/jwt-refresh/;
             return host + "/rest-auth/jwt-refresh/";
         }
+
+        public static String deleteNotification(String id){
+            return host+"/notifications/"+id+"/";
+        }
     }
 }

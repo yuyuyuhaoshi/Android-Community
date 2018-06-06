@@ -1,16 +1,24 @@
 package com.yhslib.android.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yhslib.android.R;
 
@@ -24,14 +32,22 @@ import com.yhslib.android.R;
  */
 
 public class SimpleListView extends SwipeRefreshLayout {
+
     private ListView mListView;
     private LoadMoreStatus mLoadMoreStatus = LoadMoreStatus.CLICK_TO_LOAD;
+
     private OnLoadListener mOnLoadListener;
     private View mLoadMoreView;
     private AbsListView.OnScrollListener mOnScrollListener;
     private View mEmptyView;
     private ListAdapter mAdapter;
-
+    private View foreground;
+    public ListView getmListView() {
+        return mListView;
+    }
+    public OnLoadListener getmOnLoadListener() {
+        return mOnLoadListener;
+    }
     /**
      * 加载更多状态
      */
@@ -72,9 +88,32 @@ public class SimpleListView extends SwipeRefreshLayout {
         init(context, attrs);
     }
 
-    private void init(Context context, AttributeSet attrs) {
+    @SuppressLint("ClickableViewAccessibility")
+    private void init(final Context context, AttributeSet attrs) {
         mListView = new ListView(context, attrs);
         addView(mListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        mListView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+
+//                Toast.makeText(getContext(), "长按了" + 2323232 + " ", Toast.LENGTH_SHORT).show();
+//                foreground=v.findViewById(R.id.foreground);
+//                Animation open = AnimationUtils.loadAnimation(context, R.anim.welcome_alpha);
+//                AnimationSet animationSet;
+//                animationSet = new AnimationSet(true);
+//                animationSet.addAnimation(open);
+//                animationSet.setFillAfter(true);
+//                foreground.startAnimation(animationSet);
+            }
+        });
+
+//        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+//                Toast.makeText(getContext(), "长按了" + 2323232 + " ", Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//        });
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private boolean mIsEnd = false;
 
@@ -123,7 +162,6 @@ public class SimpleListView extends SwipeRefreshLayout {
                 }
             }
         });
-
     }
 //
 //    public void addHeaderView(View view) {
@@ -148,6 +186,10 @@ public class SimpleListView extends SwipeRefreshLayout {
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
         mListView.setOnItemClickListener(listener);
+    }
+
+    public void setOnItemLongClickListener(AdapterView.OnItemLongClickListener listener) {
+        mListView.setOnItemLongClickListener(listener);
     }
 
     public void setEmptyView(View emptyView) {
@@ -253,4 +295,6 @@ public class SimpleListView extends SwipeRefreshLayout {
     public void setFooter(View view) {
         this.mLoadMoreView = view;
     }
+
+
 }

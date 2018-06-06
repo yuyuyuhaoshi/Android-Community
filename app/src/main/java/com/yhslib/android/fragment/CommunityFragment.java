@@ -107,7 +107,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         tag6 = layoutPopularTags.findViewById(R.id.tag6);
         tag7 = layoutPopularTags.findViewById(R.id.tag7);
         tag8 = layoutPopularTags.findViewById(R.id.tag8);
-
         tag1Id = layoutPopularTags.findViewById(R.id.tag1_id);
         tag2Id = layoutPopularTags.findViewById(R.id.tag2_id);
         tag3Id = layoutPopularTags.findViewById(R.id.tag3_id);

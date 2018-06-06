@@ -8,14 +8,26 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/replay_avatar"
+        <RelativeLayout
+            android:id="@+id/re"
             android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/jerry_zheng"/>
+            android:layout_height="50dp">
+            <ImageView
+                android:id="@+id/replay_avatar"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/jerry_zheng"/>
+            <ImageView
+                android:id="@+id/red_dot"
+                android:layout_alignParentEnd="true"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:background="@drawable/ic_red_dot"/>
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_marginStart="10dp"
-            android:layout_toEndOf="@id/replay_avatar"
+            android:layout_toEndOf="@id/re"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
