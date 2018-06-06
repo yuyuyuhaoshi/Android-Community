@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            // Log.d(TAG, item.getItemId() + "");
             switch (item.getItemId()) {
                 case R.id.navigation_community:
                     viewPager.setCurrentItem(COMMUNITY_FRAGMENT);
