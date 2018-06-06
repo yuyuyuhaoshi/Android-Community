@@ -3,6 +3,7 @@ package com.yhslib.android.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -10,19 +11,42 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
+import com.yhslib.android.util.BaseActivity;
 
 
-public class Welcome extends AppCompatActivity {
+public class Welcome extends BaseActivity {
     TextView textView;
     AnimationSet animationSet;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void getDataFromIntent() {
+
+    }
+
+    @Override
+    protected int getLayoutId() {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.welcome);
+        return R.layout.welcome;
+    }
+
+    @Override
+    protected void findView() {
         textView = findViewById(R.id.text_welcome);
+    }
+
+    @Override
+    protected void initView() {
         animation();
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     private void animation() {
@@ -52,5 +76,10 @@ public class Welcome extends AppCompatActivity {
             }
         });
         textView.startAnimation(animationSet);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
