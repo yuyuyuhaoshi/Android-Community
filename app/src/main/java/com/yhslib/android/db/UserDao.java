@@ -65,4 +65,15 @@ public class UserDao {
         }
         return true;
     }
+
+    public Boolean deleteAllUser() {
+        try {
+            SQLiteDatabase db = databaseHelper.getWritableDatabase();
+            int x = db.delete(DatabaseFiled.Tables.USER, null, null);
+            return x > 0;
+        } catch (SQLException e) {
+            Log.d(TAG, e.getMessage());
+            return false;
+        }
+    }
 }

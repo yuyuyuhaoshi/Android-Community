@@ -109,7 +109,6 @@ public class LoginFragment extends Fragment {
                 .post().url(URL.User.login())
                 .addParams(bool ? "username" : "email", name)
                 .addParams("password", password)
-                .addParams("token", token)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -134,6 +133,8 @@ public class LoginFragment extends Fragment {
                         if (dao.searchUser(userid)) {
                             dao.updateUser(userid, token, time, exp);
                         } else {
+                            // 保证数据库只有一条用户记录
+                            dao.deleteAllUser();
                             dao.insertUser(userid, username, token, time, exp);
                         }
 
