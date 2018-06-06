@@ -105,5 +105,9 @@ public class URL {
         public static String getNotification(){
             return host+"/notifications/";
         }
+
+        public static String deleteNotification(String id){
+            return host+"/notifications/"+id+"/";
+        }
     }
 }

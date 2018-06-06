@@ -1,6 +1,7 @@
 package com.yhslib.android.util;
 
 import android.app.Activity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -33,8 +34,14 @@ public class NotificationRefreshListAdapter extends BaseAdapter<NotificationFrag
 
     @Override
     protected void handleItem(int itemViewType, int position, NotificationFragment.RefreshListItem item, ViewHolder holder, boolean reused) {
+        if (item.isUnread)
+            holder.get(R.id.red_dot, ImageView.class).setVisibility(View.VISIBLE);
+        else
+            holder.get(R.id.red_dot, ImageView.class).setVisibility(View.INVISIBLE);
+
         if (type.equals(NotificationFragment.COMMENT)) {
             //        String[] from = {"replay_avatar", "replay_name", "replay_date", "replay_text", "text_my_comment"};
+            holder.get(R.id.id, TextView.class).setText(item.id);
             holder.get(R.id.replay_avatar,  ImageView.class).setImageResource(Integer.parseInt(item.replay_avatar));
             holder.get(R.id.replay_name, TextView.class).setText(item.replay_name);
             holder.get(R.id.replay_date, TextView.class).setText(item.replay_date);
