@@ -1,5 +1,7 @@
 package com.yhslib.android.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
@@ -8,11 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.yhslib.android.R;
+import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseActivity;
 import com.yhslib.android.util.CustomListView;
@@ -42,12 +46,17 @@ public class EmailActivity extends BaseActivity {
     private Boolean RefreshFlag = false; // 防止多次刷新标记
     private ActionBar actionBar;
     private ImageView returnArrowImage;
+    private ImageView addImage;
+
+    private AlertDialog.Builder addEmailDialogBuilder;
+    private AlertDialog addEmailDialog;
 
     @Override
     protected void getDataFromIntent() {
         Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
-        token = intent.getStringExtra("token");
+        userID = intent.getStringExtra(IntentFields.USERID);
+        token = intent.getStringExtra(IntentFields.TOKEN);
+        Log.d(TAG, userID + " " + token);
     }
 
     @Override
@@ -63,18 +72,20 @@ public class EmailActivity extends BaseActivity {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.actionbar_email);
             returnArrowImage = findViewById(R.id.return_image); // 此image findView 只能写在这
+            addImage = findViewById(R.id.add_image);
         }
     }
 
     @Override
     protected void initView() {
-
+        buildAddEmailDialog();
     }
 
     @Override
     protected void setListener() {
         setListViewPullListener();
         returnArrowImage.setOnClickListener(this);
+        addImage.setOnClickListener(this);
     }
 
     @Override
@@ -87,6 +98,9 @@ public class EmailActivity extends BaseActivity {
         switch (v.getId()) {
             case R.id.return_image:
                 EmailActivity.this.finish();
+                break;
+            case R.id.add_image:
+                addEmailDialog.show();
                 break;
         }
     }
@@ -223,6 +237,11 @@ public class EmailActivity extends BaseActivity {
         });
     }
 
+    /**
+     * [长按item点击菜单]
+     *
+     * @param item
+     */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -230,16 +249,37 @@ public class EmailActivity extends BaseActivity {
         Log.d(TAG, id + "");
         switch (item.getItemId()) {
             case R.id.set_primary:
-                set_primary_email(id + "");
+                setPrimaryEmail(id + "");
                 break;
             case R.id.verify:
-                verify_email(id + "");
+                verifyEmail(id + "");
                 break;
             case R.id.delete:
-                delete_email(id + "");
+                deleteEmail(id + "");
                 break;
         }
         return super.onContextItemSelected(item);
+    }
+
+    private void buildAddEmailDialog() {
+        addEmailDialogBuilder = new AlertDialog.Builder(EmailActivity.this);
+        addEmailDialogBuilder.setTitle("添加邮箱");
+        final EditText editText = new EditText(EmailActivity.this);
+        addEmailDialogBuilder.setView(editText);
+        addEmailDialogBuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                addEmail(editText.getText().toString());
+            }
+        });
+        addEmailDialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        addEmailDialogBuilder.setCancelable(true);
+        addEmailDialog = addEmailDialogBuilder.create();
+        addEmailDialog.setCanceledOnTouchOutside(true);
     }
 
     /**
@@ -247,7 +287,7 @@ public class EmailActivity extends BaseActivity {
      *
      * @param emailID
      */
-    private void set_primary_email(String emailID) {
+    private void setPrimaryEmail(String emailID) {
         String url = URL.User.setPrimaryEmail(emailID);
         OkHttpUtils
                 .post()
@@ -277,7 +317,7 @@ public class EmailActivity extends BaseActivity {
      *
      * @param emailID
      */
-    private void delete_email(String emailID) {
+    private void deleteEmail(String emailID) {
         String url = URL.User.deleteEmail(emailID);
         OkHttpUtils
                 .delete()
@@ -306,7 +346,7 @@ public class EmailActivity extends BaseActivity {
      *
      * @param emailID
      */
-    private void verify_email(String emailID) {
+    private void verifyEmail(String emailID) {
         String url = URL.User.deleteEmail(emailID);
         OkHttpUtils
                 .get()
@@ -327,6 +367,39 @@ public class EmailActivity extends BaseActivity {
                         hm = new ArrayList<>();
                         fetchEmail();
                         Toast.makeText(EmailActivity.this, "邮箱验证成功!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    /**
+     * [添加邮箱]
+     *
+     * @param email
+     */
+    private void addEmail(String email) {
+        String url = URL.User.addEmail();
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .addParams("email", email)
+                .build()
+                .connTimeOut(10000)
+                .readTimeOut(10000)
+                .writeTimeOut(10000)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, e.getMessage());
+                        Toast.makeText(EmailActivity.this, "邮箱添加失败，请稍后再试!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        currentPage = 1;
+                        hm = new ArrayList<>();
+                        fetchEmail();
+                        Toast.makeText(EmailActivity.this, "邮箱添加成功!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

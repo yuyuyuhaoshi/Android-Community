@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 
 import com.yhslib.android.R;
+import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseActivity;
 import com.yhslib.android.util.CustomListView;
@@ -49,8 +50,8 @@ public class MyPostsActivity extends BaseActivity {
     @Override
     protected void getDataFromIntent() {
         Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
-        token = intent.getStringExtra("token");
+        userID = intent.getStringExtra(IntentFields.USERID);
+        token = intent.getStringExtra(IntentFields.TOKEN);
     }
 
     @Override
@@ -221,9 +222,9 @@ public class MyPostsActivity extends BaseActivity {
     private void showPostDetail(Long id) {
         Log.d(TAG, id + "");
         Intent intent = new Intent(MyPostsActivity.this, PostActivity.class);
-        intent.putExtra("userID", userID);
-        intent.putExtra("token", token);
-        intent.putExtra("postID", id + "");
+        intent.putExtra(IntentFields.USERID, userID);
+        intent.putExtra(IntentFields.TOKEN, token);
+        intent.putExtra(IntentFields.POSTID, id + "");
         startActivity(intent);
     }
 
