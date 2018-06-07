@@ -23,7 +23,9 @@
         android:textSize="@dimen/font_size_large_high" />
 
     <ImageView
+        android:id="@+id/add_image"
         android:layout_width="@dimen/offset_30dp"
-        android:layout_height="@dimen/offset_30dp" />
+        android:layout_height="@dimen/offset_30dp"
+        android:src="@drawable/add" />
 
 </LinearLayout>

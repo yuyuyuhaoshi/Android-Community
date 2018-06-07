@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.yhslib.android.R;
+import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseActivity;
 import com.yhslib.android.util.MugshotUrl;
@@ -55,10 +56,10 @@ public class MyInfoActivity extends BaseActivity {
     @Override
     protected void getDataFromIntent() {
         Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
-        token = intent.getStringExtra("token");
-        nickname = intent.getStringExtra("nickname");
-        mugshot_url = intent.getStringExtra("mugshot_url");
+        userID = intent.getStringExtra(IntentFields.USERID);
+        token = intent.getStringExtra(IntentFields.TOKEN);
+        nickname = intent.getStringExtra(IntentFields.NICKNAME);
+        mugshot_url = intent.getStringExtra(IntentFields.MUGSHOTURL);
         Log.d(TAG, userID);
     }
 
@@ -114,8 +115,8 @@ public class MyInfoActivity extends BaseActivity {
                 break;
             case R.id.my_info_change_email:
                 Intent intent = new Intent(MyInfoActivity.this, EmailActivity.class);
-                intent.putExtra("userID", userID);
-                intent.putExtra("token", token);
+                intent.putExtra(IntentFields.USERID, userID);
+                intent.putExtra(IntentFields.TOKEN, token);
                 startActivity(intent);
                 break;
             case R.id.return_image:

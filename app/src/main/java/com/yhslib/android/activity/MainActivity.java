@@ -165,8 +165,6 @@ public class MainActivity extends AppCompatActivity {
         public void onPageScrollStateChanged(int state) {
 
         }
-
-
     };
 
     @Override

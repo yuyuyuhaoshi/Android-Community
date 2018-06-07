@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.yhslib.android.R;
 
+import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseActivity;
 import com.yhslib.android.util.MugshotUrl;
@@ -51,9 +52,9 @@ public class PostActivity extends BaseActivity {
     @Override
     protected void getDataFromIntent() {
         Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
-        token = intent.getStringExtra("token");
-        postID = intent.getStringExtra("postID");
+        userID = intent.getStringExtra(IntentFields.USERID);
+        token = intent.getStringExtra(IntentFields.TOKEN);
+        postID = intent.getStringExtra(IntentFields.POSTID);
     }
 
     @Override

@@ -45,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         ft.commit();
         findView();
         setListener();
-
     }
 
     private void findView() {
@@ -80,8 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                 register_underline.setBackground(getResources().getDrawable((R.drawable.line)));
             }
         });
-
     }
-
 }
 

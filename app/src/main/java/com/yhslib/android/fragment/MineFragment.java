@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,21 +37,20 @@ public class MineFragment extends BaseFragment {
     private String TAG = "MineFragment";
 
     private ImageView myViaImage;
-    private TextView nicknameTxt;
     private TextView numberOfMemberTxt;
     private TextView signatureTxt;
     private TextView followingCountTxt;
     private TextView followerCountTxt;
-    private TextView myFavoriteTxt;
-    private TextView myPostsTxt;
-    private TextView myCheckinTxt;
     private TextView checkinTxt;
+    private TextView nicknameTxt;
 
     private String TOKEN;
     private String USERID;
     private String nickname = "";
     private String mugshot_url = "";
     private Boolean ClickFlag = false; // 当数据加载完才能点击
+
+    private LinearLayout myPostsLayout, myCheckinLayout, nicknameLayout;
 
     public static MineFragment newInstance(String userid, String token) {
         Bundle args = new Bundle();
@@ -63,20 +63,19 @@ public class MineFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        getDataFromBundle();
         super.onViewCreated(view, savedInstanceState);
-        getDataFromIntent();
         findView();
         setListener();
         initView();
     }
 
 
-    private void getDataFromIntent() {
+    private void getDataFromBundle() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             USERID = bundle.getString(IntentFields.USERID);
             TOKEN = bundle.getString(IntentFields.TOKEN);
-            Log.d(TAG, USERID + "  " + TOKEN);
         }
     }
 
@@ -89,13 +88,13 @@ public class MineFragment extends BaseFragment {
     protected void findView() {
         myViaImage = view.findViewById(R.id.mine_via);
         nicknameTxt = view.findViewById(R.id.mine_nickname);
+        nicknameLayout = view.findViewById(R.id.mine_info);
         //numberOfMemberTxt = view.findViewById(R.id.numberOfMember);
         //signatureTxt = view.findViewById(R.id.mine_signature);
         //followingCountTxt = view.findViewById(R.id.mine_following);
         //followerCountTxt = view.findViewById(R.id.mine_follower);
-        myFavoriteTxt = view.findViewById(R.id.mine_my_favorite);
-        myPostsTxt = view.findViewById(R.id.mine_my_posts);
-        myCheckinTxt = view.findViewById(R.id.mine_my_checkin);
+        myPostsLayout = view.findViewById(R.id.mine_my_posts);
+        myCheckinLayout = view.findViewById(R.id.mine_my_checkin);
         checkinTxt = view.findViewById(R.id.checkin);
     }
 
@@ -106,30 +105,30 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void setListener() {
-        myPostsTxt.setOnClickListener(new View.OnClickListener() {
+        myPostsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!ClickFlag) {
                     return;
                 }
                 Intent intent = new Intent(getActivity(), MyPostsActivity.class);
-                intent.putExtra("userID", USERID);
-                intent.putExtra("token", TOKEN);
+                intent.putExtra(IntentFields.USERID, USERID);
+                intent.putExtra(IntentFields.TOKEN, TOKEN);
                 startActivity(intent);
             }
         });
 
-        nicknameTxt.setOnClickListener(new View.OnClickListener() {
+        nicknameLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!ClickFlag) {
                     return;
                 }
                 Intent intent = new Intent(getActivity(), MyInfoActivity.class);
-                intent.putExtra("userID", USERID);
-                intent.putExtra("token", TOKEN);
-                intent.putExtra("mugshot_url", mugshot_url);
-                intent.putExtra("nickname", nickname);
+                intent.putExtra(IntentFields.USERID, USERID);
+                intent.putExtra(IntentFields.TOKEN, TOKEN);
+                intent.putExtra(IntentFields.MUGSHOTURL, mugshot_url);
+                intent.putExtra(IntentFields.NICKNAME, nickname);
                 startActivity(intent);
             }
         });
@@ -193,7 +192,6 @@ public class MineFragment extends BaseFragment {
                         loadMugshot(mugshot_url);
                         ClickFlag = true;
                     }
-
                 });
     }
 
