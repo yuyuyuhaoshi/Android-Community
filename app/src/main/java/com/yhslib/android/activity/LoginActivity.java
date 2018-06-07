@@ -1,8 +1,8 @@
 package com.yhslib.android.activity;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         ActionBar actionBar = getSupportActionBar();
         actionBar.hide();
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment fragment = LoginFragment.newInstance();
         ft.replace(R.id.login_title, fragment);
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         login_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getFragmentManager();
+                FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 Fragment fragment = LoginFragment.newInstance();
                 ft.replace(R.id.login_title, fragment);
@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
         register_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fm = getFragmentManager();
+                FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 Fragment fragment = RegisterFragment.newInstance();
                 ft.replace(R.id.login_title, fragment);
