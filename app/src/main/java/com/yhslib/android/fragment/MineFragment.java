@@ -46,14 +46,16 @@ public class MineFragment extends BaseFragment {
     private TextView myCheckinTxt;
     private TextView checkinTxt;
 
-    private final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmlnX2lhdCI6MTUyODIyODE1OSwidXNlcm5hbWUiOiJ1c2VyMCIsInVzZXJfaWQiOjEsImV4cCI6MTUyODMxNDU1OSwiZW1haWwiOiJ1c2VyMEBleGFtcGxlLmNvbSJ9.o9akAdWDX7NZOIX0lBh1IwexZnEKfG3RRKwINpVzMYk";
-    private final String USERID = "1";
+    private String TOKEN;
+    private String USERID;
     private String nickname = "";
     private String mugshot_url = "";
     private Boolean ClickFlag = false; // 当数据加载完才能点击
 
-    public static MineFragment newInstance() {
+    public static MineFragment newInstance(String userid, String token) {
         Bundle args = new Bundle();
+        args.putString(IntentFields.USERID, userid);
+        args.putString(IntentFields.TOKEN, token);
         MineFragment fragment = new MineFragment();
         fragment.setArguments(args);
         return fragment;
@@ -62,21 +64,21 @@ public class MineFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //Log.d(TAG, TAG);
+        getDataFromIntent();
         findView();
         setListener();
         initView();
     }
 
-//    @Override
-//    protected void getDataFromIntent() {
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            String userID = bundle.getString(IntentFields.USERID);
-//            String token = bundle.getString(IntentFields.TOKEN);
-//            Log.d(TAG, userID + "  " + token);
-//        }
-//    }
+
+    private void getDataFromIntent() {
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            USERID = bundle.getString(IntentFields.USERID);
+            TOKEN = bundle.getString(IntentFields.TOKEN);
+            Log.d(TAG, USERID + "  " + TOKEN);
+        }
+    }
 
     @Override
     protected int getLayoutId() {

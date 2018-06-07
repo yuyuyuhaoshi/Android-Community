@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ActionBar actionBar;
     private Fragment[] fragments;
+    private String userID;
+    private String token;
 
     private final int FRAGMENT_COUNT = 4;
     private final int COMMUNITY_FRAGMENT = 0;
@@ -53,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void getDataFromIntent() {
         Intent intent = getIntent();
-        String userID = intent.getStringExtra(IntentFields.USERID);
-        String token = intent.getStringExtra(IntentFields.TOKEN);
+        userID = intent.getStringExtra(IntentFields.USERID);
+        token = intent.getStringExtra(IntentFields.TOKEN);
         Log.d(TAG, userID + "  " + token);
     }
 
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         fragments[COMMUNITY_FRAGMENT] = CommunityFragment.newInstance();
         fragments[DISCOVERY_FRAGMENT] = DiscoveryFragment.newInstance();
         fragments[NOTIFICATION_FRAGMENT] = NotificationFragment.newInstance();
-        fragments[MINE_FRAGMENT] = MineFragment.newInstance();
+        fragments[MINE_FRAGMENT] = MineFragment.newInstance(userID, token);
 
         MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(myFragmentPagerAdapter);
