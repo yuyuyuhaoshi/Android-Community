@@ -18,15 +18,26 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.yhslib.android.R;
 import com.yhslib.android.config.IntentFields;
+import com.yhslib.android.config.URL;
 import com.yhslib.android.fragment.CommunityFragment;
 import com.yhslib.android.fragment.DiscoveryFragment;
 import com.yhslib.android.fragment.MineFragment;
 import com.yhslib.android.fragment.NotificationFragment;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
+
+import okhttp3.Call;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -76,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         fragments = new Fragment[FRAGMENT_COUNT];
         fragments[COMMUNITY_FRAGMENT] = CommunityFragment.newInstance();
         fragments[DISCOVERY_FRAGMENT] = DiscoveryFragment.newInstance();
-        fragments[NOTIFICATION_FRAGMENT] = NotificationFragment.newInstance();
+        fragments[NOTIFICATION_FRAGMENT] = NotificationFragment.newInstance(token);
         fragments[MINE_FRAGMENT] = MineFragment.newInstance(userID, token);
 
         MyFragmentPagerAdapter myFragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
@@ -86,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(FRAGMENT_COUNT - 1);
         disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        setNotificationButton();
     }
 
 
@@ -98,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_community:
                     viewPager.setCurrentItem(COMMUNITY_FRAGMENT);
                     actionBar.setCustomView(R.layout.actionbar_community);
+                    setNotificationButton();
                     return true;
                 case R.id.navigation_discovery:
                     viewPager.setCurrentItem(DISCOVERY_FRAGMENT);
@@ -115,6 +128,69 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
+
+    /**
+     * [设置未读通知按钮跳转]
+     */
+    private void setNotificationButton(){
+        if (actionBar != null) {
+            ImageView have_new_message;
+            have_new_message = actionBar.getCustomView().findViewById(R.id.have_new_message);
+            TextView unread;
+            ImageView redDot;
+            unread=actionBar.getCustomView().findViewById(R.id.unread_text);
+            redDot=actionBar.getCustomView().findViewById(R.id.red_dot);
+            setUnread(unread,redDot);
+            have_new_message.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    navigation.setSelectedItemId(R.id.navigation_notifications);
+                }
+            });
+        }
+    }
+    /**
+     * [设置未读通知的数量]
+     * @param unread （未读通知的文本控件）
+     * @param redDot （未读通知的小红点）
+     */
+    private void setUnread(final TextView unread, final ImageView redDot) {
+        String url = URL.Notification.getNotification();
+        OkHttpUtils
+                .get()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .addParams("unread", "true")
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, ".setUnread()" + e.getMessage());
+                        unread.setText("");
+                        redDot.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            int countComment = jsonObject.getInt("count");
+                            if (countComment > 0) {
+                                unread.setVisibility(View.VISIBLE);
+                                redDot.setVisibility(View.VISIBLE);
+                                if (countComment > 100) {
+                                    unread.setText("99+");
+                                } else
+                                    unread.setText(String.valueOf(countComment));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            unread.setVisibility(View.INVISIBLE);
+                            redDot.setVisibility(View.INVISIBLE);
+                        }
+                    }
+                });
+    }
 
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 

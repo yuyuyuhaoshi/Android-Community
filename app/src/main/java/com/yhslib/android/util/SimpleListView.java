@@ -92,28 +92,28 @@ public class SimpleListView extends SwipeRefreshLayout {
     private void init(final Context context, AttributeSet attrs) {
         mListView = new ListView(context, attrs);
         addView(mListView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        mListView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
-            @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-
-//                Toast.makeText(getContext(), "长按了" + 2323232 + " ", Toast.LENGTH_SHORT).show();
-//                foreground=v.findViewById(R.id.foreground);
-//                Animation open = AnimationUtils.loadAnimation(context, R.anim.welcome_alpha);
-//                AnimationSet animationSet;
-//                animationSet = new AnimationSet(true);
-//                animationSet.addAnimation(open);
-//                animationSet.setFillAfter(true);
-//                foreground.startAnimation(animationSet);
-            }
-        });
-
-//        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//        mListView.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 //            @Override
-//            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-//                Toast.makeText(getContext(), "长按了" + 2323232 + " ", Toast.LENGTH_SHORT).show();
-//                return false;
+//            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+//
+////                Toast.makeText(getContext(), "长按了" + 2323232 + " ", Toast.LENGTH_SHORT).show();
+////                foreground=v.findViewById(R.id.foreground);
+////                Animation open = AnimationUtils.loadAnimation(context, R.anim.welcome_alpha);
+////                AnimationSet animationSet;
+////                animationSet = new AnimationSet(true);
+////                animationSet.addAnimation(open);
+////                animationSet.setFillAfter(true);
+////                foreground.startAnimation(animationSet);
 //            }
 //        });
+//
+////        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+////            @Override
+////            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+////                Toast.makeText(getContext(), "长按了" + 2323232 + " ", Toast.LENGTH_SHORT).show();
+////                return false;
+////            }
+////        });
         mListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             private boolean mIsEnd = false;
 
