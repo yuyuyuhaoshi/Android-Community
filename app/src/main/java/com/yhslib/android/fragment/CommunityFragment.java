@@ -3,6 +3,7 @@ package com.yhslib.android.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -15,11 +16,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yhslib.android.activity.PostActivity;
 import com.yhslib.android.util.BaseAdapter;
 import com.yhslib.android.R;
 import com.yhslib.android.util.SimpleListView;
@@ -48,6 +51,7 @@ import okhttp3.Call;
 public class CommunityFragment extends BaseFragment implements SimpleListView.OnLoadListener, AdapterView.OnItemClickListener {
     private String TAG = "CommunityFragment";
 
+    private View view;
     private View layoutSearch, layoutPopularTags;
     //    private ListView mContentRlv;
     private SearchView searchView;
@@ -66,7 +70,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     EditText searchText;
     private boolean isSearchTag = false;
     int lastPage = 0;
-    static boolean flag = false;
 
     public static CommunityFragment newInstance() {
         Bundle args = new Bundle();
@@ -75,20 +78,35 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         return fragment;
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.fragment_community, container, false);
+        return view;
+    }
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_community;
     }
 
-    static class RefreshListItem {
-        String tittle, name, date, tag, image;
+
+    @Override
+    protected void setListener() {
+        setSearchListener();
+        setListViewListener();
     }
 
+    @Override
+    protected void initData() {
+
+    }
 
     @Override
     protected void findView() {
         layoutPopularTags = view.findViewById(R.id.tags);
         layoutSearch = view.findViewById(R.id.search_view);
+//        listViewArticle = view.findViewById(R.id.content_rlv);
         searchView = layoutSearch.findViewById(R.id.search);
         layoutSwipe = view.findViewById(R.id.swipe);
         textViewPopularArticles = view.findViewById(R.id.popular_articles);
@@ -117,6 +135,12 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
 
     @Override
     protected void initView() {
+        init();
+    }
+    /**
+     * [初始化Fragment]
+     */
+    protected void init() {
         searchView.clearFocus();
         layoutPopularTags.setVisibility(View.GONE);
         tags = new TextView[]{tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8};
@@ -128,21 +152,12 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         mContentRlv.setOnLoadListener(this);
         mContentRlv.setOnItemClickListener(this);
         onLoad(true);
+//        footer.setVisibility(View.GONE);
     }
 
-    @Override
-    protected void setListener() {
-        setSearchListener();
-        setListViewListener();
-    }
-
-    @Override
-    protected void initData() {
-
-    }
-
-
-
+    /**
+     * [设置搜索监听]
+     */
     private void setSearchListener() {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
@@ -198,7 +213,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                         mContentRlv.setAdapter(mAdapter);
 //                        onLoad(true);
                         getData(mPage, mTag);
-                        isSearchTag = false;
+                        isSearchTag=false;
 //                        refreshDate(id);
                         break;
                     }
@@ -209,7 +224,10 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
             tag.setOnClickListener(tagsOnClickListener);
         }
     }
-
+    /**
+     * [搜索文章（未实现）]
+     * @param searchString (搜索的关键词)
+     */
     private void doSearch(String searchString) {//文章搜索功能(未完成)
         String[] from = {"tittle", "name", "date", "tag", "image"};
         int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
@@ -230,7 +248,10 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         adapter = new SimpleAdapter(getActivity(), getCommunityPosts(searchString, 1), R.layout.article_list, from, to);
         mContentRlv.setAdapter(adapter);
     }
-
+    /**
+     * [将API获取的json数据格式化]
+     * @param response (服务器给的json)
+     */
     public ArrayList<Map<String, Object>> resolvePostsJson(String response) {//将API获取的json数据格式化
         String[] from = {"tittle", "name", "date", "tag", "image"};
         ArrayList<Map<String, Object>> data = new ArrayList<>();
@@ -265,6 +286,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
             for (int i = 0; i < postsArray.length(); i++) {
                 map = new HashMap<>();
                 JSONObject jsonPost = postsArray.getJSONObject(i);
+                map.put("post_id", jsonPost.getString("id"));
                 map.put("tittle", jsonPost.getString("title"));
                 JSONObject jsonAuthor = jsonPost.getJSONObject("author");
                 map.put("name", jsonAuthor.getString("nickname"));
@@ -292,7 +314,9 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         }
         return data;
     }
-
+    /**
+     * [设置listView的滚动监听，使得搜索可以被折叠]
+     */
     private void setListViewListener() {
         assert ((MainActivity) getActivity()) != null;
         SlideBar slideBar = new SlideBar(layoutSwipe, ((BottomNavigationView) getActivity().findViewById(R.id.navigation)), mContentRlv);
@@ -300,7 +324,11 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     }
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
-
+    /**
+     * [从服务器获取文章列表]
+     * @param tagId (标签的id)
+     * @param page （获取第几页文章）
+     */
     private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {//使用OkHTTP获取服务器数据
 
         String url = URL.Community.getPosts();
@@ -329,7 +357,10 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         return data;
     }
 
-
+    /**
+     * [设置热门标签]
+     * @param tags (热门标签控件的数组)
+     */
     private void setPopularTags(final TextView[] tags) {//获取热门标签
         String url = URL.Community.getPopularTags();
 //        Log.d(TAG, url);
@@ -360,6 +391,13 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                 });
     }
 
+    static boolean flag = false;
+    static int requests=0;
+    /**
+     * [新建线程，向服务器请求数据]
+     * @param tag (文章标签)
+     * @param page （获取第几页文章）
+     */
     private void getData(final int page, final String tag) {
         flag = false;
 //        footer.setVisibility(View.VISIBLE);
@@ -367,15 +405,23 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
             @SuppressLint("ResourceType")
             @Override
             public void run() {
-                cycleRun(page, tag);
+                requests++;
+                cycleRun(page,tag);
             }
         }, 100);
     }
-
-    private void cycleRun(int page, String tag) {//递归获取数据
+    /**
+     * [将请求结果处理方法抽取出来，以便失败时，请求再次读取]
+     * @param tag (文章标签)
+     * @param page （获取第几页文章）
+     */
+    private void cycleRun(int page, String tag){//递归获取数据
         List<RefreshListItem> data = new LinkedList<>();
         RefreshListItem item;
         ArrayList<Map<String, Object>> data1 = getCommunityPosts(tag, page);
+        if (requests>10){//防止因为网络问题过多次请求
+            return;
+        }
         for (Map<String, Object> map : data1
                 ) {
             item = new RefreshListItem();
@@ -384,6 +430,8 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
             item.date = String.valueOf(map.get("date"));
             item.image = String.valueOf(map.get("image"));
             item.tag = String.valueOf(map.get("tag"));
+            item.postId = String.valueOf(map.get("post_id"));
+            requests=0;
             flag = true;
             mIndex++;
             data.add(item);
@@ -402,18 +450,18 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
 
     @Override
     public void onLoad(boolean isRefresh) {
-        mAdapter = new RefreshListAdapter(getActivity());
-        mContentRlv.setAdapter(mAdapter);
         if (isRefresh) {
             mPage = 1;
         } else {
             mPage++;
         }
-//        if (isSearchTag)
-//            getData(mPage, mTag);
-//        else
         getData(mPage, null);
     }
+
+    static class RefreshListItem {
+        String tittle, name, date, tag, image,postId;
+    }
+
 
     static class RefreshListAdapter extends BaseAdapter<RefreshListItem> {
 
@@ -429,6 +477,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         @Override
         protected void handleItem(int itemViewType, int position, RefreshListItem item, ViewHolder holder, boolean reused) {
 //            int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
+            holder.get(R.id.post_id, TextView.class).setText(item.postId);
             holder.get(R.id.articles_tittle, TextView.class).setText(item.tittle);
             holder.get(R.id.articles_name, TextView.class).setText(item.name);
             holder.get(R.id.articles_date, TextView.class).setText(item.date);
@@ -436,9 +485,36 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
             holder.get(R.id.articles_image, ImageView.class).setImageResource(Integer.parseInt(item.image));
         }
     }
-
+    /**
+     * [listView的点击监听，点击后跳转对应的文章列表]
+     */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getContext(), "点击了" + position + " ", Toast.LENGTH_SHORT).show();
+        int fetch = 0;
+        final ListView mListView=mContentRlv.getmListView();
+        if (mListView.getLastVisiblePosition() >= mListView.getChildCount())//get到的child只能是屏幕显示的，如第100个child，在屏幕里面当前是第2个，那么应当是第二个child而非100
+        {
+            fetch = mListView.getChildCount() - 1 - (mListView.getLastVisiblePosition() - position);
+        } else {
+            fetch = position;
+        }
+        final View item;
+        item=mListView.getChildAt(fetch);
+        TextView notificationId;
+        notificationId=item.findViewById(R.id.post_id);
+        showPostDetail(Long.valueOf(notificationId.getText().toString()));
+    }
+
+    /**
+     * [启动文章详情页]
+     *
+     * @param id
+     */
+    private void showPostDetail(Long id) {
+        Log.d(TAG, id + "");
+        Intent intent = new Intent(getContext(), PostActivity.class);
+        intent.putExtra("postID", id + "");
+        startActivity(intent);
     }
 }
