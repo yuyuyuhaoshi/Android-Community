@@ -27,6 +27,7 @@ import com.yhslib.android.R;
 import com.yhslib.android.activity.MainActivity;
 import com.yhslib.android.activity.MyPostsActivity;
 import com.yhslib.android.activity.PostActivity;
+import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseFragment;
 import com.yhslib.android.util.FormatDate;
@@ -52,7 +53,7 @@ import okhttp3.Call;
 
 @SuppressLint("ValidFragment")
 public class NotificationFragment extends BaseFragment implements SimpleListView.OnLoadListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
-//    private static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIzQGV4YW1wbGUuY29tIiwiZXhwIjoxNTI4MzY5MjQ4LCJvcmlnX2lhdCI6MTUyODI4Mjg0OCwidXNlcl9pZCI6NCwidXNlcm5hbWUiOiJ1c2VyMyJ9.JsV7AxMa968nHykMV_RWLdG9WhCdSePa16ijKMxliaM";
+    //    private static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIzQGV4YW1wbGUuY29tIiwiZXhwIjoxNTI4MzY5MjQ4LCJvcmlnX2lhdCI6MTUyODI4Mjg0OCwidXNlcl9pZCI6NCwidXNlcm5hbWUiOiJ1c2VyMyJ9.JsV7AxMa968nHykMV_RWLdG9WhCdSePa16ijKMxliaM";
     private String TAG = "NotificationFragment";
     private final char FLING_CLICK = 0;
     private final char FLING_LEFT = 1;
@@ -92,8 +93,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         return fragment;
     }
 
-    public NotificationFragment(String token){
-        this.token=token;
+    public NotificationFragment(String token) {
+        this.token = token;
     }
 
     @Nullable
@@ -144,6 +145,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     protected void initView() {
         init();
     }
+
     /**
      * [初始化Fragment]
      */
@@ -157,14 +159,16 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         onLoad(true);
         setUnread();
     }
+
     /**
      * [设置列表的监听（因多次调整，只剩下滑动时向上移动的监听）]
      */
     private void setListViewListener() {
         assert ((MainActivity) getActivity()) != null;
-        SlideBar slideBar= new SlideBar(bar,((BottomNavigationView)getActivity().findViewById(R.id.navigation)),listView);
+        SlideBar slideBar = new SlideBar(bar, ((BottomNavigationView) getActivity().findViewById(R.id.navigation)), listView);
         slideBar.SetSlideBar();
     }
+
     /**
      * [设置上面的选择标签的监听]
      */
@@ -206,6 +210,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             }
         });
     }
+
     /**
      * [初始化评论页面]
      */
@@ -218,6 +223,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         mNotice.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSecondaryText));
         mNotice_under_line.setVisibility(View.INVISIBLE);
     }
+
     /**
      * [初始化@我页面]
      */
@@ -230,6 +236,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         mNotice.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorSecondaryText));
         mNotice_under_line.setVisibility(View.INVISIBLE);
     }
+
     /**
      * [初始化通知页面]
      */
@@ -242,6 +249,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         mNotice.setTextColor(ContextCompat.getColor(getActivity(), R.color.colorPrimaryText));
         mNotice_under_line.setVisibility(View.VISIBLE);
     }
+
     /**
      * [此方法废弃]
      */
@@ -304,8 +312,10 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         }
         return data;
     }
+
     /**
      * [对从服务器获取的通知的json数据进行解析]
+     *
      * @param response（从服务器获取的json数据）
      * @return date (解析后的数据)
      */
@@ -329,8 +339,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 replay_article = "苟利国家生死以，岂因祸福避趋之,苟利国家生死以，岂因祸福避趋之";
                 map.put("replay_article", replay_article);
                 map.put("unread", false);
-                map.put("id","999999");
-                map.put("post_id","0000");
+                map.put("id", "999999");
+                map.put("post_id", "0000");
                 data.add(map);
             }
             for (int i = 0; i < notificationArray.length(); i++) {
@@ -347,8 +357,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 JSONObject jsonPost = jsonNotification.getJSONObject("post");
                 map.put("replay_article", jsonPost.getString("post_title"));
                 map.put("unread", jsonNotification.getBoolean("unread"));
-                map.put("id",jsonNotification.getString("id"));
-                map.put("post_id",jsonPost.getString("post_id"));
+                map.put("id", jsonNotification.getString("id"));
+                map.put("post_id", jsonPost.getString("post_id"));
                 data.add(map);
             }
         } catch (JSONException e) {
@@ -358,8 +368,10 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     }
 
     ArrayList<Map<String, Object>> data = new ArrayList<>();
+
     /**
      * [从服务器获取通知的json数据]
+     *
      * @param verb (通知类型)
      * @param page （获取第几页通知）
      * @return date (解析后的数据)
@@ -393,9 +405,11 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     }
 
     boolean flag = false;
-    static int requests=0;
+    static int requests = 0;
+
     /**
      * [新建线程，向服务器请求数据]
+     *
      * @param verb (通知类型)
      * @param page （获取第几页通知）
      */
@@ -411,16 +425,18 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             }
         }, 500);
     }
+
     /**
      * [将请求结果处理方法抽取出来，以便失败时，请求再次读取]
+     *
      * @param verb (通知类型)
      * @param page （获取第几页通知）
      */
     private void cycleRun(int page, String verb) {
         List<RefreshListItem> data = new LinkedList<>();
         RefreshListItem item;
-        Log.d(TAG, "cycleRun: "+requests);
-        if (requests>10){//防止因为网络问题过多次请求
+        Log.d(TAG, "cycleRun: " + requests);
+        if (requests > 10) {//防止因为网络问题过多次请求
             return;
         }
         ArrayList<Map<String, Object>> data1 = getNotification(verb, -1);
@@ -433,9 +449,9 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             item.replay_text = String.valueOf(map.get("replay_text"));
             item.replay_article = String.valueOf(map.get("replay_article"));
             item.isUnread = (boolean) map.get("unread");
-            item.id= String.valueOf(map.get("id"));
-            item.postId=String.valueOf(map.get("post_id"));
-            requests=0;
+            item.id = String.valueOf(map.get("id"));
+            item.postId = String.valueOf(map.get("post_id"));
+            requests = 0;
             flag = true;
             mIndex++;
             data.add(item);
@@ -491,7 +507,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         Toast.makeText(getContext(), "点击了" + pos + " ", Toast.LENGTH_SHORT).show();
         Log.v("MY_TAG", "onItemClick: state=" + flingState + ", pos=" + pos);
         int fetch = 0;
-        final ListView mListView=listView.getmListView();
+        final ListView mListView = listView.getmListView();
         if (mListView.getLastVisiblePosition() >= mListView.getChildCount())//get到的child只能是屏幕显示的，如第100个child，在屏幕里面当前是第2个，那么应当是第二个child而非100
         {
             fetch = mListView.getChildCount() - 1 - (mListView.getLastVisiblePosition() - pos);
@@ -499,9 +515,9 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             fetch = pos;
         }
         final View item;
-        item=mListView.getChildAt(fetch);
+        item = mListView.getChildAt(fetch);
         TextView notificationId;
-        notificationId=item.findViewById(R.id.post_id);
+        notificationId = item.findViewById(R.id.post_id);
         showPostDetail(Long.valueOf(notificationId.getText().toString()));
     }
 
@@ -513,19 +529,19 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     private void showPostDetail(Long id) {
         Log.d(TAG, id + "");
         Intent intent = new Intent(getContext(), PostActivity.class);
-        intent.putExtra("token", token);
-        intent.putExtra("postID", id + "");
+        intent.putExtra(IntentFields.TOKEN, token);
+        intent.putExtra(IntentFields.POSTID, id + "");
         startActivity(intent);
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        if (foreground!=null){
+        if (foreground != null) {
             closeMenu(foreground);//如果已经有菜单被展开那么关闭它
         }
         Toast.makeText(getContext(), "长按了" + position + " ", Toast.LENGTH_SHORT).show();
         int fetch = 0;
-        final ListView mListView=listView.getmListView();
+        final ListView mListView = listView.getmListView();
         if (mListView.getLastVisiblePosition() >= mListView.getChildCount())//get到的child只能是屏幕显示的，如第100个child，在屏幕里面当前是第2个，那么应当是第二个child而非100
         {
             fetch = mListView.getChildCount() - 1 - (mListView.getLastVisiblePosition() - position);
@@ -533,7 +549,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             fetch = position;
         }
         final View item;
-        item=mListView.getChildAt(fetch);
+        item = mListView.getChildAt(fetch);
         foreground = item.findViewById(R.id.foreground);
 //        foreground.setClickable(false);
         Animation open = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_open_menu);
@@ -543,10 +559,10 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         animationSet.setFillAfter(true);
         foreground.startAnimation(animationSet);
 
-        final TextView read,delete,notificationId;
-        notificationId=item.findViewById(R.id.id);
-        read=item.findViewById(R.id.read_notification);
-        delete=item.findViewById(R.id.delete_notification);
+        final TextView read, delete, notificationId;
+        notificationId = item.findViewById(R.id.id);
+        read = item.findViewById(R.id.read_notification);
+        delete = item.findViewById(R.id.delete_notification);
         read.setClickable(true);
         delete.setClickable(true);
         final int finalFetch = fetch;
@@ -557,7 +573,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 read.setClickable(false);
                 delete.setClickable(false);
                 item.findViewById(R.id.red_dot).setVisibility(View.INVISIBLE);
-                foreground=null;
+                foreground = null;
             }
         });
         delete.setOnClickListener(new View.OnClickListener() {
@@ -567,11 +583,11 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 read.setClickable(false);
                 delete.setClickable(false);
                 deleteNotification(notificationId.getText().toString());
-                View[] views=new View[]{mListView.getChildAt(finalFetch+1),mListView.getChildAt(finalFetch+2),mListView.getChildAt(finalFetch+3)};
-                NewThread newThread = new NewThread(item,views);
+                View[] views = new View[]{mListView.getChildAt(finalFetch + 1), mListView.getChildAt(finalFetch + 2), mListView.getChildAt(finalFetch + 3)};
+                NewThread newThread = new NewThread(item, views);
                 newThread.start();
                 listView.getmOnLoadListener().onLoad(true);
-                foreground=null;
+                foreground = null;
             }
         });
         return true;
@@ -579,42 +595,46 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
 
     /**
      * [收起菜单的的效果（即移动菜单前面的前景）]
+     *
      * @param foreground （菜单前面需要收起的前景）
      */
-    private void closeMenu(View foreground){
+    private void closeMenu(View foreground) {
         Animation close = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_close_menu);
         AnimationSet animationSet;
         animationSet = new AnimationSet(true);
         animationSet.addAnimation(close);
         animationSet.setFillAfter(true);
-        if (foreground!=null)
+        if (foreground != null)
             foreground.startAnimation(animationSet);
     }
 
     /**
      * [删除时的效果（向上移动）]
+     *
      * @param view （删除的item）
      */
-    private void deleteAnim(View view){
+    private void deleteAnim(View view) {
         Animation close = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_delete);
         AnimationSet animationSet;
         animationSet = new AnimationSet(true);
         animationSet.addAnimation(close);
-        if (view!=null)
+        if (view != null)
             view.startAnimation(animationSet);
     }
+
     /**
      * [删除时的效果（向下移动）]
+     *
      * @param view （删除的item）
      */
-    private void deleteAnimUp(View view){
+    private void deleteAnimUp(View view) {
         Animation up = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_delete_up);
         Animation down = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_delete_down);
         AnimationSet animationSet;
         animationSet = new AnimationSet(true);
         animationSet.addAnimation(up);
         animationSet.addAnimation(down);
-        if (view!=null)
+        if (view != null)
             view.startAnimation(animationSet);
     }
 
@@ -698,6 +718,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
 
     /**
      * [删除通知]
+     *
      * @param id （删除的通知的id）
      */
     private void deleteNotification(String id) {
@@ -722,24 +743,27 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(getContext(),"删除成功"+response+":"+id,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "删除成功" + response + ":" + id, Toast.LENGTH_SHORT).show();
                         onLoad(true);
                     }
                 });
     }
+
     /**
      * [开启一个新线程，用以播放删除动画]
      */
-    class NewThread extends Thread{
+    class NewThread extends Thread {
         View view;
         View[] views;
-        public NewThread(View view,View[] views){
-            this.view=view;
-            this.views=views;
+
+        public NewThread(View view, View[] views) {
+            this.view = view;
+            this.views = views;
         }
+
         public void run() {
             deleteAnim(view);
-            for (View v:views
+            for (View v : views
                     ) {
                 deleteAnimUp(v);
             }
