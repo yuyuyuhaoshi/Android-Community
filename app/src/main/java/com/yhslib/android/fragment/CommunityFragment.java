@@ -77,6 +77,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         fragment.setArguments(args);
         return fragment;
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
