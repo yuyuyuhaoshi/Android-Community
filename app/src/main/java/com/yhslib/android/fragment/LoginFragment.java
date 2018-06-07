@@ -1,14 +1,11 @@
 package com.yhslib.android.fragment;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,6 +15,7 @@ import com.yhslib.android.activity.MainActivity;
 import com.yhslib.android.config.HashMapField;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
+import com.yhslib.android.util.BaseFragment;
 import com.yhslib.android.util.JWTUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -36,11 +34,10 @@ import okhttp3.Call;
 
 import com.yhslib.android.db.*;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment extends BaseFragment {
     private String TAG = "LoginFragment";
     private EditText login_edt_name, login_edt_password;
     private Button login_button;
-    private View view;
 
     public static LoginFragment newInstance() {
         Bundle args = new Bundle();
@@ -55,18 +52,26 @@ public class LoginFragment extends Fragment {
         Matcher matcher = pattern.matcher(name);
         return matcher.matches();
     }
-
-    private void findView() {
+    @Override
+    protected void findView() {
         login_edt_name = view.findViewById(R.id.login_edt_name);
         login_edt_password = view.findViewById(R.id.login_edt_password);
         login_button = view.findViewById(R.id.login_button);
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_login, container, false);
-        return view;
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void setListener() {
+
+    }
+
+    @Override
+    protected void initData() {
+
     }
 
     @Override
@@ -74,6 +79,11 @@ public class LoginFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findView();
         setOnClickListener();
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_login;
     }
 
     private void setOnClickListener() {
