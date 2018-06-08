@@ -20,12 +20,6 @@ public class RegisterFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        Log.d(TAG, TAG);
-    }
-
-    @Override
     protected int getLayoutId() {
         return R.layout.fragment_register;
     }

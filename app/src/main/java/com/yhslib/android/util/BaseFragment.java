@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yhslib.android.R;
-
 public abstract class BaseFragment extends Fragment {
 
     protected View view;

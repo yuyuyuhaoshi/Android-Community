@@ -16,10 +16,10 @@ import com.yhslib.android.config.HashMapField;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseFragment;
+import com.yhslib.android.util.Email;
 import com.yhslib.android.util.JWTUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,8 +27,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Call;
 
@@ -46,12 +44,6 @@ public class LoginFragment extends BaseFragment {
         return fragment;
     }
 
-    public boolean isEmail(String name) {
-        String strPattern = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
-        Pattern pattern = Pattern.compile(strPattern);
-        Matcher matcher = pattern.matcher(name);
-        return matcher.matches();
-    }
     @Override
     protected void findView() {
         login_edt_name = view.findViewById(R.id.login_edt_name);
@@ -98,7 +90,7 @@ public class LoginFragment extends BaseFragment {
                     Toast.makeText(getActivity(), "账号或密码为空，请重新输入!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (isEmail(usernameOrEmail)) {
+                if (Email.isEmail(usernameOrEmail)) {
                     bool = false;
                 } else {
                     bool = true;
