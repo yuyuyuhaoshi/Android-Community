@@ -7,8 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.yhslib.android.R;
-
 public abstract class BaseFragment extends Fragment {
 
     protected View view;
@@ -20,15 +18,18 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-
+    @Nullable
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        getDataFromBundle();
         super.onViewCreated(view, savedInstanceState);
         findView();
         initView();
         setListener();
         initData();
     }
+
+    protected abstract void getDataFromBundle();
 
     protected abstract int getLayoutId();
 

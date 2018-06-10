@@ -16,10 +16,10 @@ import com.yhslib.android.config.HashMapField;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseFragment;
+import com.yhslib.android.util.Email;
 import com.yhslib.android.util.JWTUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,8 +27,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import okhttp3.Call;
 
@@ -46,12 +44,11 @@ public class LoginFragment extends BaseFragment {
         return fragment;
     }
 
-    public boolean isEmail(String name) {
-        String strPattern = "^\\s*\\w+(?:\\.{0,1}[\\w-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\\.[a-zA-Z]+\\s*$";
-        Pattern pattern = Pattern.compile(strPattern);
-        Matcher matcher = pattern.matcher(name);
-        return matcher.matches();
+    @Override
+    protected void getDataFromBundle() {
+
     }
+
     @Override
     protected void findView() {
         login_edt_name = view.findViewById(R.id.login_edt_name);
@@ -98,7 +95,7 @@ public class LoginFragment extends BaseFragment {
                     Toast.makeText(getActivity(), "账号或密码为空，请重新输入!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (isEmail(usernameOrEmail)) {
+                if (Email.isEmail(usernameOrEmail)) {
                     bool = false;
                 } else {
                     bool = true;
@@ -110,9 +107,11 @@ public class LoginFragment extends BaseFragment {
     }
 
     private void handleLogin(String name, String password, boolean bool) {
+        String url = URL.User.login();
+        Log.d(TAG, url);
         OkHttpUtils
                 .post()
-                .url(URL.User.login())
+                .url(url)
                 .addParams(bool ? "username" : "email", name)
                 .addParams("password", password)
                 .build()
@@ -125,26 +124,33 @@ public class LoginFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        HashMap<String, Object> hashMap = formatUserInfo(response);
-                        String token = hashMap.get(HashMapField.TOKEN).toString();
-                        String userid = hashMap.get(HashMapField.USERID).toString();
-                        String username = hashMap.get(HashMapField.USERNAME).toString();
-                        HashMap<String, Object> tokenHashMap = JWTUtils.decoded(token);
-                        String exp = tokenHashMap.get(HashMapField.EXP).toString();
-                        Date day = new Date();
-                        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        String time = df.format(day);
+                        // 存在网络被墙的问题 获取到193什么乱七八糟的主页 无法解析JSON键值对
+                        try {
+                            HashMap<String, Object> hashMap = formatUserInfo(response);
+                            Log.d(TAG, response);
+                            String token = hashMap.get(HashMapField.TOKEN).toString();
+                            String userid = hashMap.get(HashMapField.USERID).toString();
+                            String username = hashMap.get(HashMapField.USERNAME).toString();
+                            HashMap<String, Object> tokenHashMap = JWTUtils.decoded(token);
+                            String exp = tokenHashMap.get(HashMapField.EXP).toString();
+                            Date day = new Date();
+                            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            String time = df.format(day);
 
-                        UserDao dao = new UserDao(getContext());
-                        if (dao.searchUserById(userid)) {
-                            dao.updateUser(userid, token, time, exp);
-                        } else {
-                            // 保证数据库只有一条用户记录
-                            dao.deleteAllUser();
-                            dao.insertUser(userid, username, token, time, exp);
+                            UserDao dao = new UserDao(getContext());
+                            if (dao.searchUserById(userid)) {
+                                dao.updateUser(userid, token, time, exp);
+                            } else {
+                                // 保证数据库只有一条用户记录
+                                dao.deleteAllUser();
+                                dao.insertUser(userid, username, token, time, exp);
+                            }
+
+                            startMainActivity(userid, token);
+                        } catch (NullPointerException e) {
+                            Toast.makeText(getActivity(), "登录失败，请检查网络环境!", Toast.LENGTH_LONG).show();
                         }
 
-                        startMainActivity(userid, token);
                     }
                 });
     }

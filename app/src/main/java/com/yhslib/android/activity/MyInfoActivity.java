@@ -135,6 +135,7 @@ public class MyInfoActivity extends BaseActivity {
         changeNicknameDialogBuilder = new AlertDialog.Builder(MyInfoActivity.this);
         changeNicknameDialogBuilder.setTitle("修改昵称");
         final EditText edit = new EditText(MyInfoActivity.this);
+        edit.setSingleLine();
         changeNicknameDialogBuilder.setView(edit);
         changeNicknameDialogBuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override

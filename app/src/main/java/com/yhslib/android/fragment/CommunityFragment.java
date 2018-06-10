@@ -87,6 +87,11 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     }
 
     @Override
+    protected void getDataFromBundle() {
+
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_community;
     }

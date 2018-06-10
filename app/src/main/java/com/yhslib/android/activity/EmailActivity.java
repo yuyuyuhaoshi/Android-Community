@@ -265,6 +265,7 @@ public class EmailActivity extends BaseActivity {
         addEmailDialogBuilder = new AlertDialog.Builder(EmailActivity.this);
         addEmailDialogBuilder.setTitle("添加邮箱");
         final EditText editText = new EditText(EmailActivity.this);
+        editText.setSingleLine();
         addEmailDialogBuilder.setView(editText);
         addEmailDialogBuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
             @Override
@@ -366,7 +367,7 @@ public class EmailActivity extends BaseActivity {
                         currentPage = 1;
                         hm = new ArrayList<>();
                         fetchEmail();
-                        Toast.makeText(EmailActivity.this, "邮箱验证成功!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EmailActivity.this, "验证已发送至邮箱!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }

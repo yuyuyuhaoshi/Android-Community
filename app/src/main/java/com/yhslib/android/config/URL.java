@@ -5,6 +5,12 @@ public class URL {
     public static final String host = "http://api.dj-china.org";
 
     public static class User {
+        public static String registration() {
+            // method:post
+            // return http://api.dj-china.org/rest-auth/registration/
+            return host + "/rest-auth/registration/";
+        }
+
         public static String login() {
             // method:post
             return host + "/rest-auth/login/";
