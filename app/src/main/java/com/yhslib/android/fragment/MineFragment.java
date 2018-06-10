@@ -20,14 +20,17 @@ import com.yhslib.android.activity.MyPostsActivity;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseFragment;
+import com.yhslib.android.util.CoinType;
 import com.yhslib.android.util.MugshotUrl;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -43,6 +46,7 @@ public class MineFragment extends BaseFragment {
     private TextView followerCountTxt;
     private TextView checkinTxt;
     private TextView nicknameTxt;
+    private TextView copperCoinTxt;
 
     private String TOKEN;
     private String USERID;
@@ -62,16 +66,7 @@ public class MineFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        getDataFromBundle();
-        super.onViewCreated(view, savedInstanceState);
-        findView();
-        setListener();
-        initView();
-    }
-
-
-    private void getDataFromBundle() {
+    protected void getDataFromBundle() {
         Bundle bundle = getArguments();
         if (bundle != null) {
             USERID = bundle.getString(IntentFields.USERID);
@@ -96,11 +91,13 @@ public class MineFragment extends BaseFragment {
         myPostsLayout = view.findViewById(R.id.mine_my_posts);
         myCheckinLayout = view.findViewById(R.id.mine_my_checkin);
         checkinTxt = view.findViewById(R.id.checkin);
+        copperCoinTxt = view.findViewById(R.id.copper_coin);
     }
 
     @Override
     protected void initView() {
         fetchPersonalInformation();
+        fetchBalance();
     }
 
     @Override
@@ -156,16 +153,15 @@ public class MineFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Toast.makeText(getActivity().getApplicationContext(), "签到失败", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "签到失败", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, e.getMessage());
                     }
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Toast.makeText(getActivity().getApplicationContext(), "签到成功", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "签到成功", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, response);
                     }
-
                 });
     }
 
@@ -195,6 +191,26 @@ public class MineFragment extends BaseFragment {
                 });
     }
 
+    private void fetchBalance() {
+        String url = URL.User.getBalance(USERID);
+        OkHttpUtils
+                .get()
+                .url(url)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        HashMap<String, Object> hashMap = formatBalance(response);
+                        copperCoinTxt.setText(hashMap.get("copper").toString());
+                    }
+                });
+    }
+
     private void loadMugshot(String url) {
         url = URL.host + url;
         MugshotUrl.load(url, myViaImage);
@@ -214,5 +230,18 @@ public class MineFragment extends BaseFragment {
             e.printStackTrace();
         }
         return resultList;
+    }
+
+    private HashMap<String, Object> formatBalance(String response) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+            JSONObject jsonObject = jsonArray.getJSONObject(0);
+            String copper = CoinType.formatCoinNumber(jsonObject.getString("amount__sum"));
+            hashMap.put("copper", copper);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return hashMap;
     }
 }

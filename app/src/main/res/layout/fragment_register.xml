@@ -50,6 +50,7 @@
             android:singleLine="true" />
 
         <Button
+            android:id="@+id/register_ok"
             android:layout_width="@dimen/offset_200dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -18,15 +18,18 @@ public abstract class BaseFragment extends Fragment {
         return view;
     }
 
-
+    @Nullable
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        getDataFromBundle();
         super.onViewCreated(view, savedInstanceState);
         findView();
         initView();
         setListener();
         initData();
     }
+
+    protected abstract void getDataFromBundle();
 
     protected abstract int getLayoutId();
 

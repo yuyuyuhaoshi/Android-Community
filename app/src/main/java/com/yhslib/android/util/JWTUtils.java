@@ -24,6 +24,12 @@ import okhttp3.Call;
 public class JWTUtils {
     private static String TAG = "JWTUtils";
 
+    /**
+     * 解析token值 取出body中的值
+     *
+     * @param JWTEncoded token值
+     * @return hashMap token中的关键信息
+     */
     public static HashMap<String, Object> decoded(String JWTEncoded) {
         HashMap<String, Object> hashMap = new HashMap<>();
         try {
@@ -54,19 +60,36 @@ public class JWTUtils {
         return hashMap;
     }
 
+    /**
+     * 检测token是否过期
+     * 过期 return false 需要登出
+     * 未过期 return true 继续用旧的token
+     *
+     * @param hashMap 需要包含exp 过期时间
+     * @param context 上下文 数据库操作需要context
+     * @return Boolean
+     */
     public static Boolean inspectToken(HashMap<String, Object> hashMap, Context context) {
         long exp = Long.parseLong(hashMap.get(HashMapField.EXP).toString());
         long currentTime = System.currentTimeMillis() / 1000;
-        if (currentTime - exp > 3600 * 24) {
-            // 过期一天过期
-            return false;
-        } else if (currentTime - exp < 1800) {
+        Log.d(TAG, "currentTime" + currentTime + "exp" + exp);
+        if (exp - currentTime < 1800) {
+            // 刷新token
             handleRefreshToken(hashMap.get(HashMapField.TOKEN).toString(), context);
             return true;
+        } else if (currentTime < exp) {
+            // 暂不刷新token
+            return true;
         }
-        return true;
+        return false;
     }
 
+    /**
+     * 请求新的token
+     *
+     * @param oldJWTToken 旧的token
+     * @param context     上下文
+     */
     private static void handleRefreshToken(String oldJWTToken, final Context context) {
         String url = URL.Auth.refreshJWTToken();
 
@@ -99,6 +122,12 @@ public class JWTUtils {
                 });
     }
 
+    /**
+     * 格式化返回的token
+     *
+     * @param json json键值对
+     * @return newToken 取出新的token
+     */
     private static String formatNewToken(String json) {
         String newToken = "";
         try {

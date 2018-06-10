@@ -105,6 +105,11 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     }
 
     @Override
+    protected void getDataFromBundle() {
+
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_notification;
     }
