@@ -51,13 +51,10 @@ import java.util.Map;
 
 import okhttp3.Call;
 
-@SuppressLint("ValidFragment")
 public class NotificationFragment extends BaseFragment implements SimpleListView.OnLoadListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
     //    private static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIzQGV4YW1wbGUuY29tIiwiZXhwIjoxNTI4MzY5MjQ4LCJvcmlnX2lhdCI6MTUyODI4Mjg0OCwidXNlcl9pZCI6NCwidXNlcm5hbWUiOiJ1c2VyMyJ9.JsV7AxMa968nHykMV_RWLdG9WhCdSePa16ijKMxliaM";
     private String TAG = "NotificationFragment";
     private final char FLING_CLICK = 0;
-    private final char FLING_LEFT = 1;
-    private final char FLING_RIGHT = 2;
     private char flingState = FLING_CLICK;
     private View view;
     private SimpleAdapter adapter;
@@ -88,13 +85,10 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
 
     public static NotificationFragment newInstance(String token) {
         Bundle args = new Bundle();
-        NotificationFragment fragment = new NotificationFragment(token);
+        args.putString(IntentFields.TOKEN, token);
+        NotificationFragment fragment = new NotificationFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    public NotificationFragment(String token) {
-        this.token = token;
     }
 
     @Nullable
@@ -118,7 +112,10 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
 
     @Override
     protected void initData() {
-
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            token = bundle.getString(IntentFields.TOKEN);
+        }
     }
 
     @Override
@@ -330,8 +327,11 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             lastPage = jsonObject.getInt("last_page");
             for (int i = 0; i < 2; i++) {
                 map = new HashMap<>();
-                String replay_avatar, replay_name, replay_date, replay_text, replay_article;
+                String replay_text, replay_article;
                 map.put("replay_avatar", R.drawable.jerry_zheng);
+                if (i==1){
+                    map.put("replay_avatar", R.drawable.hand_image9);
+                }
                 map.put("replay_name", "膜法师");
                 map.put("replay_date", "5月20日");
                 replay_text = "给你续一秒给你续一秒给你续一秒给你续一秒给你续一秒,苟利国家生死以，岂因祸福避趋之";
@@ -348,7 +348,44 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 String replay_date;
                 JSONObject jsonNotification = notificationArray.getJSONObject(i);
                 JSONObject jsonAuthor = jsonNotification.getJSONObject("actor");
-                map.put("replay_avatar", R.drawable.jerry_zheng);
+                switch (i%10){
+                    case 0:
+                        map.put("replay_avatar", R.drawable.jerry_zheng);
+                        break;
+                    case 1:
+                        map.put("replay_avatar", R.drawable.hand_image1);
+                        break;
+                    case 2:
+                        map.put("replay_avatar", R.drawable.hand_image2);
+                        break;
+                    case 3:
+                        map.put("replay_avatar", R.drawable.hand_image3);
+                        break;
+                    case 4:
+                        map.put("replay_avatar", R.drawable.hand_image4);
+                        break;
+                    case 5:
+                        map.put("replay_avatar", R.drawable.hand_image5);
+                        break;
+                    case 6:
+                        map.put("replay_avatar", R.drawable.hand_image5);
+                        break;
+                    case 7:
+                        map.put("replay_avatar", R.drawable.hand_image6);
+                        break;
+                    case 8:
+                        map.put("replay_avatar", R.drawable.hand_image7);
+                        break;
+                    case 9:
+                        map.put("replay_avatar", R.drawable.hand_image8);
+                        break;
+                    case 10:
+                        map.put("replay_avatar", R.drawable.hand_image9);
+                        break;
+                        default:
+                            map.put("replay_avatar", R.drawable.jerry_zheng);
+                            break;
+                }
                 map.put("replay_name", jsonAuthor.getString("nickname"));
                 replay_date = FormatDate.changeDate(jsonNotification.getString("timestamp"));
                 map.put("replay_date", replay_date);
