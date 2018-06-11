@@ -4,7 +4,6 @@ import android.content.Context;
 import android.util.Base64;
 import android.util.Log;
 
-import com.yhslib.android.activity.Welcome;
 import com.yhslib.android.config.HashMapField;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.db.UserDao;
@@ -73,7 +72,8 @@ public class JWTUtils {
         long exp = Long.parseLong(hashMap.get(HashMapField.EXP).toString());
         long currentTime = System.currentTimeMillis() / 1000;
         Log.d(TAG, "currentTime" + currentTime + "exp" + exp);
-        if (exp - currentTime < 1800) {
+        if ((exp - currentTime < 1800) && (exp - currentTime >= 0)) {
+            // 在即将过期的半小时内
             // 刷新token
             handleRefreshToken(hashMap.get(HashMapField.TOKEN).toString(), context);
             return true;
