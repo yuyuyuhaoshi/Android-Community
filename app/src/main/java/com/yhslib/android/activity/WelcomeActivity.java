@@ -2,8 +2,7 @@ package com.yhslib.android.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
@@ -22,7 +21,8 @@ import com.yhslib.android.util.JWTUtils;
 import java.util.HashMap;
 
 
-public class Welcome extends BaseActivity {
+public class WelcomeActivity extends BaseActivity {
+    private String TAG = "WelcomeActivity";
     TextView textView;
     AnimationSet animationSet;
     UserDao dao;
@@ -59,9 +59,9 @@ public class Welcome extends BaseActivity {
     }
 
     private void animation() {
-        Animation welcome_alpha = AnimationUtils.loadAnimation(Welcome.this, R.anim.welcome_alpha);
-        Animation welcome_translate = AnimationUtils.loadAnimation(Welcome.this, R.anim.welcome_translate);
-        Animation welcome_scale = AnimationUtils.loadAnimation(Welcome.this, R.anim.welcome_scale);
+        Animation welcome_alpha = AnimationUtils.loadAnimation(WelcomeActivity.this, R.anim.welcome_alpha);
+        Animation welcome_translate = AnimationUtils.loadAnimation(WelcomeActivity.this, R.anim.welcome_translate);
+        Animation welcome_scale = AnimationUtils.loadAnimation(WelcomeActivity.this, R.anim.welcome_scale);
         animationSet = new AnimationSet(true);
         animationSet.addAnimation(welcome_alpha);
         animationSet.addAnimation(welcome_translate);
@@ -89,7 +89,8 @@ public class Welcome extends BaseActivity {
                 hashMap.put(HashMapField.USERID, userid);
                 hashMap.put(HashMapField.TOKEN, token);
                 hashMap.put(HashMapField.EXP, exp);
-                Boolean bool = JWTUtils.inspectToken(hashMap, Welcome.this);
+                Log.d(TAG, hashMap.toString());
+                Boolean bool = JWTUtils.inspectToken(hashMap, WelcomeActivity.this);
                 if (bool) {
                     intentFlag = 2;
                 } else {
@@ -100,12 +101,12 @@ public class Welcome extends BaseActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 if (intentFlag == 2) {
-                    Intent intent = new Intent(Welcome.this, MainActivity.class);
+                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
                     intent.putExtra(IntentFields.TOKEN, hashMap.get(HashMapField.TOKEN).toString());
                     intent.putExtra(IntentFields.USERID, hashMap.get(HashMapField.USERID).toString());
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(Welcome.this, LoginActivity.class);
+                    Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
             }

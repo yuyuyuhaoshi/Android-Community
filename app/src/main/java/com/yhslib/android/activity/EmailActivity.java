@@ -16,6 +16,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.yhslib.android.R;
+import com.yhslib.android.config.HashMapField;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseActivity;
@@ -34,7 +35,6 @@ import okhttp3.Call;
 
 public class EmailActivity extends BaseActivity {
     private String TAG = "EmailActivity";
-    private String userID;
     private String token;
     private int currentPage = 1;
     private int lastPage;
@@ -54,9 +54,7 @@ public class EmailActivity extends BaseActivity {
     @Override
     protected void getDataFromIntent() {
         Intent intent = getIntent();
-        userID = intent.getStringExtra(IntentFields.USERID);
         token = intent.getStringExtra(IntentFields.TOKEN);
-        Log.d(TAG, userID + " " + token);
     }
 
     @Override
@@ -106,9 +104,7 @@ public class EmailActivity extends BaseActivity {
     }
 
     /**
-     * [设置往下拉至底部加载更多数据]
-     *
-     * @param
+     * 设置往下拉至底部加载更多数据
      */
     private void setListViewPullListener() {
         // list view 下拉加载下一页文章
@@ -135,9 +131,7 @@ public class EmailActivity extends BaseActivity {
     }
 
     /**
-     * [获取邮箱列表]
-     *
-     * @param
+     * 获取邮箱列表
      */
     private void fetchEmail() {
         RefreshFlag = false;
@@ -147,7 +141,6 @@ public class EmailActivity extends BaseActivity {
                 .url(url)
                 .addHeader("Authorization", "Bearer " + token)
                 .addParams("page", currentPage + "")
-                .addParams("page_size", "20")
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -173,9 +166,10 @@ public class EmailActivity extends BaseActivity {
     }
 
     /**
-     * [解析JSON字符串]
+     * 解析JSON字符串
      *
-     * @param response
+     * @param response 获取到的JSON数据
+     * @return ArrayList
      */
     private ArrayList<HashMap<String, Object>> formatEmailsJSON(String response) {
         RefreshFlag = false;
@@ -187,21 +181,21 @@ public class EmailActivity extends BaseActivity {
             for (int i = 0; i < emailsArray.length(); i++) {
                 JSONObject emailObject = (JSONObject) emailsArray.opt(i);
                 HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put("id", emailObject.getString("id"));
-                hashMap.put("email", currentPage + "." + emailObject.getString("email"));
+                hashMap.put(HashMapField.EMAILID, emailObject.getString("id"));
+                hashMap.put(HashMapField.EMAIL, emailObject.getString("email"));
 
                 String primary = emailObject.getString("primary");
                 if (primary.equals("true")) {
-                    hashMap.put("primary", getResources().getString(R.string.primary_email));
+                    hashMap.put(HashMapField.PRIMARY, getResources().getString(R.string.primary_email));
                 } else {
-                    hashMap.put("primary", "");
+                    hashMap.put(HashMapField.PRIMARY, "");
                 }
 
                 String verified = emailObject.getString("verified");
                 if (verified.equals("false")) {
-                    hashMap.put("verified", getResources().getString(R.string.unverified));
+                    hashMap.put(HashMapField.VERIFIED, getResources().getString(R.string.unverified));
                 } else {
-                    hashMap.put("verified", "");
+                    hashMap.put(HashMapField.VERIFIED, "");
                 }
 
                 resultList.add(hashMap);
@@ -212,19 +206,18 @@ public class EmailActivity extends BaseActivity {
         return resultList;
     }
 
-
     /**
-     * [设置listAdapter]
+     * 设置listAdapter
      *
-     * @param list
+     * @param list 存放email id, email, PRIMARY, PRIMARY的ArrayList
      */
     private void setEmailListAdapter(final ArrayList<HashMap<String, Object>> list) {
-        String[] from = {"email", "primary", "verified"};
+        String[] from = {HashMapField.EMAIL, HashMapField.PRIMARY, HashMapField.VERIFIED};
         int[] to = {R.id.email, R.id.email_primary, R.id.email_verified};
         adapter = new SimpleAdapter(EmailActivity.this, list, R.layout.list_email, from, to) {
             @Override
             public long getItemId(int position) {
-                return Integer.parseInt(list.get(position).get("id").toString());
+                return Integer.parseInt(list.get(position).get(HashMapField.EMAILID).toString());
             }
         };
         listView.setAdapter(adapter);
@@ -238,9 +231,10 @@ public class EmailActivity extends BaseActivity {
     }
 
     /**
-     * [长按item点击菜单]
+     * 长按item点击菜单
      *
-     * @param item
+     * @param item 被点击的item项
+     * @return boolean 没有实际意义
      */
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -261,6 +255,9 @@ public class EmailActivity extends BaseActivity {
         return super.onContextItemSelected(item);
     }
 
+    /**
+     * 创建添加邮箱的对话框
+     */
     private void buildAddEmailDialog() {
         addEmailDialogBuilder = new AlertDialog.Builder(EmailActivity.this);
         addEmailDialogBuilder.setTitle("添加邮箱");
@@ -284,9 +281,9 @@ public class EmailActivity extends BaseActivity {
     }
 
     /**
-     * [设置主邮箱]
+     * 设置主邮箱
      *
-     * @param emailID
+     * @param emailID email的id
      */
     private void setPrimaryEmail(String emailID) {
         String url = URL.User.setPrimaryEmail(emailID);
@@ -314,9 +311,9 @@ public class EmailActivity extends BaseActivity {
     }
 
     /**
-     * [删除邮箱]
+     * 删除邮箱
      *
-     * @param emailID
+     * @param emailID email的id
      */
     private void deleteEmail(String emailID) {
         String url = URL.User.deleteEmail(emailID);
@@ -343,9 +340,9 @@ public class EmailActivity extends BaseActivity {
     }
 
     /**
-     * [验证邮箱]
+     * 验证邮箱
      *
-     * @param emailID
+     * @param emailID email的id
      */
     private void verifyEmail(String emailID) {
         String url = URL.User.deleteEmail(emailID);
@@ -367,15 +364,15 @@ public class EmailActivity extends BaseActivity {
                         currentPage = 1;
                         hm = new ArrayList<>();
                         fetchEmail();
-                        Toast.makeText(EmailActivity.this, "验证已发送至邮箱!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EmailActivity.this, "验证已发送至邮箱，请查收!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
     /**
-     * [添加邮箱]
+     * 添加邮箱
      *
-     * @param email
+     * @param email 邮箱地址
      */
     private void addEmail(String email) {
         String url = URL.User.addEmail();
