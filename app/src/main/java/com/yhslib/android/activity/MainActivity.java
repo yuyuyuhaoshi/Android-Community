@@ -29,6 +29,7 @@ import com.yhslib.android.fragment.CommunityFragment;
 import com.yhslib.android.fragment.DiscoveryFragment;
 import com.yhslib.android.fragment.MineFragment;
 import com.yhslib.android.fragment.NotificationFragment;
+import com.yhslib.android.util.BaseActivity;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -40,7 +41,7 @@ import java.lang.reflect.Field;
 import okhttp3.Call;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     private String TAG = "MainActivity";
     private BottomNavigationView navigation;
     private ViewPager viewPager;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private Fragment[] fragments;
     private String userID;
     private String token;
+    private ImageView settingsImage;
 
     private final int FRAGMENT_COUNT = 4;
     private final int COMMUNITY_FRAGMENT = 0;
@@ -56,34 +58,31 @@ public class MainActivity extends AppCompatActivity {
     private final int MINE_FRAGMENT = 3;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getDataFromIntent();
-        findView();
-        initView();
-    }
-
-    private void getDataFromIntent() {
+    protected void getDataFromIntent() {
         Intent intent = getIntent();
         userID = intent.getStringExtra(IntentFields.USERID);
         token = intent.getStringExtra(IntentFields.TOKEN);
         Log.d(TAG, userID + "  " + token);
     }
 
-    private void findView() {
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void findView() {
         navigation = findViewById(R.id.navigation);
         viewPager = findViewById(R.id.viewPager);
         actionBar = getSupportActionBar();
     }
 
-
-    private void initView() {
+    @Override
+    protected void initView() {
         if (actionBar != null) {
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             actionBar.setCustomView(R.layout.actionbar_community);
         }
-
         fragments = new Fragment[FRAGMENT_COUNT];
         fragments[COMMUNITY_FRAGMENT] = CommunityFragment.newInstance();
         fragments[DISCOVERY_FRAGMENT] = DiscoveryFragment.newInstance();
@@ -97,7 +96,20 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setOffscreenPageLimit(FRAGMENT_COUNT - 1);
         disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        setNotificationButton();
+    }
+
+    @Override
+    protected void setListener() {
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
 
@@ -123,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.navigation_mine:
                     viewPager.setCurrentItem(MINE_FRAGMENT);
                     actionBar.setCustomView(R.layout.actionbar_mine);
+                    setSettingsButton();
                     return true;
             }
             return false;
@@ -132,15 +145,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * [设置未读通知按钮跳转]
      */
-    private void setNotificationButton(){
+    private void setNotificationButton() {
         if (actionBar != null) {
             ImageView have_new_message;
             have_new_message = actionBar.getCustomView().findViewById(R.id.have_new_message);
             TextView unread;
             ImageView redDot;
-            unread=actionBar.getCustomView().findViewById(R.id.unread_text);
-            redDot=actionBar.getCustomView().findViewById(R.id.red_dot);
-            setUnread(unread,redDot);
+            unread = actionBar.getCustomView().findViewById(R.id.unread_text);
+            redDot = actionBar.getCustomView().findViewById(R.id.red_dot);
+            setUnread(unread, redDot);
             have_new_message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -149,8 +162,24 @@ public class MainActivity extends AppCompatActivity {
             });
         }
     }
+
+    private void setSettingsButton() {
+        if (actionBar != null) {
+            settingsImage = actionBar.getCustomView().findViewById(R.id.settings_image);
+            settingsImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                    startActivity(intent);
+                }
+            });
+
+        }
+    }
+
     /**
      * [设置未读通知的数量]
+     *
      * @param unread （未读通知的文本控件）
      * @param redDot （未读通知的小红点）
      */
@@ -257,6 +286,12 @@ public class MainActivity extends AppCompatActivity {
         }).setNegativeButton("取消", null).show();
     }
 
+    /**
+     * 去掉底部bar的滑动偏移
+     *
+     * @param
+     * @return
+     */
     @SuppressLint("RestrictedApi")
     public static void disableShiftMode(BottomNavigationView view) {
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);

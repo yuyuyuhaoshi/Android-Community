@@ -1,17 +1,12 @@
 package com.yhslib.android.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -25,7 +20,6 @@ import android.widget.Toast;
 
 import com.yhslib.android.R;
 import com.yhslib.android.activity.MainActivity;
-import com.yhslib.android.activity.MyPostsActivity;
 import com.yhslib.android.activity.PostActivity;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
@@ -52,11 +46,9 @@ import java.util.Map;
 import okhttp3.Call;
 
 public class NotificationFragment extends BaseFragment implements SimpleListView.OnLoadListener, AdapterView.OnItemLongClickListener, AdapterView.OnItemClickListener {
-    //    private static final String TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InVzZXIzQGV4YW1wbGUuY29tIiwiZXhwIjoxNTI4MzY5MjQ4LCJvcmlnX2lhdCI6MTUyODI4Mjg0OCwidXNlcl9pZCI6NCwidXNlcm5hbWUiOiJ1c2VyMyJ9.JsV7AxMa968nHykMV_RWLdG9WhCdSePa16ijKMxliaM";
     private String TAG = "NotificationFragment";
     private final char FLING_CLICK = 0;
     private char flingState = FLING_CLICK;
-    private View view;
     private SimpleAdapter adapter;
     private SimpleListView listView;
     private TextView mComment;
@@ -75,13 +67,17 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     private int mPage = 1;
     private int mIndex = 1;
     private View footer;
-    EditText searchText;
-    String type = COMMENT;
+    private EditText searchText;
+    private String type = COMMENT;
     private boolean isSearchTag = false;
-    int lastPage = 5;
+    private int lastPage = 5;
     boolean isTypeChange = false;
     private View foreground;
     private String token;
+    private ArrayList<Map<String, Object>> data = new ArrayList<>();
+
+    private boolean flag = false; // 是否请求成功的标记
+    private static int requests = 0;
 
     public static NotificationFragment newInstance(String token) {
         Bundle args = new Bundle();
@@ -89,13 +85,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         NotificationFragment fragment = new NotificationFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_notification, container, false);
-        return view;
     }
 
     @Override
@@ -128,12 +117,12 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         listView = view.findViewById(R.id.notification_list_view);
         footer = view.findViewById(R.id.footer_layout);
         listView.setFooter(footer);
-        mComment = (TextView) view.findViewById(R.id.comment);
-        mComment_under_line = (ImageView) view.findViewById(R.id.comment_under_line);
-        mAtMe = (TextView) view.findViewById(R.id.atMe);
-        mAtMe_under_line = (ImageView) view.findViewById(R.id.atMe_under_line);
-        mNotice = (TextView) view.findViewById(R.id.notice);
-        mNotice_under_line = (ImageView) view.findViewById(R.id.notice_under_line);
+        mComment = view.findViewById(R.id.comment);
+        mComment_under_line = view.findViewById(R.id.comment_under_line);
+        mAtMe = view.findViewById(R.id.atMe);
+        mAtMe_under_line = view.findViewById(R.id.atMe_under_line);
+        mNotice = view.findViewById(R.id.notice);
+        mNotice_under_line = view.findViewById(R.id.notice_under_line);
         bar = view.findViewById(R.id.bar);
         dot_comment = view.findViewById(R.id.dot_comment);
         dot_Atme = view.findViewById(R.id.dot_atMe);
@@ -145,13 +134,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
 
     @Override
     protected void initView() {
-        init();
-    }
-
-    /**
-     * [初始化Fragment]
-     */
-    protected void init() {
         setComment();
         mAdapter = new NotificationRefreshListAdapter(getActivity(), COMMENT);
         listView.setAdapter(mAdapter);
@@ -159,7 +141,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         listView.setOnItemClickListener(this);
         listView.setOnItemLongClickListener(this);
         onLoad(true);
-        setUnread();
+        getNotification("like");
+        getNotification("reply");
     }
 
     /**
@@ -259,10 +242,9 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         ArrayList<Map<String, Object>> data = new ArrayList<>();
         Map<String, Object> map;
         map = new HashMap<>();
-//        String[] from = {"replay_avatar", "replay_name", "replay_date", "replay_text", "text_my_comment"};
         if (type.equals(COMMENT)) {
             for (int i = 0; i < 15; i++) {
-                String replay_avatar, replay_name, replay_date, replay_text, text_my_comment;
+                String replay_text, text_my_comment;
                 map.put("replay_avatar", R.drawable.jerry_zheng);
                 map.put("replay_name", "膜法师");
                 map.put("replay_date", "5月20日");
@@ -279,9 +261,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 data.add(map);
             }
         } else if (type.equals(ATME)) {
-//            String[] from = {"replay_avatar", "replay_name", "replay_date", "replay_article", "text_my_comment"};
             for (int i = 0; i < 15; i++) {
-                String replay_avatar, replay_name, replay_date, replay_article, text_my_comment;
+                String text_my_comment;
                 map.put("replay_avatar", R.drawable.jerry_zheng);
                 map.put("replay_name", "膜法师");
                 map.put("replay_date", "5月20日");
@@ -298,9 +279,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 data.add(map);
             }
         } else {
-            //            String[] from = {"replay_avatar", "replay_name", "replay_date", "replay_text"};
             for (int i = 0; i < 15; i++) {
-                String replay_avatar, replay_name, replay_date, replay_text;
+                String replay_text;
                 map.put("replay_avatar", R.drawable.jerry_zheng);
                 map.put("replay_name", "膜法师");
                 map.put("replay_date", "5月20日");
@@ -334,7 +314,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 map = new HashMap<>();
                 String replay_text, replay_article;
                 map.put("replay_avatar", R.drawable.jerry_zheng);
-                if (i==1){
+                if (i == 1) {
                     map.put("replay_avatar", R.drawable.hand_image9);
                 }
                 map.put("replay_name", "膜法师");
@@ -353,7 +333,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                 String replay_date;
                 JSONObject jsonNotification = notificationArray.getJSONObject(i);
                 JSONObject jsonAuthor = jsonNotification.getJSONObject("actor");
-                switch (i%10){
+                switch (i % 10) {
                     case 0:
                         map.put("replay_avatar", R.drawable.jerry_zheng);
                         break;
@@ -387,9 +367,9 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                     case 10:
                         map.put("replay_avatar", R.drawable.hand_image9);
                         break;
-                        default:
-                            map.put("replay_avatar", R.drawable.jerry_zheng);
-                            break;
+                    default:
+                        map.put("replay_avatar", R.drawable.jerry_zheng);
+                        break;
                 }
                 map.put("replay_name", jsonAuthor.getString("nickname"));
                 replay_date = FormatDate.changeDate(jsonNotification.getString("timestamp"));
@@ -409,8 +389,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         return data;
     }
 
-    ArrayList<Map<String, Object>> data = new ArrayList<>();
-
     /**
      * [从服务器获取通知的json数据]
      *
@@ -420,7 +398,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
      */
     private ArrayList<Map<String, Object>> getNotification(String verb, int page) {
         String url = URL.Notification.getNotification();
-        Log.d(TAG, url);
         GetBuilder builder = OkHttpUtils
                 .get()
                 .url(url)
@@ -446,9 +423,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         return data;
     }
 
-    boolean flag = false;
-    static int requests = 0;
-
     /**
      * [新建线程，向服务器请求数据]
      *
@@ -457,7 +431,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
      */
     private void setNotification(final int page, final String verb) {
         flag = false;
-//        footer.setVisibility(View.VISIBLE);
         listView.postDelayed(new Runnable() {
             @SuppressLint("ResourceType")
             @Override
@@ -527,7 +500,8 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         } else {
             setNotification(mPage, "like");
         }
-        setUnread();
+        getNotification("like");
+        getNotification("reply");
     }
 
     public static class RefreshListItem {
@@ -593,7 +567,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         final View item;
         item = mListView.getChildAt(fetch);
         foreground = item.findViewById(R.id.foreground);
-//        foreground.setClickable(false);
         Animation open = AnimationUtils.loadAnimation(getContext(), R.anim.list_view_open_menu);
         AnimationSet animationSet;
         animationSet = new AnimationSet(true);
@@ -683,14 +656,14 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     /**
      * [设置未读通知的的个数]
      */
-    private void setUnread() {
+    private void getNotification(String verb) {
         String url = URL.Notification.getNotification();
         OkHttpUtils
                 .get()
                 .url(url)
                 .addHeader("Authorization", "Bearer " + token)
                 .addParams("unread", "true")
-                .addParams("verb", "reply")
+                .addParams("verb", verb)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -717,42 +690,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                             e.printStackTrace();
                             unread_comment.setVisibility(View.INVISIBLE);
                             dot_comment.setVisibility(View.INVISIBLE);
-                        }
-                    }
-                });
-
-        OkHttpUtils
-                .get()
-                .url(url)
-                .addHeader("Authorization", "Bearer " + token)
-                .addParams("unread", "true")
-                .addParams("verb", "like")
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Log.d(TAG, ".setUnread()" + e.getMessage());
-                        unread_notice.setVisibility(View.INVISIBLE);
-                        dot_notice.setVisibility(View.INVISIBLE);
-                    }
-
-                    @Override
-                    public void onResponse(String response, int id) {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            int countNotice = jsonObject.getInt("count");
-                            if (countNotice > 0) {
-                                unread_notice.setVisibility(View.VISIBLE);
-                                dot_notice.setVisibility(View.VISIBLE);
-                                if (countNotice > 100) {
-                                    unread_notice.setText("99+");
-                                } else
-                                    unread_notice.setText(String.valueOf(countNotice));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            unread_notice.setVisibility(View.INVISIBLE);
-                            dot_notice.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
