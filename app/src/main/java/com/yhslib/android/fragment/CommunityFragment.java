@@ -52,9 +52,7 @@ import okhttp3.Call;
 public class CommunityFragment extends BaseFragment implements SimpleListView.OnLoadListener, AdapterView.OnItemClickListener {
     private String TAG = "CommunityFragment";
 
-    private View view;
     private View layoutSearch, layoutPopularTags;
-    //    private ListView mContentRlv;
     private SearchView searchView;
     private View.OnClickListener tagsOnClickListener;
     private TextView tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag1Id, tag2Id, tag3Id, tag4Id, tag5Id, tag6Id, tag7Id, tag8Id, textViewPopularArticles;
@@ -63,7 +61,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     private TextView[] tags, tagsId;
     private SimpleListView mContentRlv;
     private String mTag = "1";
-    //    private View mEmptyView;
     private RefreshListAdapter mAdapter;
     private int mPage = 1;
     private int mIndex = 1;
@@ -77,13 +74,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         CommunityFragment fragment = new CommunityFragment();
         fragment.setArguments(args);
         return fragment;
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_community, container, false);
-        return view;
     }
 
     @Override
@@ -112,7 +102,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     protected void findView() {
         layoutPopularTags = view.findViewById(R.id.tags);
         layoutSearch = view.findViewById(R.id.search_view);
-//        listViewArticle = view.findViewById(R.id.content_rlv);
         searchView = layoutSearch.findViewById(R.id.search);
         layoutSwipe = view.findViewById(R.id.swipe);
         textViewPopularArticles = view.findViewById(R.id.popular_articles);
@@ -152,14 +141,13 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         layoutPopularTags.setVisibility(View.GONE);
         tags = new TextView[]{tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8};
         tagsId = new TextView[]{tag1Id, tag2Id, tag3Id, tag4Id, tag5Id, tag6Id, tag7Id, tag8Id};
-        setPopularTags(tags);
+        getPopularTags(tags);
         mContentRlv.setFooter(footer);
         mAdapter = new RefreshListAdapter(getActivity());
         mContentRlv.setAdapter(mAdapter);
         mContentRlv.setOnLoadListener(this);
         mContentRlv.setOnItemClickListener(this);
         onLoad(true);
-//        footer.setVisibility(View.GONE);
     }
 
     /**
@@ -214,14 +202,11 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                 for (int i = 0; i < tags.length; i++) {
                     if (v.getId() == tags[i].getId()) {
                         id = tagsId[i].getText().toString();
-//                        isSearchTag = true;
                         mTag = id;
                         mAdapter = new RefreshListAdapter(getActivity());
                         mContentRlv.setAdapter(mAdapter);
-//                        onLoad(true);
                         getData(mPage, mTag);
                         isSearchTag = false;
-//                        refreshDate(id);
                         break;
                     }
                 }
@@ -237,23 +222,9 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      *
      * @param searchString (搜索的关键词)
      */
-    private void doSearch(String searchString) {//文章搜索功能(未完成)
+    private void doSearch(String searchString) {
         String[] from = {"tittle", "name", "date", "tag", "image"};
         int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
-//        ArrayList<Map<String, Object>> data=new ArrayList<>();
-//        System.out.println("788787788："+lastPage);
-//        for (int i = 0; i < lastPage; i++) {
-//            ArrayList<Map<String, Object>> dataFrom=getCommunityPosts(null,i);
-//            System.out.println("啦啦啦");
-//            for (Map<String, Object> item: dataFrom
-//                 ) {
-//                String tittle =item.get("tittle").toString();
-//                System.out.println(tittle+tittle.contains(searchString));
-//                if (tittle.contains(searchString)){
-//                    data.add(item);
-//                }
-//            }
-//        }
         adapter = new SimpleAdapter(getActivity(), getCommunityPosts(searchString, 1), R.layout.article_list, from, to);
         mContentRlv.setAdapter(adapter);
     }
@@ -263,7 +234,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      *
      * @param response (服务器给的json)
      */
-    public ArrayList<Map<String, Object>> resolvePostsJson(String response) {//将API获取的json数据格式化
+    public ArrayList<Map<String, Object>> resolvePostsJson(String response) {
         String[] from = {"tittle", "name", "date", "tag", "image"};
         ArrayList<Map<String, Object>> data = new ArrayList<>();
         Map<String, Object> map;
@@ -344,7 +315,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      * @param page  （获取第几页文章）
      */
     private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {//使用OkHTTP获取服务器数据
-
         String url = URL.Community.getPosts();
         Log.d(TAG, url);
         GetBuilder builder = OkHttpUtils
@@ -376,9 +346,8 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      *
      * @param tags (热门标签控件的数组)
      */
-    private void setPopularTags(final TextView[] tags) {//获取热门标签
+    private void getPopularTags(final TextView[] tags) {//获取热门标签
         String url = URL.Community.getPopularTags();
-//        Log.d(TAG, url);
         OkHttpUtils
                 .get()
                 .url(url)
@@ -417,7 +386,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      */
     private void getData(final int page, final String tag) {
         flag = false;
-//        footer.setVisibility(View.VISIBLE);
         mContentRlv.postDelayed(new Runnable() {
             @SuppressLint("ResourceType")
             @Override
@@ -434,11 +402,12 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      * @param tag  (文章标签)
      * @param page （获取第几页文章）
      */
-    private void cycleRun(int page, String tag) {//递归获取数据
+    private void cycleRun(int page, String tag) {
         List<RefreshListItem> data = new LinkedList<>();
         RefreshListItem item;
         ArrayList<Map<String, Object>> data1 = getCommunityPosts(tag, page);
-        if (requests > 10) {//防止因为网络问题过多次请求
+        if (requests > 10) {
+            // 防止因为网络问题过多次请求
             return;
         }
         for (Map<String, Object> map : data1
@@ -455,9 +424,10 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
             mIndex++;
             data.add(item);
         }
-        mAdapter.setData(data, page == 1 ? true : false);
-        mContentRlv.finishLoad(page == lastPage ? true : false);
-        if (!flag) {//如果数据没有获取成功那么重新获取一次
+        mAdapter.setData(data, page == 1);
+        mContentRlv.finishLoad(page == lastPage);
+        if (!flag) {
+            // 如果数据没有获取成功那么重新获取一次
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
@@ -495,7 +465,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
 
         @Override
         protected void handleItem(int itemViewType, int position, RefreshListItem item, ViewHolder holder, boolean reused) {
-//            int[] to = {R.id.articles_tittle, R.id.articles_name, R.id.articles_date, R.id.articles_tag, R.id.articles_image};
             holder.get(R.id.post_id, TextView.class).setText(item.postId);
             holder.get(R.id.articles_tittle, TextView.class).setText(item.tittle);
             holder.get(R.id.articles_name, TextView.class).setText(item.name);
