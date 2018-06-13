@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/login_button"
+        android:id="@+id/logout_button"
         android:layout_width="@dimen/offset_200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

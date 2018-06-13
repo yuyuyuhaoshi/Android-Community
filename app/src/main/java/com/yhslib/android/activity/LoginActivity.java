@@ -1,11 +1,13 @@
 package com.yhslib.android.activity;
 
+import android.content.DialogInterface;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -15,12 +17,14 @@ import android.widget.TextView;
 import com.yhslib.android.R;
 import com.yhslib.android.fragment.LoginFragment;
 import com.yhslib.android.fragment.RegisterFragment;
+import com.yhslib.android.util.ActivityContainer;
+import com.yhslib.android.util.BaseActivity;
 import com.yhslib.android.util.BaseFragment;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
     private TextView register_textview;
     private TextView login_textview;
     private View login_underline;
@@ -29,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_main);
+
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
@@ -37,24 +41,42 @@ public class LoginActivity extends AppCompatActivity {
             decorView.setSystemUiVisibility(option);
         }
         ActionBar actionBar = getSupportActionBar();
-        actionBar.hide();
+        if (actionBar != null) {
+            actionBar.hide();
+        }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment fragment = LoginFragment.newInstance();
         ft.replace(R.id.login_title, fragment);
         ft.commit();
         findView();
-        setListener();
     }
 
-    private void findView() {
+    @Override
+    protected void getDataFromIntent() {
+
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login_main;
+    }
+
+    @Override
+    protected void findView() {
         login_textview = findViewById(R.id.login_textview);
         register_textview = findViewById(R.id.register_textview);
         login_underline = findViewById(R.id.login_underline);
         register_underline = findViewById(R.id.register_underline);
     }
 
-    private void setListener() {
+    @Override
+    protected void initView() {
+
+    }
+
+    @Override
+    protected void setListener() {
         login_textview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +101,30 @@ public class LoginActivity extends AppCompatActivity {
                 register_underline.setBackground(getResources().getDrawable((R.drawable.line)));
             }
         });
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        exit_dialog();
+    }
+
+    private void exit_dialog() {
+        new AlertDialog.Builder(this).setMessage("您确定要退出吗？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ActivityContainer.getInstance().finishAllActivity();
+            }
+        }).setNegativeButton("取消", null).show();
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
 
