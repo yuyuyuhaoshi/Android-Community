@@ -4,15 +4,10 @@ package com.yhslib.android.fragment;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -20,7 +15,6 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.yhslib.android.activity.PostActivity;
 import com.yhslib.android.config.IntentFields;
@@ -281,12 +275,11 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
                         break;
                     }
                     if (j != 0) {
-                        tag = tag + "·" + tagsArry.getJSONObject(j).getString("name");
+                        tag += "·" + tagsArry.getJSONObject(j).getString("name");
                     } else {
-                        tag = tag + tagsArry.getJSONObject(j).getString("name");
+                        tag += tagsArry.getJSONObject(j).getString("name");
                     }
                 }
-                Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.articlc_image);
                 map.put("tag", tag);
                 map.put("image", R.drawable.articlc_image);
                 data.add(map);
@@ -314,7 +307,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      * @param tagId (标签的id)
      * @param page  （获取第几页文章）
      */
-    private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {//使用OkHTTP获取服务器数据
+    private ArrayList<Map<String, Object>> getCommunityPosts(String tagId, int page) {
         String url = URL.Community.getPosts();
         Log.d(TAG, url);
         GetBuilder builder = OkHttpUtils
@@ -346,7 +339,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      *
      * @param tags (热门标签控件的数组)
      */
-    private void getPopularTags(final TextView[] tags) {//获取热门标签
+    private void getPopularTags(final TextView[] tags) {
         String url = URL.Community.getPopularTags();
         OkHttpUtils
                 .get()
@@ -479,8 +472,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getContext(), "点击了" + position + " ", Toast.LENGTH_SHORT).show();
-        int fetch = 0;
+        int fetch;
         final ListView mListView = mContentRlv.getmListView();
         if (mListView.getLastVisiblePosition() >= mListView.getChildCount())//get到的child只能是屏幕显示的，如第100个child，在屏幕里面当前是第2个，那么应当是第二个child而非100
         {
@@ -501,7 +493,6 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
      * @param id
      */
     private void showPostDetail(Long id) {
-        Log.d(TAG, id + "");
         Intent intent = new Intent(getContext(), PostActivity.class);
         intent.putExtra(IntentFields.POSTID, id + "");
         startActivity(intent);
