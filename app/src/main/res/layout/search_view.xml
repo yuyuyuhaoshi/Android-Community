@@ -1,43 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="@dimen/fillet_frame_height"
-    android:background="@drawable/fillet_frame"
-    android:layout_marginBottom="20dp">
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/fillet_frame">
+
     <SearchView
         android:id="@+id/search"
         android:layout_width="0dp"
         android:layout_height="@dimen/fillet_frame_height"
+        android:layout_weight="1"
         android:background="@drawable/fillet_frame"
-        android:queryHint="搜索朝闻道内容"
-        android:layout_weight="1">
-    </SearchView>
+        android:queryHint="搜索朝闻道内容"></SearchView>
+
     <LinearLayout
         android:id="@+id/line_post"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="@dimen/fillet_frame_height"
-            android:text="|"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/offset_10dp"
-            android:textSize="23sp"
-            android:textColor="@color/colorCommonForegroundGrey"/>
+            android:text="|"
+            android:textColor="@color/colorCommonForegroundGrey"
+            android:textSize="23sp" />
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/post_icon"/>
+            android:background="@drawable/post_icon" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/post"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/offset_10dp"
             android:layout_marginEnd="@dimen/offset_20dp"
-            android:textSize="@dimen/button_font_size_15sp"
-            android:textColor="@color/colorCommonForegroundGrey"/>
+            android:layout_marginStart="@dimen/offset_10dp"
+            android:text="@string/post"
+            android:textColor="@color/colorCommonForegroundGrey"
+            android:textSize="@dimen/button_font_size_15sp" />
     </LinearLayout>
 
 </LinearLayout>

@@ -1,112 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <TextView
         android:id="@+id/id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <TextView
         android:id="@+id/post_id"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:visibility="gone" />
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="95dp">
+
         <TextView
             android:id="@+id/read_notification"
-            android:layout_alignParentEnd="true"
             android:layout_width="wrap_content"
-            android:padding="30dp"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:padding="30dp"
             android:text="@string/have_read"
             android:textColor="@color/colorWhite"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:background="@color/colorPrimary"/>
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/delete_notification"
-            android:layout_toStartOf="@id/read_notification"
             android:layout_width="wrap_content"
-            android:padding="30dp"
             android:layout_height="match_parent"
+            android:layout_toStartOf="@id/read_notification"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center"
+            android:padding="30dp"
             android:text="@string/delete"
             android:textColor="@color/colorWhite"
-            android:gravity="center"
-            android:textSize="20sp"
-            android:background="@color/colorPrimaryDark"/>
+            android:textSize="20sp" />
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/foreground"
         android:layout_width="match_parent"
         android:layout_height="95dp"
+        android:background="@color/colorWhite"
         android:orientation="vertical"
-        android:paddingTop="20dp"
         android:paddingBottom="10dp"
-        android:background="@color/colorWhite">
+        android:paddingTop="20dp">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <RelativeLayout
                 android:id="@+id/re"
                 android:layout_width="50dp"
                 android:layout_height="50dp">
+
                 <ImageView
                     android:id="@+id/replay_avatar"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:background="@drawable/jerry_zheng"/>
+                    android:background="@drawable/jerry_zheng" />
+
                 <ImageView
                     android:id="@+id/red_dot"
-                    android:layout_alignParentEnd="true"
                     android:layout_width="15dp"
                     android:layout_height="15dp"
-                    android:background="@drawable/ic_red_dot"/>
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ic_red_dot" />
             </RelativeLayout>
+
             <LinearLayout
-                android:layout_marginStart="10dp"
-                android:layout_toEndOf="@id/re"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@id/re"
                 android:orientation="vertical">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
+
                         <TextView
                             android:id="@+id/replay_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/magician"/>
+                            android:text="@string/magician" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/liked_your_comment"/>
+                            android:text="@string/liked_your_comment" />
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/replay_date"
-                        android:layout_alignParentEnd="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5月20日"/>
+                        android:layout_alignParentEnd="true"
+                        android:text="5月20日" />
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:layout_marginTop="10dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/replay_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="苟利国家生死以，岂因祸福避趋之苟利国家生死以，岂因祸福避趋之苟利国家生死以，岂因祸福避趋之"/>
+                        android:text="苟利国家生死以，岂因祸福避趋之苟利国家生死以，岂因祸福避趋之苟利国家生死以，岂因祸福避趋之" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>
