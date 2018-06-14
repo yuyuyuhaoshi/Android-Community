@@ -25,8 +25,7 @@ public class MugshotUrl {
 
                     @Override
                     public void onResponse(Bitmap response, int id) {
-                        ImageView mImageView = imageView;
-                        mImageView.setImageBitmap(response);
+                        imageView.setImageBitmap(response);
                     }
                 });
     }
