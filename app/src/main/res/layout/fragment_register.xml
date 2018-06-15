@@ -27,7 +27,8 @@
             android:layout_margin="@dimen/offset_20dp"
             android:background="@drawable/edit_text_frame"
             android:hint="@string/password"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:inputType="textPassword"/>
 
         <EditText
             android:id="@+id/register_repeat_password"
@@ -37,7 +38,8 @@
             android:layout_margin="@dimen/offset_20dp"
             android:background="@drawable/edit_text_frame"
             android:hint="@string/repeat_password"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/register_email"
