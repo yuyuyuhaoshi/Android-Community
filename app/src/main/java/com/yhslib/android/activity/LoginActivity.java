@@ -1,6 +1,7 @@
 package com.yhslib.android.activity;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -33,12 +36,21 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Window window = getWindow();
+//        //隐藏标题栏
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        //隐藏状态栏
+//        //定义全屏参数
+//        int flag= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+//        //设置当前窗体为全屏显示
+//        window.setFlags(flag, flag);
 
         if (Build.VERSION.SDK_INT >= 21) {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
             decorView.setSystemUiVisibility(option);
+            getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
