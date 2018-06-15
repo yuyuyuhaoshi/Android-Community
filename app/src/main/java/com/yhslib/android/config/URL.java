@@ -13,6 +13,7 @@ public class URL {
 
         public static String login() {
             // method:post
+            // return http://api.dj-china.org/rest-auth/login/
             return host + "/rest-auth/login/";
         }
 

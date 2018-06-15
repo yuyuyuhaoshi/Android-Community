@@ -40,7 +40,7 @@ public class MyInfoActivity extends BaseActivity {
     private String mugshot_url;
 
     private AlertDialog.Builder changeNicknameDialogBuilder, changePasswordDialogBuilder;
-    private LinearLayout changeNicknameLayout, changePasswordLayout, changeEmailLayout;
+    private LinearLayout changeNicknameLayout, changePasswordLayout, changeEmailLayout, changeViaLayout;
     private AlertDialog changeNicknameDialog, changePasswordDialog;
     private TextView nicknameTxt;
     private ImageView myViaImage;
@@ -75,6 +75,7 @@ public class MyInfoActivity extends BaseActivity {
         changeEmailLayout = findViewById(R.id.my_info_change_email);
         nicknameTxt = findViewById(R.id.my_info_nickname);
         myViaImage = findViewById(R.id.my_info_via);
+        changeViaLayout = findViewById(R.id.my_info_change_via);
         actionBar = getSupportActionBar();
     }
 
