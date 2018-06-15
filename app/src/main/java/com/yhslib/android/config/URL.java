@@ -13,6 +13,7 @@ public class URL {
 
         public static String login() {
             // method:post
+            // return http://api.dj-china.org/rest-auth/login/
             return host + "/rest-auth/login/";
         }
 
@@ -81,6 +82,12 @@ public class URL {
             // return http://api.dj-china.org/users/1/checkin/;
             return host + "/users/" + userId + "/checkin/";
         }
+
+        public static String getReplyList(String userId) {
+            // method: post
+            // return http://api.dj-china.org/users/1/replies/;
+            return host + "/users/" + userId + "/replies/";
+        }
     }
 
     public static class Post {
@@ -123,7 +130,5 @@ public class URL {
             // return http://api.dj-china.org/rest-auth/jwt-refresh/;
             return host + "/rest-auth/jwt-refresh/";
         }
-
-
     }
 }

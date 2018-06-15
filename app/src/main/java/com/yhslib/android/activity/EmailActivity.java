@@ -345,7 +345,7 @@ public class EmailActivity extends BaseActivity {
      * @param emailID email的id
      */
     private void verifyEmail(String emailID) {
-        String url = URL.User.deleteEmail(emailID);
+        String url = URL.User.reverifyEmail(emailID);
         OkHttpUtils
                 .get()
                 .url(url)

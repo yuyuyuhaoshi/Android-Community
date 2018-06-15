@@ -35,7 +35,7 @@
                     android:text="在  " />
 
                 <TextView
-                    android:id="@+id/replay_name"
+                    android:id="@+id/post_author_nickname"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/magician"
@@ -48,7 +48,7 @@
                     android:text="  的文章：" />
 
                 <TextView
-                    android:id="@+id/replay_date"
+                    android:id="@+id/reply_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5月20日" />
@@ -60,7 +60,7 @@
                 android:layout_marginTop="@dimen/offset_10dp">
 
                 <TextView
-                    android:id="@+id/replay_article"
+                    android:id="@+id/post_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -85,17 +85,17 @@
         android:padding="@dimen/offset_8dp">
 
         <TextView
-            android:id="@+id/final_text_my_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="说：" />
 
         <TextView
-            android:id="@+id/replay_text"
+            android:id="@+id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="苟利国家生死以，岂因祸福避趋之"
-            android:textColor="@color/colorPrimaryText" />
+            android:textColor="@color/colorPrimaryText"
+            android:singleLine="true"/>
     </LinearLayout>
 
 </LinearLayout>

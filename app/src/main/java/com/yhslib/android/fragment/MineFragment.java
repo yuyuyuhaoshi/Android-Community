@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.yhslib.android.R;
 import com.yhslib.android.activity.MyInfoActivity;
 import com.yhslib.android.activity.MyPostsActivity;
+import com.yhslib.android.activity.MyReplyActivity;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseFragment;
@@ -54,7 +55,7 @@ public class MineFragment extends BaseFragment {
     private String mugshot_url = "";
     private Boolean ClickFlag = false; // 当数据加载完才能点击
 
-    private LinearLayout myPostsLayout, myCheckinLayout, nicknameLayout;
+    private LinearLayout myPostsLayout, myCheckinLayout, nicknameLayout, myReplyLayout;
 
     public static MineFragment newInstance(String userid, String token) {
         Bundle args = new Bundle();
@@ -92,6 +93,7 @@ public class MineFragment extends BaseFragment {
         myCheckinLayout = view.findViewById(R.id.mine_my_checkin);
         checkinTxt = view.findViewById(R.id.checkin);
         copperCoinTxt = view.findViewById(R.id.copper_coin);
+        myReplyLayout = view.findViewById(R.id.mine_my_reply);
     }
 
     @Override
@@ -102,6 +104,19 @@ public class MineFragment extends BaseFragment {
 
     @Override
     protected void setListener() {
+        myReplyLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!ClickFlag) {
+                    return;
+                }
+                Intent intent = new Intent(getActivity(), MyReplyActivity.class);
+                intent.putExtra(IntentFields.USERID, USERID);
+                intent.putExtra(IntentFields.TOKEN, TOKEN);
+                startActivity(intent);
+            }
+        });
+
         myPostsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

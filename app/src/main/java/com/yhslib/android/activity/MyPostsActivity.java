@@ -85,6 +85,15 @@ public class MyPostsActivity extends BaseActivity {
         fetchPosts();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.return_image:
+                MyPostsActivity.this.finish();
+                break;
+        }
+    }
+
     /**
      * [下拉加载下一页文章]
      */
@@ -228,12 +237,4 @@ public class MyPostsActivity extends BaseActivity {
         startActivity(intent);
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.return_image:
-                MyPostsActivity.this.finish();
-                break;
-        }
-    }
 }
