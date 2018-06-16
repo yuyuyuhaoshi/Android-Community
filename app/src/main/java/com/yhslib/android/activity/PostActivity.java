@@ -161,7 +161,7 @@ public class PostActivity extends BaseActivity {
     }
 
     /**
-     * [解析文章所属的评论信息]
+     * 获取文章所属的评论信息
      */
     private void fetchReply() {
         RefreshFlag = false;
@@ -209,7 +209,7 @@ public class PostActivity extends BaseActivity {
     /**
      * [解析文章JSON数据]
      *
-     * @param response
+     * @param response 相应数据
      * @return hashMap
      */
     private HashMap<String, Object> formatPostJSON(String response) {
@@ -235,9 +235,9 @@ public class PostActivity extends BaseActivity {
     }
 
     /**
-     * [解析评论JSON数据]
+     * 解析评论JSON数据
      *
-     * @param response
+     * @param response 相应数据
      * @return ArrayList
      */
     private ArrayList<HashMap<String, Object>> formatReplyJSON(String response) {
