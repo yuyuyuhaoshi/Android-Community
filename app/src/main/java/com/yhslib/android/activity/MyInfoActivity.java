@@ -3,7 +3,10 @@ package com.yhslib.android.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.soundcloud.android.crop.Crop;
 import com.yhslib.android.R;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
@@ -25,11 +29,22 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
+import java.util.Random;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.FormBody;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class MyInfoActivity extends BaseActivity {
     private String TAG = "MyInfoActivity";
@@ -46,6 +61,8 @@ public class MyInfoActivity extends BaseActivity {
     private ImageView myViaImage;
     private ActionBar actionBar;
     private ImageView returnArrowImage;
+
+    private Bitmap headerBitmap;
 
 
     @Override
@@ -98,6 +115,7 @@ public class MyInfoActivity extends BaseActivity {
         changePasswordLayout.setOnClickListener(this);
         changeEmailLayout.setOnClickListener(this);
         returnArrowImage.setOnClickListener(this);
+        changeViaLayout.setOnClickListener(this);
     }
 
     @Override
@@ -122,6 +140,9 @@ public class MyInfoActivity extends BaseActivity {
                 break;
             case R.id.return_image:
                 MyInfoActivity.this.finish();
+                break;
+            case R.id.my_info_change_via:
+                Crop.pickImage(this);
                 break;
         }
     }
@@ -186,6 +207,39 @@ public class MyInfoActivity extends BaseActivity {
         changePasswordDialog = changePasswordDialogBuilder.create();
         changePasswordDialog.setCanceledOnTouchOutside(true);
         changePasswordDialog.setView(dialogView);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
+        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+            beginCrop(result.getData());
+        } else if (requestCode == Crop.REQUEST_CROP) {
+            handleCrop(resultCode, result);
+        }
+    }
+
+    private void beginCrop(Uri source) {
+        Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
+        Crop.of(source, destination).asSquare().start(this);
+    }
+
+    private void handleCrop(int resultCode, Intent result) {
+        if (resultCode == RESULT_OK) {
+            try {
+                headerBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Crop.getOutput(result));
+            } catch (IOException e) {
+                e.printStackTrace();
+                Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+                return;
+            }
+            // resultView.setImageURI(Crop.getOutput(result));
+            File image = convertBitmapToFile(headerBitmap);
+            if (image != null) {
+                handleChangeVia(image);
+            }
+        } else if (resultCode == Crop.RESULT_ERROR) {
+            Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -279,5 +333,97 @@ public class MyInfoActivity extends BaseActivity {
                         Toast.makeText(MyInfoActivity.this, "密码修改成功", Toast.LENGTH_SHORT).show();
                     }
                 });
+    }
+
+    private File convertBitmapToFile(Bitmap bitmap) {
+        File filesDir = getApplicationContext().getFilesDir();
+        File imageFile = new File(filesDir, "via.jpg");
+        OutputStream os;
+        try {
+            os = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            Log.e(getClass().getSimpleName(), "Error writing bitmap", e);
+            Toast.makeText(MyInfoActivity.this, "头像裁剪失败", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        return imageFile;
+    }
+
+    private String randomString() {
+        String str = "zxcvbnmlkjhgfdsaqwertyuiopQWERTYUIOPASDFGHJKLZXCVBNM1234567890";
+        int length = 10;
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        //长度为几就循环几次
+        for (int i = 0; i < length; ++i) {
+            //产生0-61的数字
+            int number = random.nextInt(62);
+            sb.append(str.charAt(number));
+        }
+        //将承载的字符转换成字符串
+        return sb.toString();
+    }
+
+    /**
+     * TODO头像上传
+     *
+     * @param
+     * @return
+     */
+    private void handleChangeVia(File image) {
+        Log.d(TAG, image.getName());
+        String s = randomString();
+        String url = URL.User.changeVia() + s + ".jpg";
+        OkHttpClient client = new OkHttpClient();
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpeg"), image);
+        MultipartBody multipartBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("filename", "s" + ".jpg", requestBody)
+                .build();
+        final Request request = new Request.Builder()
+                .url(url)
+                .post(multipartBody)
+                .addHeader("Authorization", "Bearer " + token)
+                .build();
+        try {
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onFailure(Call call, IOException e) {
+                    Log.d(TAG, e.getMessage());
+                    return;
+                }
+
+                @Override
+                public void onResponse(Call call, Response response) throws IOException {
+
+                }
+            });
+        } catch (RuntimeException e) {
+            Log.d(TAG, e.getMessage());
+            Toast.makeText(MyInfoActivity.this, "头像修改失败", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Toast.makeText(MyInfoActivity.this, "头像修改成功", Toast.LENGTH_SHORT).show();
+//        OkHttpUtils.post()
+//                .addFile("file", image.getName(), image)
+//                .url(url)
+//                .addHeader("Authorization", "Bearer " + token)
+//                .build()
+//                .execute(new StringCallback() {
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        Toast.makeText(MyInfoActivity.this, "头像修改失败", Toast.LENGTH_SHORT).show();
+//                        Log.d(TAG, e.getMessage());
+//                    }
+//
+//                    @Override
+//                    public void onResponse(String response, int id) {
+//                        Log.d(TAG, response);
+//                        Toast.makeText(MyInfoActivity.this, "头像修改成功", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
     }
 }

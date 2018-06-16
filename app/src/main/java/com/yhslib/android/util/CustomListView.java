@@ -134,4 +134,11 @@ public class CustomListView extends ListView {
         if (progressDialog != null)
             progressDialog.dismiss();
     }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int expandSpec = View.MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
+                View.MeasureSpec.AT_MOST);
+        super.onMeasure(widthMeasureSpec, expandSpec);
+    }
 }
