@@ -1,5 +1,7 @@
 package com.yhslib.android.config;
 
+import java.util.Random;
+
 public class URL {
     // 文档 https://www.showdoc.cc/web/#/djangochina
     public static final String host = "http://api.dj-china.org";
@@ -87,6 +89,13 @@ public class URL {
             // method: post
             // return http://api.dj-china.org/users/1/replies/;
             return host + "/users/" + userId + "/replies/";
+        }
+
+        public static String changeVia() {
+            // method: post
+            // return http://api.dj-china.org/users/mugshot/;
+
+            return host + "/users/mugshot/";
         }
     }
 

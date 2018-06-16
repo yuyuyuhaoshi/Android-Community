@@ -17,6 +17,6 @@ public final class HashMapField {
     public static final String POST_TITLE = "POST_TITLE";
     public static final String POST_ID = "POST_ID";
     public static final String COMMENT = "COMMENT";
-
+    public static final String LIKE = "LIKE";
     public static final String TIME = "TIME";
 }

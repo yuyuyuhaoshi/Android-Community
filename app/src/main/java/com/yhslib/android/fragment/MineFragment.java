@@ -175,7 +175,7 @@ public class MineFragment extends BaseFragment {
                     @Override
                     public void onResponse(String response, int id) {
                         Toast.makeText(getActivity(), "签到成功", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, response);
+                        fetchBalance();
                     }
                 });
     }
@@ -258,5 +258,11 @@ public class MineFragment extends BaseFragment {
             e.printStackTrace();
         }
         return hashMap;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchPersonalInformation();
     }
 }

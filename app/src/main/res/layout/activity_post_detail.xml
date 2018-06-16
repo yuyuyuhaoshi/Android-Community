@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <ScrollView
+    <com.yhslib.android.util.CustomScrollView
+        android:id="@+id/post_detail_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/offset_6dp"
@@ -92,100 +93,26 @@
 
             </LinearLayout>
 
-
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/offset_2dp"
                 android:layout_marginTop="@dimen/offset_10dp"
                 android:background="@color/colorDivider" />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/offset_10dp"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:layout_width="@dimen/offset_30dp"
-                        android:layout_height="@dimen/offset_30dp"
-                        android:src="@mipmap/via" />
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/offset_10dp"
-                        android:layout_marginTop="@dimen/offset_6dp"
-                        android:layout_weight="1"
-                        android:text="此项为假数据 TODO 层级回复"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="@dimen/font_size_normal" />
-
-                    <ImageView
-                        android:layout_width="@dimen/offset_30dp"
-                        android:layout_height="@dimen/offset_30dp"
-                        android:src="@mipmap/good" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/offset_10dp"
-                        android:layout_marginTop="@dimen/offset_6dp"
-                        android:text="290"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="@dimen/font_size_normal" />
-
-                    <ImageView
-                        android:layout_width="@dimen/offset_30dp"
-                        android:layout_height="@dimen/offset_30dp"
-                        android:layout_marginLeft="@dimen/offset_10dp"
-                        android:src="@mipmap/more" />
-                </LinearLayout>
-
-                <TextView
+                <com.yhslib.android.util.CustomListView
+                    android:id="@+id/reply_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/temporary_reply"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="@dimen/font_size_normal" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/offset_10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="一小时前"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="@dimen/font_size_normal" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/offset_10dp"
-                        android:text="@string/reply"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="@dimen/font_size_normal" />
-
-                </LinearLayout>
+                    android:layout_marginTop="@dimen/offset_10dp" />
             </LinearLayout>
-
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/offset_10dp" />
 
 
         </LinearLayout>
 
-
-    </ScrollView>
-
+    </com.yhslib.android.util.CustomScrollView>
 
 </LinearLayout>
