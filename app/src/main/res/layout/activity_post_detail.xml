@@ -67,10 +67,17 @@
                     android:text="@string/attention" />
             </LinearLayout>
 
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/offset_2dp"
+                android:layout_marginTop="@dimen/offset_10dp"
+                android:background="@color/colorDivider" />
+
             <TextView
                 android:id="@+id/post_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/offset_20dp"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="@dimen/font_size_normal_high" />
 

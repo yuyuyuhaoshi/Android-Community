@@ -89,7 +89,7 @@ public class PostActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        getSupportActionBar().hide();
     }
 
     @Override

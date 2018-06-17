@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <LinearLayout android:id="@+id/bar"
+    <LinearLayout
+        android:id="@+id/bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -26,25 +27,29 @@
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
                 tools:ignore="RtlSymmetry">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1">
+
                     <TextView
                         android:id="@+id/comment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/comment"
-                        tools:ignore="NestedWeights"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent" />
+                        tools:ignore="NestedWeights" />
+
                     <ImageView
                         android:id="@+id/dot_comment"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
                         android:layout_width="25dp"
                         android:layout_height="15dp"
-                        android:background="@drawable/ic_red_dot"/>
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/ic_red_dot" />
+
                     <TextView
                         android:id="@+id/unread_comment"
                         android:layout_width="25dp"
@@ -52,9 +57,9 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="10dp"
                         android:gravity="center"
-                        android:textSize="10sp"
+                        android:text="000"
                         android:textColor="@color/colorWhite"
-                        android:text="000"/>
+                        android:textSize="10sp" />
                 </RelativeLayout>
 
                 <ImageView
@@ -72,25 +77,29 @@
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
                 tools:ignore="RtlSymmetry">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1">
+
                     <TextView
                         android:id="@+id/atMe"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/at_me"
-                        tools:ignore="NestedWeights"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent" />
+                        tools:ignore="NestedWeights" />
+
                     <ImageView
                         android:id="@+id/dot_atMe"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
                         android:layout_width="25dp"
                         android:layout_height="15dp"
-                        android:background="@drawable/ic_red_dot"/>
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/ic_red_dot" />
+
                     <TextView
                         android:id="@+id/unread_atMe"
                         android:layout_width="25dp"
@@ -98,10 +107,11 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="10dp"
                         android:gravity="center"
-                        android:textSize="10sp"
+                        android:text="99+"
                         android:textColor="@color/colorWhite"
-                        android:text="99+"/>
+                        android:textSize="10sp" />
                 </RelativeLayout>
+
                 <ImageView
                     android:id="@+id/atMe_under_line"
                     android:layout_width="match_parent"
@@ -118,25 +128,29 @@
                 android:paddingEnd="5dp"
                 android:paddingStart="5dp"
                 tools:ignore="RtlSymmetry">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginBottom="5dp"
                     android:layout_weight="1">
+
                     <TextView
                         android:id="@+id/notice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/notice"
-                        tools:ignore="NestedWeights"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent" />
+                        tools:ignore="NestedWeights" />
+
                     <ImageView
                         android:id="@+id/dot_notice"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
                         android:layout_width="25dp"
                         android:layout_height="15dp"
-                        android:background="@drawable/ic_red_dot"/>
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/ic_red_dot" />
+
                     <TextView
                         android:id="@+id/unread_notice"
                         android:layout_width="25dp"
@@ -144,9 +158,9 @@
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="10dp"
                         android:gravity="center"
-                        android:textSize="10sp"
+                        android:text="000"
                         android:textColor="@color/colorWhite"
-                        android:text="000"/>
+                        android:textSize="10sp" />
                 </RelativeLayout>
 
                 <ImageView
@@ -164,6 +178,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="10dp" />
     </LinearLayout>
+
     <include
         android:id="@+id/footer_layout"
         layout="@layout/footer_more"

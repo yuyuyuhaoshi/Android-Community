@@ -7,67 +7,71 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="220dp"
-        android:src="@drawable/banner"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:src="@drawable/banner" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            >
+            android:orientation="horizontal">
+
             <TextView
-                android:layout_marginTop="@dimen/offset_22dp"
-                android:layout_marginLeft="@dimen/offset_88dp"
                 android:id="@+id/login_textview"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/login"
-                android:textStyle="bold"
-                android:layout_width="wrap_content" />
-            <TextView
-                android:layout_marginTop="@dimen/offset_22dp"
-                android:layout_marginRight="@dimen/offset_88dp"
-                android:id="@+id/register_textview"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/register"
-                android:textStyle="bold"
-                android:gravity="right"
                 android:layout_width="wrap_content"
-                android:layout_alignRight="@id/login_textview"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/offset_88dp"
+                android:layout_marginTop="@dimen/offset_22dp"
+                android:layout_weight="1"
+                android:text="@string/login"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/register_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignRight="@id/login_textview"
+                android:layout_marginRight="@dimen/offset_88dp"
+                android:layout_marginTop="@dimen/offset_22dp"
+                android:layout_weight="1"
+                android:gravity="right"
+                android:text="@string/register"
+                android:textStyle="bold" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 
             android:orientation="horizontal">
+
             <View
                 android:id="@+id/login_underline"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_2dp"
-                android:layout_weight="1"
                 android:layout_marginTop="@dimen/offset_10dp"
-                android:background="@color/colorGray"
-                />
+                android:layout_weight="1"
+                android:background="@color/colorGray" />
+
             <View
                 android:id="@+id/register_underline"
-                android:layout_marginTop="@dimen/offset_10dp"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/offset_2dp"
+                android:layout_marginTop="@dimen/offset_10dp"
                 android:layout_weight="1"
-                android:background="@color/colorLightGray"
-                />
+                android:background="@color/colorLightGray" />
         </LinearLayout>
     </LinearLayout>
+
     <FrameLayout
         android:id="@+id/login_title"
-        android:layout_margin="@dimen/offset_10dp"
-        android:layout_gravity="center"
-        android:background="@drawable/large_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </FrameLayout>
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/offset_10dp"
+        android:background="@drawable/large_frame"></FrameLayout>
 </LinearLayout>
