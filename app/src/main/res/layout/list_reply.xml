@@ -60,6 +60,7 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/like_button"
                 android:layout_width="@dimen/offset_20dp"
                 android:layout_height="@dimen/offset_20dp"
                 android:src="@mipmap/good" />

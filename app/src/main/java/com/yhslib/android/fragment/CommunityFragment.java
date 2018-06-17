@@ -49,7 +49,8 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     private View layoutSearch, layoutPopularTags;
     private SearchView searchView;
     private View.OnClickListener tagsOnClickListener;
-    private TextView tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag1Id, tag2Id, tag3Id, tag4Id, tag5Id, tag6Id, tag7Id, tag8Id, textViewPopularArticles;
+    private TextView tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag1Id, tag2Id, tag3Id, tag4Id,
+            tag5Id, tag6Id, tag7Id, tag8Id, textViewPopularArticles;
     private SimpleAdapter adapter;
     private View layoutSwipe;
     private TextView[] tags, tagsId;
@@ -59,20 +60,25 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     private int mPage = 1;
     private int mIndex = 1;
     private View footer;
-    EditText searchText;
+    private EditText searchText;
     private boolean isSearchTag = false;
-    int lastPage = 0;
+    private int lastPage = 0;
+    private String TOKEN;
 
-    public static CommunityFragment newInstance() {
+    public static CommunityFragment newInstance(String token) {
         Bundle args = new Bundle();
         CommunityFragment fragment = new CommunityFragment();
+        args.putString(IntentFields.TOKEN, token);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     protected void getDataFromBundle() {
-
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            TOKEN = bundle.getString(IntentFields.TOKEN);
+        }
     }
 
     @Override
@@ -99,7 +105,8 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         searchView = layoutSearch.findViewById(R.id.search);
         layoutSwipe = view.findViewById(R.id.swipe);
         textViewPopularArticles = view.findViewById(R.id.popular_articles);
-        int id = searchView.getContext().getResources().getIdentifier("android:id/search_src_text", null, null);
+        int id = searchView.getContext().getResources().
+                getIdentifier("android:id/search_src_text", null, null);
         searchText = searchView.findViewById(id);
         tag1 = layoutPopularTags.findViewById(R.id.tag1);
         tag2 = layoutPopularTags.findViewById(R.id.tag2);
@@ -457,13 +464,15 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
         }
 
         @Override
-        protected void handleItem(int itemViewType, int position, RefreshListItem item, ViewHolder holder, boolean reused) {
+        protected void handleItem(int itemViewType, int position, RefreshListItem item,
+                                  ViewHolder holder, boolean reused) {
             holder.get(R.id.post_id, TextView.class).setText(item.postId);
             holder.get(R.id.articles_tittle, TextView.class).setText(item.tittle);
             holder.get(R.id.articles_name, TextView.class).setText(item.name);
             holder.get(R.id.articles_date, TextView.class).setText(item.date);
             holder.get(R.id.articles_tag, TextView.class).setText(item.tag);
-            holder.get(R.id.articles_image, ImageView.class).setImageResource(Integer.parseInt(item.image));
+            holder.get(R.id.articles_image, ImageView.class).
+                    setImageResource(Integer.parseInt(item.image));
         }
     }
 
@@ -474,7 +483,8 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         int fetch;
         final ListView mListView = mContentRlv.getmListView();
-        if (mListView.getLastVisiblePosition() >= mListView.getChildCount())//get到的child只能是屏幕显示的，如第100个child，在屏幕里面当前是第2个，那么应当是第二个child而非100
+        // get到的child只能是屏幕显示的，如第100个child，在屏幕里面当前是第2个，那么应当是第二个child而非100
+        if (mListView.getLastVisiblePosition() >= mListView.getChildCount())
         {
             fetch = mListView.getChildCount() - 1 - (mListView.getLastVisiblePosition() - position);
         } else {
@@ -495,6 +505,7 @@ public class CommunityFragment extends BaseFragment implements SimpleListView.On
     private void showPostDetail(Long id) {
         Intent intent = new Intent(getContext(), PostActivity.class);
         intent.putExtra(IntentFields.POSTID, id + "");
+        intent.putExtra(IntentFields.TOKEN, TOKEN);
         startActivity(intent);
     }
 }

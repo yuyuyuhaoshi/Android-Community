@@ -40,6 +40,11 @@ public class ReplyListAdapter extends BaseAdapter {
     }
 
     @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+
+    @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //return super.getView(position, convertView, parent);
         if (inflater == null) {
