@@ -93,9 +93,9 @@
             android:id="@+id/comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:text="苟利国家生死以，岂因祸福避趋之"
-            android:textColor="@color/colorPrimaryText"
-            android:singleLine="true"/>
+            android:textColor="@color/colorPrimaryText" />
     </LinearLayout>
 
 </LinearLayout>

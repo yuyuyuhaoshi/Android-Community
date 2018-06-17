@@ -1,11 +1,15 @@
 package com.yhslib.android.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,10 +48,13 @@ public class PostActivity extends BaseActivity {
     private TextView postCreatedTime;
     private TextView postViewsCount;
     private ImageView postAuthorMugshotImage;
+    private LinearLayout commentPostLayout;
     private CustomListView listView;
     private CustomScrollView scrollview;
 
     private ReplyListAdapter adapter;
+    private AlertDialog.Builder commentDialogBuilder;
+    private AlertDialog commentDialog;
 
     private Boolean RefreshFlag = false; // 防止多次刷新标记
     private int currentPage = 1;
@@ -85,16 +92,19 @@ public class PostActivity extends BaseActivity {
         postCreatedTime = findViewById(R.id.post_created_time);
         listView = findViewById(R.id.reply_list);
         scrollview = findViewById(R.id.post_detail_scrollview);
+        commentPostLayout = findViewById(R.id.comment_post_layout);
     }
 
     @Override
     protected void initView() {
-
+        getSupportActionBar().hide();
+        buildCommentDialog();
     }
 
     @Override
     protected void setListener() {
         setListViewPullListener();
+        commentPostLayout.setOnClickListener(this);
     }
 
     @Override
@@ -105,7 +115,11 @@ public class PostActivity extends BaseActivity {
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.comment_post_layout:
+                commentDialog.show();
+                break;
+        }
     }
 
     /**
@@ -209,6 +223,7 @@ public class PostActivity extends BaseActivity {
      * @param position 记录在ArrayList中的位置
      */
     private void handleLikeReply(String replyID, final int position) {
+        Log.d(TAG, "like");
         if (!canLikeFlag) {
             Toast.makeText(PostActivity.this, "请勿多次请求!", Toast.LENGTH_SHORT).show();
             return;
@@ -340,9 +355,88 @@ public class PostActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         handleLikeReply(id + "", position);
+                        Log.d(TAG, id + "");
                     }
                 });
             }
         });
+    }
+
+    /**
+     * 评论的对话框
+     */
+    private void buildCommentDialog() {
+        commentDialogBuilder = new AlertDialog.Builder(PostActivity.this);
+        commentDialogBuilder.setTitle("评论");
+        final EditText editText = new EditText(PostActivity.this);
+        commentDialogBuilder.setView(editText);
+        commentDialogBuilder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                handleCommentPost(editText.getText().toString());
+            }
+        });
+        commentDialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        commentDialogBuilder.setCancelable(true);
+        commentDialog = commentDialogBuilder.create();
+        commentDialog.setCanceledOnTouchOutside(true);
+    }
+
+    private void handleCommentPost(String comment) {
+        String url = URL.Post.comment();
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .addHeader("Content-Type", "application/json")
+                .addParams("object_pk", postID)
+                .addParams("comment", comment)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.d(TAG, e.getMessage());
+                        Toast.makeText(PostActivity.this, "评论失败!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        Log.d(TAG, response);
+                        hm.add(0, formatSingleCommentJSON(response));
+                        adapter.notifyDataSetChanged();
+                        Toast.makeText(PostActivity.this, "评论成功!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private Reply formatSingleCommentJSON(String response) {
+        Reply reply = new Reply();
+        try {
+            JSONObject replyObject = new JSONObject(response);
+            reply.setId(Integer.parseInt(replyObject.get("id").toString()));
+            reply.setComment(replyObject.getString("comment"));
+
+            // 设置随机头像
+            Random r = new Random();
+            int s = r.nextInt();
+            reply.setMugshot(s % 3 == 0 ? R.mipmap.via : (s % 3 == 1 ? R.drawable.jerry_zheng : R.drawable.hand_image8));
+
+            reply.setLike(0 + "");
+            String time = replyObject.getString("submit_date");
+            time = FormatDate.changeDate(time);
+            reply.setDate(time);
+
+            JSONObject userObject = replyObject.getJSONObject("user");
+            reply.setUserID(Integer.parseInt(userObject.getString("id")));
+            reply.setNickname(userObject.getString("nickname"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return reply;
     }
 }

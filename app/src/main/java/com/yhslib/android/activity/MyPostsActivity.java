@@ -236,5 +236,4 @@ public class MyPostsActivity extends BaseActivity {
         intent.putExtra(IntentFields.POSTID, id + "");
         startActivity(intent);
     }
-
 }

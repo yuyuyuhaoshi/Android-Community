@@ -19,7 +19,7 @@
         android:layout_height="match_parent"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:text="我的回复"
+        android:text="@string/mine_my_reply"
         android:textColor="@color/colorWhite"
         android:textSize="20sp" />
 

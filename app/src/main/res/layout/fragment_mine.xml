@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/mine_via"
                 android:layout_width="@dimen/offset_80dp"

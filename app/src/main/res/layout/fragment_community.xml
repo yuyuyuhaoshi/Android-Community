@@ -3,8 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/offset_10dp"
-    >
+    android:padding="@dimen/offset_10dp">
 
     <LinearLayout
         android:id="@+id/swipe"
@@ -57,9 +56,9 @@
 
         <include
             android:id="@+id/tags"
-            android:layout_height="wrap_content"
+            layout="@layout/popular_tags"
             android:layout_width="match_parent"
-            layout="@layout/popular_tags" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <include
@@ -67,8 +66,7 @@
         layout="@layout/footer_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
         android:layout_alignParentBottom="true"
-        />
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp" />
 </RelativeLayout>

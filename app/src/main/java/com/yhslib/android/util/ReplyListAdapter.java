@@ -13,6 +13,8 @@ import com.yhslib.android.R;
 
 import java.util.ArrayList;
 
+import ru.noties.markwon.Markwon;
+
 public class ReplyListAdapter extends BaseAdapter {
     private Activity activity;
     private ArrayList<Reply> replyArrayList;
@@ -39,10 +41,10 @@ public class ReplyListAdapter extends BaseAdapter {
         return Long.parseLong(replyArrayList.get(position).getId() + "");
     }
 
-    @Override
-    public boolean areAllItemsEnabled() {
-        return false;
-    }
+//    @Override
+//    public boolean areAllItemsEnabled() {
+//        return false;
+//    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -63,8 +65,12 @@ public class ReplyListAdapter extends BaseAdapter {
         mugshot.setImageResource(reply.getMugshot());
         nickname.setText(reply.getNickname());
         date.setText(reply.getDate());
-        comment.setText(reply.getComment());
+        Markwon.setMarkdown(comment, reply.getComment());
+        Markwon.scheduleDrawables(comment);
+        // comment.setText(reply.getComment());
         like.setText(reply.getLike());
+
+
 
         return convertView;
     }

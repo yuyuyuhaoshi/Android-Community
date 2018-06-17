@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -50,6 +51,7 @@
             android:id="@+id/reply_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:focusable="false"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/font_size_normal" />
 
@@ -63,6 +65,8 @@
                 android:id="@+id/like_button"
                 android:layout_width="@dimen/offset_20dp"
                 android:layout_height="@dimen/offset_20dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:src="@mipmap/good" />
 
             <TextView

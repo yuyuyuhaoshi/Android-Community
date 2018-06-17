@@ -11,5 +11,4 @@
         android:layout_marginBottom="@dimen/offset_14dp"
         android:layout_marginTop="@dimen/offset_14dp" />
 
-
 </LinearLayout>

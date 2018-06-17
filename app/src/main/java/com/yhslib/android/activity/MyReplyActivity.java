@@ -204,8 +204,24 @@ public class MyReplyActivity extends BaseActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // showPostDetail(id);
+                HashMap<String, Object> hashMap = hm.get(position);
+                Long postID = Long.parseLong(hashMap.get(HashMapField.POST_ID).toString());
+                showPostDetail(postID);
             }
         });
+    }
+
+    /**
+     * [启动文章详情页]
+     *
+     * @param id
+     */
+    private void showPostDetail(Long id) {
+        Log.d(TAG, id + "");
+        Intent intent = new Intent(MyReplyActivity.this, PostActivity.class);
+        intent.putExtra(IntentFields.USERID, userID);
+        intent.putExtra(IntentFields.TOKEN, token);
+        intent.putExtra(IntentFields.POSTID, id + "");
+        startActivity(intent);
     }
 }
