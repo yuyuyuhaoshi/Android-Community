@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.yhslib.android.R;
@@ -18,6 +17,8 @@ import com.yhslib.android.util.CustomListView;
 import com.yhslib.android.util.CustomScrollView;
 import com.yhslib.android.util.FormatDate;
 import com.yhslib.android.util.MugshotUrl;
+import com.yhslib.android.util.Reply;
+import com.yhslib.android.util.ReplyListAdapter;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import okhttp3.Call;
 import ru.noties.markwon.Markwon;
@@ -45,13 +47,13 @@ public class PostActivity extends BaseActivity {
     private CustomListView listView;
     private CustomScrollView scrollview;
 
-    private SimpleAdapter adapter;
+    private ReplyListAdapter adapter;
 
     private Boolean RefreshFlag = false; // 防止多次刷新标记
     private int currentPage = 1;
     private int lastPage = 1;
 
-    private ArrayList<HashMap<String, Object>> hm = new ArrayList<>();
+    private ArrayList<Reply> hm = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,7 +185,7 @@ public class PostActivity extends BaseActivity {
                         Log.d(TAG, response);
                         ArrayList<HashMap<String, Object>> list = formatReplyJSON(response);
                         Log.d(TAG, list.toString());
-                        hm.addAll(formatReplyJSON(response));
+                        hm.addAll(formatHashMapToReply(formatReplyJSON(response)));
                         // 在请求第一页的时候初始化Adapter
                         // 其他时候更新Adapter即可
                         if (currentPage == 1) {
@@ -196,6 +198,7 @@ public class PostActivity extends BaseActivity {
                     }
                 });
     }
+
 
     /**
      * [加载头像]
@@ -260,6 +263,11 @@ public class PostActivity extends BaseActivity {
                 JSONObject userObject = replyObject.getJSONObject("user");
                 hashMap.put(HashMapField.USERID, userObject.getString("id"));
                 hashMap.put(HashMapField.NICKNAME, userObject.getString("nickname"));
+
+                // 设置随机头像
+                Random r = new Random();
+                int s = r.nextInt();
+                hashMap.put(HashMapField.MUGSHOT, s % 3 == 0 ? R.mipmap.via : (s % 3 == 1 ? R.drawable.jerry_zheng : R.drawable.hand_image8));
                 resultList.add(hashMap);
             }
         } catch (JSONException e) {
@@ -268,15 +276,8 @@ public class PostActivity extends BaseActivity {
         return resultList;
     }
 
-    private void setReplyListAdapter(final ArrayList<HashMap<String, Object>> list) {
-        String[] from = {HashMapField.NICKNAME, HashMapField.TIME, HashMapField.COMMENT, HashMapField.LIKE};
-        int[] to = {R.id.reply_nickname, R.id.reply_date, R.id.reply_detail, R.id.reply_like_count};
-        adapter = new SimpleAdapter(PostActivity.this, list, R.layout.list_reply, from, to) {
-            @Override
-            public long getItemId(int position) {
-                return Integer.parseInt(list.get(position).get(HashMapField.ID).toString());
-            }
-        };
+    private void setReplyListAdapter(final ArrayList<Reply> list) {
+        adapter = new ReplyListAdapter(this, list);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -285,5 +286,21 @@ public class PostActivity extends BaseActivity {
                 // showPostDetail(id);
             }
         });
+    }
+
+    private ArrayList<Reply> formatHashMapToReply(ArrayList<HashMap<String, Object>> list) {
+        ArrayList<Reply> replyList = new ArrayList<>();
+        for (HashMap<String, Object> i : list) {
+            Reply reply = new Reply();
+            reply.setId(Integer.parseInt(i.get(HashMapField.ID).toString()));
+            reply.setComment(i.get(HashMapField.COMMENT).toString());
+            reply.setMugshot(Integer.parseInt(i.get(HashMapField.MUGSHOT).toString()));
+            reply.setLike(i.get(HashMapField.LIKE).toString());
+            reply.setDate(i.get(HashMapField.TIME).toString());
+            reply.setUserID(Integer.parseInt(i.get(HashMapField.USERID).toString()));
+            reply.setNickname(i.get(HashMapField.NICKNAME).toString());
+            replyList.add(reply);
+        }
+        return replyList;
     }
 }

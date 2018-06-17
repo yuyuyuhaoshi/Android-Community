@@ -8,6 +8,7 @@
         android:id="@+id/reply_mugshot"
         android:layout_width="@dimen/offset_40dp"
         android:layout_height="@dimen/offset_40dp"
+        android:layout_marginTop="@dimen/offset_10dp"
         android:src="@mipmap/via" />
 
     <LinearLayout
@@ -35,7 +36,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/offset_6dp"
-                android:text="一小时前"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="@dimen/font_size_normal" />
 
@@ -50,7 +50,6 @@
             android:id="@+id/reply_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/temporary_reply"
             android:textColor="@color/colorPrimaryText"
             android:textSize="@dimen/font_size_normal" />
 
@@ -71,7 +70,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/offset_4dp"
                 android:gravity="center"
-                android:text="290"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="@dimen/font_size_normal" />
 

@@ -19,4 +19,5 @@ public final class HashMapField {
     public static final String COMMENT = "COMMENT";
     public static final String LIKE = "LIKE";
     public static final String TIME = "TIME";
+    public static final String MUGSHOT = "MUGSHOT";
 }

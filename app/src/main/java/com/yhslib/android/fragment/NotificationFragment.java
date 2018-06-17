@@ -455,8 +455,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
             return;
         }
         ArrayList<Map<String, Object>> data1 = getNotification(verb, -1);
-        for (Map<String, Object> map : data1
-                ) {
+        for (Map<String, Object> map : data1) {
             item = new RefreshListItem();
             item.replay_avatar = String.valueOf(map.get("replay_avatar"));
             item.replay_name = String.valueOf(map.get("replay_name"));
@@ -555,7 +554,6 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
         if (foreground != null) {
             closeMenu(foreground);//如果已经有菜单被展开那么关闭它
         }
-        Toast.makeText(getContext(), "长按了" + position + " ", Toast.LENGTH_SHORT).show();
         int fetch = 0;
         final ListView mListView = listView.getmListView();
         if (mListView.getLastVisiblePosition() >= mListView.getChildCount())//get到的child只能是屏幕显示的，如第100个child，在屏幕里面当前是第2个，那么应当是第二个child而非100
