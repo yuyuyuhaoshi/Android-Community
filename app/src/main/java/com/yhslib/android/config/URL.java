@@ -117,6 +117,12 @@ public class URL {
             // return http://api.dj-china.org/replies/1/like/;
             return host + "/replies/" + replyID + "/like/";
         }
+
+        public static String comment() {
+            // method: post
+            // return http://api.dj-china.org/replies/;
+            return host + "/replies/";
+        }
     }
 
     public static class Community {

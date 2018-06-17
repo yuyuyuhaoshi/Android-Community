@@ -41,10 +41,10 @@ public class ReplyListAdapter extends BaseAdapter {
         return Long.parseLong(replyArrayList.get(position).getId() + "");
     }
 
-    @Override
-    public boolean areAllItemsEnabled() {
-        return false;
-    }
+//    @Override
+//    public boolean areAllItemsEnabled() {
+//        return false;
+//    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -65,11 +65,12 @@ public class ReplyListAdapter extends BaseAdapter {
         mugshot.setImageResource(reply.getMugshot());
         nickname.setText(reply.getNickname());
         date.setText(reply.getDate());
+        Markwon.setMarkdown(comment, reply.getComment());
+        Markwon.scheduleDrawables(comment);
         // comment.setText(reply.getComment());
         like.setText(reply.getLike());
 
-        Markwon.setMarkdown(comment, reply.getComment());
-        Markwon.scheduleDrawables(comment);
+
 
         return convertView;
     }
