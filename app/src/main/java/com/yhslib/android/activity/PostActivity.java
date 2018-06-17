@@ -6,11 +6,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.yhslib.android.R;
-import com.yhslib.android.config.HashMapField;
 import com.yhslib.android.config.IntentFields;
 import com.yhslib.android.config.URL;
 import com.yhslib.android.util.BaseActivity;
@@ -18,6 +17,8 @@ import com.yhslib.android.util.CustomListView;
 import com.yhslib.android.util.CustomScrollView;
 import com.yhslib.android.util.FormatDate;
 import com.yhslib.android.util.MugshotUrl;
+import com.yhslib.android.util.Reply;
+import com.yhslib.android.util.ReplyListAdapter;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
@@ -27,6 +28,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import okhttp3.Call;
 import ru.noties.markwon.Markwon;
@@ -45,13 +47,14 @@ public class PostActivity extends BaseActivity {
     private CustomListView listView;
     private CustomScrollView scrollview;
 
-    private SimpleAdapter adapter;
+    private ReplyListAdapter adapter;
 
     private Boolean RefreshFlag = false; // 防止多次刷新标记
     private int currentPage = 1;
     private int lastPage = 1;
+    private Boolean canLikeFlag = true;
 
-    private ArrayList<HashMap<String, Object>> hm = new ArrayList<>();
+    private ArrayList<Reply> hm = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class PostActivity extends BaseActivity {
         userID = intent.getStringExtra(IntentFields.USERID);
         token = intent.getStringExtra(IntentFields.TOKEN);
         postID = intent.getStringExtra(IntentFields.POSTID);
+        Log.d(TAG, token);
     }
 
     @Override
@@ -180,9 +184,6 @@ public class PostActivity extends BaseActivity {
 
                     @Override
                     public void onResponse(String response, int id) {
-                        Log.d(TAG, response);
-                        ArrayList<HashMap<String, Object>> list = formatReplyJSON(response);
-                        Log.d(TAG, list.toString());
                         hm.addAll(formatReplyJSON(response));
                         // 在请求第一页的时候初始化Adapter
                         // 其他时候更新Adapter即可
@@ -193,6 +194,52 @@ public class PostActivity extends BaseActivity {
                         }
                         adapter.notifyDataSetChanged();
                         RefreshFlag = true;
+                    }
+                });
+    }
+
+
+    /**
+     * 请求点赞
+     * flag 保证不会多次请求
+     * 在请求开始标记为false
+     * 在响应结束标记为true
+     *
+     * @param replyID  点赞评论的id
+     * @param position 记录在ArrayList中的位置
+     */
+    private void handleLikeReply(String replyID, final int position) {
+        if (!canLikeFlag) {
+            Toast.makeText(PostActivity.this, "请勿多次请求!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        canLikeFlag = false;
+        String url = URL.Post.likeReply(replyID);
+        final Reply reply = hm.get(position);
+        OkHttpUtils
+                .post()
+                .url(url)
+                .addHeader("Authorization", "Bearer " + token)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        canLikeFlag = true;
+                        Log.d(TAG, e.getMessage());
+                        Toast.makeText(PostActivity.this, "已经赞过!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onResponse(String response, int id) {
+                        // 刷新ArrayList
+                        String like = reply.getLike();
+                        int l = Integer.parseInt(like) + 1;
+                        reply.setLike(l + "");
+                        hm.set(position, reply);
+                        adapter.notifyDataSetChanged();
+
+                        canLikeFlag = true;
+                        Toast.makeText(PostActivity.this, "点赞成功!", Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -240,8 +287,8 @@ public class PostActivity extends BaseActivity {
      * @param response 相应数据
      * @return ArrayList
      */
-    private ArrayList<HashMap<String, Object>> formatReplyJSON(String response) {
-        ArrayList<HashMap<String, Object>> resultList = new ArrayList<>();
+    private ArrayList<Reply> formatReplyJSON(String response) {
+        ArrayList<Reply> resultList = new ArrayList<>();
         try {
             JSONObject repliesObject = new JSONObject(response);
             JSONArray repliesArray = repliesObject.getJSONArray("data");
@@ -249,18 +296,27 @@ public class PostActivity extends BaseActivity {
             lastPage = repliesObject.getInt("last_page");
             for (int i = 0; i < repliesArray.length(); i++) {
                 JSONObject replyObject = (JSONObject) repliesArray.opt(i);
-                HashMap<String, Object> hashMap = new HashMap<>();
-                hashMap.put(HashMapField.ID, replyObject.get("id"));
-                hashMap.put(HashMapField.COMMENT, currentPage + replyObject.getString("comment"));
+
+                Reply reply = new Reply();
+                reply.setId(Integer.parseInt(replyObject.get("id").toString()));
+                reply.setComment(replyObject.getString("comment"));
+
+                // 设置随机头像
+                Random r = new Random();
+                int s = r.nextInt();
+                reply.setMugshot(s % 3 == 0 ? R.mipmap.via : (s % 3 == 1 ? R.drawable.jerry_zheng : R.drawable.hand_image8));
+
+                reply.setLike(replyObject.getString("like_count"));
                 String time = replyObject.getString("submit_date");
                 time = FormatDate.changeDate(time);
-                hashMap.put(HashMapField.TIME, time);
-                hashMap.put(HashMapField.LIKE, replyObject.getString("like_count"));
+                reply.setDate(time);
 
                 JSONObject userObject = replyObject.getJSONObject("user");
-                hashMap.put(HashMapField.USERID, userObject.getString("id"));
-                hashMap.put(HashMapField.NICKNAME, userObject.getString("nickname"));
-                resultList.add(hashMap);
+                reply.setUserID(Integer.parseInt(userObject.getString("id")));
+                reply.setNickname(userObject.getString("nickname"));
+
+
+                resultList.add(reply);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -268,21 +324,24 @@ public class PostActivity extends BaseActivity {
         return resultList;
     }
 
-    private void setReplyListAdapter(final ArrayList<HashMap<String, Object>> list) {
-        String[] from = {HashMapField.NICKNAME, HashMapField.TIME, HashMapField.COMMENT, HashMapField.LIKE};
-        int[] to = {R.id.reply_nickname, R.id.reply_date, R.id.reply_detail, R.id.reply_like_count};
-        adapter = new SimpleAdapter(PostActivity.this, list, R.layout.list_reply, from, to) {
-            @Override
-            public long getItemId(int position) {
-                return Integer.parseInt(list.get(position).get(HashMapField.ID).toString());
-            }
-        };
+    /**
+     * 自定义adapter重写
+     *
+     * @param list reply的ArrayList
+     */
+    private void setReplyListAdapter(final ArrayList<Reply> list) {
+        adapter = new ReplyListAdapter(this, list);
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // showPostDetail(id);
+            public void onItemClick(AdapterView<?> parent, View view, final int position, final long id) {
+                view.findViewById(R.id.like_button).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        handleLikeReply(id + "", position);
+                    }
+                });
             }
         });
     }

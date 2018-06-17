@@ -87,7 +87,7 @@ public class MainActivity extends BaseActivity {
         }
 
         fragments = new Fragment[FRAGMENT_COUNT];
-        fragments[COMMUNITY_FRAGMENT] = CommunityFragment.newInstance();
+        fragments[COMMUNITY_FRAGMENT] = CommunityFragment.newInstance(token);
         fragments[DISCOVERY_FRAGMENT] = DiscoveryFragment.newInstance();
         fragments[NOTIFICATION_FRAGMENT] = NotificationFragment.newInstance(token);
         fragments[MINE_FRAGMENT] = MineFragment.newInstance(userID, token);

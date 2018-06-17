@@ -111,6 +111,12 @@ public class URL {
             // return http://api.dj-china.org/post/1/replies/;
             return host + "/posts/" + postID + "/replies/";
         }
+
+        public static String likeReply(String replyID) {
+            // method: post
+            // return http://api.dj-china.org/replies/1/like/;
+            return host + "/replies/" + replyID + "/like/";
+        }
     }
 
     public static class Community {
