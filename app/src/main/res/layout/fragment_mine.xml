@@ -238,7 +238,7 @@
                 android:layout_width="@dimen/offset_0dp"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/offset_8dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:paddingTop="@dimen/offset_10dp"
                 android:text="@string/mine_my_check_in"
                 android:textColor="@color/colorPrimaryText"
@@ -251,7 +251,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="@dimen/offset_40dp"
+                    android:layout_width="@dimen/offset_30dp"
                     android:layout_height="@dimen/offset_40dp"
                     android:src="@drawable/gold" />
 
@@ -265,7 +265,7 @@
                     android:textSize="@dimen/font_size_normal" />
 
                 <ImageView
-                    android:layout_width="@dimen/offset_40dp"
+                    android:layout_width="@dimen/offset_30dp"
                     android:layout_height="@dimen/offset_40dp"
                     android:src="@drawable/silver" />
 
@@ -279,13 +279,13 @@
                     android:textSize="@dimen/font_size_normal" />
 
                 <ImageView
-                    android:layout_width="@dimen/offset_40dp"
+                    android:layout_width="@dimen/offset_30dp"
                     android:layout_height="@dimen/offset_40dp"
                     android:src="@drawable/copper" />
 
                 <TextView
                     android:id="@+id/copper_coin"
-                    android:layout_width="@dimen/offset_0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
