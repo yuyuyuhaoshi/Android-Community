@@ -49,18 +49,18 @@ public class LoginActivity extends BaseActivity {
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-            decorView.setSystemUiVisibility(option);
-            getWindow().setStatusBarColor(Color.TRANSPARENT);
+            decorView.setSystemUiVisibility(option);  //隐藏标题栏
+            getWindow().setStatusBarColor(Color.TRANSPARENT);//隐藏状态栏
         }
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.hide();
         }
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        FragmentManager fm = getSupportFragmentManager();//3.0以下版本,没有fragment的api,所以用getSupportFragmentManager间接获取FragmentManager()对象。
+        FragmentTransaction ft = fm.beginTransaction();//FragmentTransaction可以在运行时添加，删除或替换Fragment
         Fragment fragment = LoginFragment.newInstance();
         ft.replace(R.id.login_title, fragment);
-        ft.commit();
+        ft.commit();//提交修改
         findView();
     }
 
@@ -84,14 +84,14 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+    //初始视图(界面控件等)
     }
 
     @Override
     protected void setListener() {
         login_textview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {//login
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 Fragment fragment = LoginFragment.newInstance();
@@ -103,13 +103,13 @@ public class LoginActivity extends BaseActivity {
         });
         register_textview.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view) {//register
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
                 Fragment fragment = RegisterFragment.newInstance();
                 ft.replace(R.id.login_title, fragment);
                 ft.commit();
-                login_underline.setBackground(getResources().getDrawable((R.drawable.line_unchecked)));
+                login_underline.setBackground(getResources().getDrawable((R.drawable.line_unchecked)));//给View设置背景图片
                 register_underline.setBackground(getResources().getDrawable((R.drawable.line)));
             }
         });
@@ -122,7 +122,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        exit_dialog();
+        exit_dialog();//,判断Fragment栈里面有没有回退.
     }
 
     private void exit_dialog() {

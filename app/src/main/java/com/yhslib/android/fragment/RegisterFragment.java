@@ -109,6 +109,7 @@ public class RegisterFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                        //请求失败
                         Log.d(TAG, e.getMessage());
                         Toast.makeText(getActivity(), "注册失败，请重新注册!", Toast.LENGTH_LONG).show();
                     }

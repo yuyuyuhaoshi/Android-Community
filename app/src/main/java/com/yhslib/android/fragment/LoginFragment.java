@@ -37,7 +37,7 @@ public class LoginFragment extends BaseFragment {
     private EditText login_edt_name, login_edt_password;
     private Button login_button;
 
-    public static LoginFragment newInstance() {
+    public static LoginFragment newInstance() {//静态工厂方法,初始化fragment的参数，然后返回新的fragment到调用者
         Bundle args = new Bundle();
         LoginFragment fragment = new LoginFragment();
         fragment.setArguments(args);
