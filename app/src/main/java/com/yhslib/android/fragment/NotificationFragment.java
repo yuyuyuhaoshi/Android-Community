@@ -654,7 +654,7 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
     /**
      * [设置未读通知的的个数]
      */
-    private void getNotification(String verb) {
+    private void getNotification(final String verb) {
         String url = URL.Notification.getNotification();
         OkHttpUtils
                 .get()
@@ -667,8 +667,13 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                     @Override
                     public void onError(Call call, Exception e, int id) {
                         Log.d(TAG, ".setUnread()" + e.getMessage());
-                        unread_comment.setVisibility(View.INVISIBLE);
-                        dot_comment.setVisibility(View.INVISIBLE);
+                        if (verb.equals("like")){
+                            unread_notice.setVisibility(View.INVISIBLE);
+                            dot_notice.setVisibility(View.INVISIBLE);
+                        }if (verb.equals("reply")){
+                            unread_comment.setVisibility(View.INVISIBLE);
+                            dot_comment.setVisibility(View.INVISIBLE);
+                        }
                     }
 
                     @Override
@@ -677,17 +682,31 @@ public class NotificationFragment extends BaseFragment implements SimpleListView
                             JSONObject jsonObject = new JSONObject(response);
                             int countComment = jsonObject.getInt("count");
                             if (countComment > 0) {
-                                unread_comment.setVisibility(View.VISIBLE);
-                                dot_comment.setVisibility(View.VISIBLE);
-                                if (countComment > 100) {
-                                    unread_comment.setText("99+");
-                                } else
-                                    unread_comment.setText(String.valueOf(countComment));
+                                if (verb.equals("like")){
+                                    unread_notice.setVisibility(View.VISIBLE);
+                                    dot_notice.setVisibility(View.VISIBLE);
+                                    if (countComment > 100) {
+                                        unread_notice.setText("99+");
+                                    } else
+                                        unread_notice.setText(String.valueOf(countComment));
+                                }if (verb.equals("reply")){
+                                    unread_comment.setVisibility(View.VISIBLE);
+                                    dot_comment.setVisibility(View.VISIBLE);
+                                    if (countComment > 100) {
+                                        unread_comment.setText("99+");
+                                    } else
+                                        unread_comment.setText(String.valueOf(countComment));
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            unread_comment.setVisibility(View.INVISIBLE);
-                            dot_comment.setVisibility(View.INVISIBLE);
+                            if (verb.equals("like")){
+                                unread_notice.setVisibility(View.INVISIBLE);
+                                dot_notice.setVisibility(View.INVISIBLE);
+                            }if (verb.equals("reply")){
+                                unread_comment.setVisibility(View.INVISIBLE);
+                                dot_comment.setVisibility(View.INVISIBLE);
+                            }
                         }
                     }
                 });
